@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
+import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/saved_widget.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 
@@ -15,7 +16,7 @@ class SavedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PropertiesCubit cubit =PropertiesCubit.get(context);   
+    PropertiesCubit cubit =PropertiesCubit.get(context)..getFavourites();   
 
   return BlocConsumer<PropertiesCubit,PropertiesStates>
   (builder:(context,states){
@@ -43,7 +44,7 @@ class SavedScreen extends StatelessWidget {
       body: Container(
         
         margin: const EdgeInsets.only(left:16,),
-        child: ListView(
+        child:cubit.favouritesLoading?customLoading() :ListView(
           scrollDirection: Axis.vertical,
           children: [
             const SizedBox(height: 40,),
@@ -54,9 +55,10 @@ class SavedScreen extends StatelessWidget {
             Text("\n${cubit.favouriteProperties.length} properties",style: f15TextGraySemibold_1,),
             for(int i = 0;i < cubit.favouriteProperties.length ;i ++)
             SavedWidget(
+              context: context,
               property: cubit.favouriteProperties[i],
               function:(){
-                 cubit.changePropertyFavourite(cubit.favouriteProperties[i]);
+                 cubit.changeSavedFavourite(cubit.favouriteProperties[i]);
               },
               )
           ],
@@ -66,7 +68,8 @@ class SavedScreen extends StatelessWidget {
     );
   
   } , 
-  listener:(context,states){} );
+  listener:(context,states){
+  } );
   }
 
 }

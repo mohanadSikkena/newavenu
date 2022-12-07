@@ -1,37 +1,107 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'dart:convert';
 
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:newavenue/models/agent/agent_model.dart';
+
+class Ad {
+  String image;
+  int id;
+  Ad({
+    required this.image,
+    required this.id,
+  });
+  
+
+
+  factory Ad.fromMap(Map<String, dynamic> map) {
+    return Ad(
+      image:'http://192.168.1.7:81/'+ map['cover_image'],
+      id: map['id'],
+    );
+  }
+
+
+}
+
+
+class FavouriteProperty {
+  int id;
+  String location;
+  String img;
+  String price;
+  FavouriteProperty({
+    required this.id,
+    required this.location,
+    required this.img,
+    required this.price,
+  });
+
+  factory FavouriteProperty.fromMap(Map<String, dynamic> map) {
+    return FavouriteProperty(
+      id: map['id'] as int,
+      location: map['location'] as String,
+      img:'http://192.168.1.7:81/'+map['images'][0]["image"],
+      price: CurrencyFormatter.
+      format(int.parse(map['price']  ), 
+      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
+      symbolSide: SymbolSide.right)).toString(),
+    );
+  }
+}
+
+class AgentProperty {
+  int id;
+  String img;
+  String location;
+  String price;
+  AgentProperty({
+    required this.id,
+    required this.img,
+    required this.location,
+    required this.price,
+  });
+  factory AgentProperty.fromMap(Map<String, dynamic> map) {
+    return AgentProperty(
+      id: map['id'] as int,
+      img: 'http://192.168.1.7:81/'+map['images'][0]["image"],
+      location: map['location'] as String,
+      price: CurrencyFormatter.
+      format(int.parse(map['price']  ), 
+      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
+      symbolSide: SymbolSide.right)).toString(),
+    );
+  }
+
+}
+
 class Property {
   int id;
+  Agent agent;
   String name;
   String area;
   String price;
-  int agentId;
+  String saleType;
   String description;
   String location;
   int currentImage;
   bool isFavourite =false;
   List<String> images;
   List details;
-  String agentName;
-  String agentAbout;
-  String agentImage;
 
   List<String> features;
   Property({
-    required this.agentAbout,
-    required this.agentImage,
-    required this.agentName,
+    required this.agent,
+    required this.saleType,
     required this.price,
     required this.details,
     required this.features,
     required this.id,
     required this.name,
     required this.area,
-    required this.agentId,
     required this.description,
     required this.location,
     required this.currentImage,
@@ -67,40 +137,32 @@ class Property {
   //   );
   // }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'area': area,
-      'agentId': agentId,
-      'description': description,
-      'location': location,
-      'currentImage': currentImage,
-      'isFavourite': isFavourite,
-      'images': images,
-    };
-  }
 
   factory Property.fromMap(Map<String, dynamic> map) {
     List<String>newImages=[];
     map['images'].forEach((image){
-      newImages.add('http://localhost:8000/'+image['image']) ;
+      newImages.add('http://192.168.1.7:81/'+image['image']) ;
     });
     List<String> newFeatures=[];
     map['features'].forEach((feature){
       newFeatures.add(feature['name']) ;
     });
     return Property(
-      agentAbout: map['agent']['about'],
-      agentName: map['agent']['name'],
-      agentImage: map['agent']['img']??'s',
-      price: CurrencyFormatter.format(int.parse(map['price']  ), CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", symbolSide: SymbolSide.right)).toString(),
+      agent: map["agent"],
+      saleType: map["sell_type_id"]==1?"Sale":"Rent",
+      // agentAbout: map['agent']['about'],
+      // agentName: map['agent']['name'],
+      // agentImage: 'http://192.168.1.7:81/'+map['agent']['img'],
+      price: CurrencyFormatter.
+      format(int.parse(map['price']  ), 
+      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
+      symbolSide: SymbolSide.right)).toString(),
       details:map["details"] ,
       features: newFeatures,
       id: map['id'] as int,
       name: map['name'] as String,
       area: map['area'] as String,
-      agentId: map['agent_id'] as int,
+      // agentId: map['agent_id'] as int,
       description: map['description'] as String,
       location: map['location'] as String,
       // currentImage: map['currentImage'] as int,
@@ -114,41 +176,6 @@ class Property {
     );
   }
 
-  String toJson() => json.encode(toMap());
 
-  factory Property.fromJson(String source) => Property.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  @override
-  String toString() {
-    return 'Property(id: $id, name: $name, area: $area, agentId: $agentId, description: $description, location: $location, currentImage: $currentImage, isFavourite: $isFavourite, images: $images)';
-  }
-
-  @override
-  bool operator ==(covariant Property other) {
-    if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.area == area &&
-      other.agentId == agentId &&
-      other.description == description &&
-      other.location == location &&
-      other.currentImage == currentImage &&
-      other.isFavourite == isFavourite &&
-      listEquals(other.images, images);
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-      name.hashCode ^
-      area.hashCode ^
-      agentId.hashCode ^
-      description.hashCode ^
-      location.hashCode ^
-      currentImage.hashCode ^
-      isFavourite.hashCode ^
-      images.hashCode;
-  }
 }

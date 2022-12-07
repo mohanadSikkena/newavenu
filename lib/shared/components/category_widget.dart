@@ -1,16 +1,13 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
 
-Widget categoryWidget(
+Widget  categoryWidget(
   {
 
-    required IconData icon,
     required String name,
-    required int properties,
     required String image,
     required Function function,
 
@@ -49,15 +46,10 @@ Widget categoryWidget(
   
         children: [
   
-          Card(
-  
-            child: Icon(icon,color: primaryColor,),
-  
-          ),
+
   
           Text(name,style: f17TextWhiteSemibold,),
   
-          Text('$properties Properties',style: f11TextWhiteRegular,)
   
         ],
   

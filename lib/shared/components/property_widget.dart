@@ -12,42 +12,39 @@ Widget propertyWidget(
       PropertiesCubit cubit=PropertiesCubit.get(context);
   return InkWell(
     onTap: () {
-       cubit.getProperty(property.id, context);
-
-      
+          PropertiesCubit.get(context).getProperty(property.id, context);
     },
     child: Container(
       margin: const EdgeInsets.only(
           top: 17,
           right: 16),
       height:315,
-      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          Flexible(
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 CarouselSlider.builder(
+
                     itemCount: property.images.length,
                     itemBuilder: (context, i, j) {
                       return Container(
-                        width: double.infinity,
-                        height: 224,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                               image: NetworkImage(
                                 property.images[i]
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             )),
                       );
                     },
                     options: CarouselOptions(
-
                       
+                        height: 224,
+                        enableInfiniteScroll: false,
                         onPageChanged: (i, j) {
                           cubit.changeHomePagePropertiesImage(i, property);
                         },
@@ -56,7 +53,8 @@ Widget propertyWidget(
                     effect: ScrollingDotsEffect(
                         dotColor: gray_2, activeDotColor: gray_3),
                     activeIndex: property.currentImage,
-                    count: property.images.length),
+                    count: property.images.length
+                    ),
               ],
             ),
           ),

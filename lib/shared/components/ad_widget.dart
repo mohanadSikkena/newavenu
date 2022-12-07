@@ -1,0 +1,22 @@
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:newavenue/models/properties/properties_cubit.dart';
+import 'package:newavenue/models/properties/property_model.dart';
+
+Widget adWidget({
+  required BuildContext context, 
+  required Ad ad
+
+})=> 
+  GestureDetector(
+
+  
+    onTap:(){
+      PropertiesCubit.get(context).getProperty(ad.id, context);
+    } ,
+    child: Image(
+
+      image: NetworkImage(ad.image, )),
+  );

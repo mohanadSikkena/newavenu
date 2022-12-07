@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/agent/agent_details.dart';
+import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -13,7 +14,7 @@ import '../../shared/styles/colors.dart';
 
 class PropertyScreen extends StatelessWidget {
    // ignore: use_key_in_widget_constructors
-   const PropertyScreen({Key? key ,
+  PropertyScreen({Key? key ,
   }) ;
 
 
@@ -26,7 +27,7 @@ class PropertyScreen extends StatelessWidget {
      (builder: (context,states){
         return Scaffold(
       backgroundColor: black,
-      body: ListView(
+      body: cubit.propertyLoading?customLoading():ListView(
         scrollDirection: Axis.vertical,
         children: [
           Stack(
@@ -125,10 +126,10 @@ class PropertyScreen extends StatelessWidget {
                             Container(
                               alignment: Alignment.center,
                               height: 20,
-                              width: 105,
+                              width: 80,
                               padding: const EdgeInsets.only(left: 10 , right: 10),
                               margin: const EdgeInsets.only(left: 10),
-                              child: Text("Negotiatable",style: f13TextWhiteMedium,),
+                              child: Text(cubit.currentProperty.saleType,style: f13TextWhiteMedium,),
                               decoration: BoxDecoration(
                                 color: primaryColor,
                                 borderRadius: BorderRadius.circular(10)
@@ -175,20 +176,27 @@ class PropertyScreen extends StatelessWidget {
           // ignore: prefer_const_constructors
           ListTile(
             onTap: (){
+              cubit.getAgentProperties(cubit.currentProperty.agent.id);
               Navigator.push(context, 
               MaterialPageRoute(builder: (_){
-                return const AgentDetails();
+                return AgentDetails( agent: cubit.currentProperty.agent, );
               }));
             },
             
             contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
             // ignore: prefer_const_constructors
             leading: CircleAvatar(
-              child: Text(cubit.currentProperty.agentImage),
+              
+              
+              
+              child: Image(
+                fit: BoxFit.fill,
+                image: NetworkImage(cubit.currentProperty.agent.img,)), 
+              
               radius: 40,
-              backgroundColor: Colors.amber,),
-              title: Text(cubit.currentProperty.agentName,style: f15TextWhiteSemibold,),
-              subtitle: Text(cubit.currentProperty.agentAbout,style: f12TextWhiteRegular,),
+              ),
+              title: Text(cubit.currentProperty.agent.name,style: f15TextWhiteSemibold,),
+              subtitle: Text(cubit.currentProperty.agent.about,style: f12TextWhiteRegular,),
           ),
           Container(
             margin: const EdgeInsets.only(left: 16,top: 16),

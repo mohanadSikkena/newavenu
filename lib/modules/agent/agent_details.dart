@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/models/properties/properties_cubit.dart';
+import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/properties/explore_screen.dart';
 import 'package:newavenue/shared/components/agent_profile_property_widget.dart';
+import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
 import '../../shared/styles/colors.dart';
 
 
-class AgentDetails extends StatefulWidget {
-  const AgentDetails({Key? key}) : super(key: key);
+class AgentDetails extends StatelessWidget {
+  Agent agent;
+  AgentDetails({ Key? key , required this.agent}) : super(key: key);
 
-  @override
-  State<AgentDetails> createState() => _AgentDetailsState();
-}
-
-class _AgentDetailsState extends State<AgentDetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocConsumer<PropertiesCubit,PropertiesStates>
+    (builder: (context,states){
+  return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
           elevation: 0.0,
@@ -37,40 +40,40 @@ class _AgentDetailsState extends State<AgentDetails> {
             child: Column(
               children: [
                 CircleAvatar(
-                  backgroundColor: gray_1,
+                  backgroundImage: NetworkImage(agent.img),
                   radius: 43,
                 ),
                 const SizedBox(
                   height: 33,
                 ),
                 Text(
-                  "Agent Name",
+                  agent.name,
                   style: f34DisplayBlackBold,
                 ),
                 Text(
-                  "Land & Happiness Property",
+                  agent.about,
                   style: f15TextgrayRegular_1,
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 17,
-                  ),
-                  height: 80,
-                  width:190,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      iconWithText(
-                          text: "Favourite",
-                          icon: Icons.favorite_border,
-                          isFavourite: true,
-                          ),
-                      iconWithText(
-                          text: "Chat", icon: Icons.chat_bubble, ),
-                      iconWithText(text: "Call", icon: Icons.call, )
-                    ],
-                  ),
-                ),
+                // Container(
+                //   margin: const EdgeInsets.only(
+                //     top: 17,
+                //   ),
+                //   height: 80,
+                //   width:190,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       iconWithText(
+                //           text: "Favourite",
+                //           icon: Icons.favorite_border,
+                //           isFavourite: true,
+                //           ),
+                //       iconWithText(
+                //           text: "Chat", icon: Icons.chat_bubble, ),
+                //       iconWithText(text: "Call", icon: Icons.call, )
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 )
@@ -115,13 +118,13 @@ class _AgentDetailsState extends State<AgentDetails> {
                 Container(
                   height: 172,
                   margin: const EdgeInsets.only(top: 15),
-                  child: ListView.builder(
-                      itemCount: 6,
+                  child:PropertiesCubit.get(context).agentPropertiesLoading? customLoading():ListView.builder(
+                      itemCount: PropertiesCubit.get(context).agentSale.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, i) {
                         return profilePropertyWidget(
-                            context: context,
-                            name: '284 Flemming Street Henderson, NC 934');
+                          property: PropertiesCubit.get(context).agentSale[i] , 
+                          context: context);
                       }),
                 ),
                 const SizedBox(
@@ -159,13 +162,14 @@ class _AgentDetailsState extends State<AgentDetails> {
                 Container(
                   margin: const EdgeInsets.only(top: 15,bottom: 20),
                   height: 172,
-                  child: ListView.builder(
-                      itemCount: 6,
+                  child:PropertiesCubit.get(context).agentPropertiesLoading? customLoading(): ListView.builder(
+                      itemCount: PropertiesCubit.get(context).agentRent.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, i) {
                         return profilePropertyWidget(
                             context: context,
-                            name: '284 Flemming Street Henderson, NC 934');
+                            property: PropertiesCubit.get(context).agentRent[i]
+                            );
                       }),
                 ),
                 Align(
@@ -175,7 +179,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                  const SizedBox(height: 20,),
                  Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Thus, only by choosing the right property will enhance and allow you to multiply and grow your property portfolio in a easier and more systematic way without over stretching your financial comfortability. ",
+                  child: Text(agent.description,
                   style: f15TextBlackRegular,)),
                   const SizedBox(height: 30,),
                   
@@ -188,9 +192,12 @@ class _AgentDetailsState extends State<AgentDetails> {
         ],
       ),
     );
+  
+    }, 
+    listener: (context,states){});
+
   }
 }
-
 
   @override
   Widget iconWithText ({

@@ -9,7 +9,6 @@ import 'package:newavenue/shared/styles/styles.dart';
 Widget allCategoriesWidget(
   {
     required String name,
-    required int len,
     required String img,
     required Function function
   }
@@ -37,37 +36,18 @@ Widget allCategoriesWidget(
   
       children: [
   
-        Column(
-  
-          crossAxisAlignment: CrossAxisAlignment.start,
-  
-          children: [
-  
-            Card(
-  
-              child: Icon(Icons.house,color: primaryColor ,size: 20,),
-  
-            ),
-  
-            Text(name,style:f24DisplayBlackBold,),
-  
-            Text('$len properties',style:f13TextGrayRegular_1,)
-  
-  
-  
-          ],
-  
-        ),
+        Text(name,style:f24DisplayBlackBold,),
   
         Row(
   
           children: [
   
             Container(
+              padding: EdgeInsets.only(bottom: 16),
   
-              height: 64,
+              height: 80,
   
-              width: 64,
+              width: 84,
   
               decoration: BoxDecoration(
   
@@ -75,7 +55,7 @@ Widget allCategoriesWidget(
   
                   image:NetworkImage(
                     img
-                  ),fit: BoxFit.fill ),
+                  ),fit: BoxFit.cover ),
   
                 
   

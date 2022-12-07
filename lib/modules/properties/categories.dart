@@ -65,13 +65,13 @@ class CategoriesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              for(int i=0;i<cubit.testCategories.length;i++)
+              for(int i=0;i<cubit.subCategories.length;i++)
               allCategoriesWidget(
-                name: cubit.testCategories[i]["name"],
-                img :cubit.testCategories[i]["img"],
-                len: 2,
+                name: cubit.subCategories[i]["name"],
+                img :cubit.subCategories[i]["img"],
+                
                 function: (){
-                cubit.navigateToCategoriesExplore(i, context);
+                cubit.navigateToExploreFromCategory(context: context, i: cubit.subCategories[i]["id"]);
                 
               })
               

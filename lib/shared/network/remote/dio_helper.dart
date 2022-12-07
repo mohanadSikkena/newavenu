@@ -6,11 +6,12 @@ class dioHelper{
   static late Dio dio;
 
   static init(){
-    print('in');
     dio = Dio(
-      BaseOptions(baseUrl:'http://localhost:8000/api',receiveDataWhenStatusError: true )
-    );
+      BaseOptions(baseUrl:'http://192.168.1.7:81/api',receiveDataWhenStatusError: true )
+    );  
   }
+
+
 
   static Future<Response> getData(
     {
@@ -22,5 +23,22 @@ class dioHelper{
       url,
     );
     
+  }
+
+    static Future<Response> setData({
+    required String url,
+    required dynamic query, 
+  }) async{
+    return await dio.post(
+      
+      url, 
+      data: query,
+      
+      options: Options(
+      
+        receiveDataWhenStatusError: true,
+        validateStatus: (_) => true,  
+        )
+      );
   }
 }

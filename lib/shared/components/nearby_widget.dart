@@ -13,11 +13,12 @@ Widget nearbyWidget(
 
     required Property property,
     required BuildContext context,
-    required Function function
   }
 )=>InkWell(
   onTap: (){
-    PropertiesCubit.get(context).getProperty( property.id, context);
+    PropertiesCubit.get(context).getProperty(property.id, context);
+    
+
   },
   child:   Container(
   
@@ -33,40 +34,7 @@ Widget nearbyWidget(
   
         Container(
   
-          child: 
-  
-              Column(
-  
-  
-  
-                children: [
-  
-                  const SizedBox(height: 10,),
-  
-                  Row(
-  
-                  crossAxisAlignment: CrossAxisAlignment.start,
-  
-                  mainAxisAlignment: MainAxisAlignment.end,
-  
-                    children: [
-  
-                      IconButton(
-                        onPressed: (){
-                          function();
-                        }, 
-                        icon: Icon(
-                          property.isFavourite?Icons.favorite:Icons.favorite_border,
-                          color: property.isFavourite?favoriteColor:white,),),
-  
-  
-                    ],
-  
-                  ),
-  
-                ],
-  
-              ),
+    
   
            
   

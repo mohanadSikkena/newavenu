@@ -1,10 +1,13 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/properties/categories.dart';
+import 'package:newavenue/shared/components/ad_widget.dart';
 import 'package:newavenue/shared/components/buy_rent_custom_button.dart';
 import 'package:newavenue/shared/components/category_widget.dart';
+import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/custom_text_field.dart';
 import 'package:newavenue/shared/components/nearby_widget.dart';
 import 'package:newavenue/shared/components/property_widget.dart';
@@ -42,25 +45,8 @@ Widget build(BuildContext context) {
               
             children:  [
 
-              const SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-        
-                  Text(
-                      '\nSet Location',
-                      style: f17TextBlackRegular
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right:20.0),
-                      child: Text(
-                  '\nNews',
-                  style: f17TextBlackRegular,
-                ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 5,),
+              const SizedBox(height: 20,),
+
               
               Text('Browse',
               style:f34DisplayBlackBold
@@ -111,104 +97,75 @@ Widget build(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Categories',style: f15TextGraySemibold_1,),
-                    InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_){
-                          return const CategoriesScreen();
-                        }));
-                      },
-                      child: Row(
-                        children: [
-                          Text('See all',style: f11TextPrimarySemibold,),
-                          Icon(Icons.chevron_right_rounded,color: primaryColor,)
-                        ],
-                      ),
-                    )
+                    
                   ],
                 ),
                 const SizedBox(height: 15,),
                 SizedBox(
                   height: 188,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: cubit.testCategories.length,
-                    itemBuilder: (context,i){
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      categoryWidget(name: cubit.categories[0]['name'], image:cubit.categories[0]['img'] , function: (){
+                        cubit.navigateToSubCategories(i: 1, context: context);
+                      }),
+                      categoryWidget(name: cubit.categories[1]['name'], image:cubit.categories[1]['img'] , function: (){
+                        cubit.navigateToSubCategories(i: 2, context: context);
+                      })
+                  ],)
+                  // ListView.builder(
+                  //   scrollDirection: Axis.horizontal,
+                  //   itemCount: cubit.testCategories.length,
+                  //   itemBuilder: (context,i){
                       
-                      return categoryWidget
-                      (
-                      icon: cubit.testCategories[i]["icon"], 
-                      name: cubit.testCategories[i]["name"], 
-                      properties: cubit.testCategories[i]["len"],
+                  //     return categoryWidget
+                  //     (
+                  //     icon: cubit.testCategories[i]["icon"], 
+                  //     name: cubit.testCategories[i]["name"], 
+                  //     properties: cubit.testCategories[i]["len"],
                        
-                      image: cubit.testCategories[i]['img'],
-                      function: (){
-                        cubit.navigateToCategoriesExplore(i, context);
-                      }
+                  //     image: cubit.testCategories[i]['img'],
+                  //     function: (){
+                  //       cubit.navigateToCategoriesExplore(i, context);
+                  //     }
         
-                      );
-                    }),
+                  //     );
+                  //   }),
                 
                 )
                 ,
                 const SizedBox(height: 16,),
-                Container(
-                  height: 400,
-                  child: ListView.builder(
-                    
-                    itemCount: 2,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context,i){
-                      
-                      return Container(
-                        height: 400,
-                        width: 400,
-                        
-                         margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image:AssetImage(images[i]),),
-                    
-                  
-                ),
-                      );
-                    }),
-                
-                
-               
+                cubit.adsLoading? customLoading():CarouselSlider.builder(
+
+                  options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                autoPlayInterval:const   Duration(seconds: 10),
 
                 
-                ),
+                height: 320,
+              
+                
+              ),
+                  
+                  itemCount: cubit.ads.length,
+                  itemBuilder: (context,i,j){
+                    
+                    return adWidget(context: context, ad: cubit.ads[i]);
+                  }),
 
 
                 const SizedBox(height: 16),     
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Near by',style: f15TextGraySemibold_1,),
-                    InkWell(
-                      onTap: (){},
-                      child: Row(
-                        children: [
-                          Text('See all',style: f11TextPrimarySemibold,),
-                          Icon(Icons.chevron_right_rounded,color: primaryColor,)
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                Text('Most Views',style: f15TextGraySemibold_1,),
                 const SizedBox(height:15,),
                 SizedBox(
                   height:266,
-                  child: ListView.builder(
+                  child:cubit.mostViewsLoading? customLoading():ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: cubit.allProperties.length,
+                    itemCount: cubit.mostViewd.length,
                     itemBuilder: (context,i){
                       return nearbyWidget(
-                        function: (){
-                          cubit.changePropertyFavourite(cubit.allProperties[i]);
-                        },
-                        property: cubit.allProperties[i],
+                        property: cubit.mostViewd[i],
                         context: context,
                         
                       );
@@ -216,15 +173,18 @@ Widget build(BuildContext context) {
                 ),
                 Text("Explore all ${cubit.allProperties.length}+ properties",style: f15TextGraySemibold_1,),
                 
-                for(int i =0 ;i<cubit.allProperties.length;i++)
+                cubit.allPropertiesLoading?customLoading() :
+                Column(
+                  children: [
+                    for(int i =0 ;i<cubit.allProperties.length;i++)
                 
-                Container(
-                  child: propertyWidget(
-                    
-                    context: context,
-                    property: cubit.allProperties[i],                
+                propertyWidget(
+                  
+                  context: context,
+                  property: cubit.allProperties[i],                
                  
-                  ),
+                ),
+                  ],
                 )
               
             ],

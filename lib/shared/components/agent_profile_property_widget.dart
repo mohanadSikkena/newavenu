@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:newavenue/models/properties/property_model.dart';
 // ignore: unused_import
 import 'package:newavenue/modules/properties/property_screen.dart';
 import 'package:newavenue/shared/styles/colors.dart';
@@ -8,9 +9,9 @@ import 'package:newavenue/shared/styles/styles.dart';
 
 
 Widget profilePropertyWidget({
-  required String name,
   double width=375,
   double height = 812,
+  required AgentProperty property,
   required BuildContext context
 })=>InkWell(
   onTap: (){
@@ -38,7 +39,7 @@ Widget profilePropertyWidget({
   
           decoration: BoxDecoration(
   
-            color: gray_1,
+            image: DecorationImage(image: NetworkImage(property.img)),
   
             borderRadius: BorderRadius.circular(10)
   
@@ -48,9 +49,9 @@ Widget profilePropertyWidget({
   
         ),
   
-        Text(name,style: f15TextBlackSemibold,maxLines: 2, overflow: TextOverflow.ellipsis),
+        Text(property.location,style: f15TextBlackSemibold,maxLines: 2, overflow: TextOverflow.ellipsis),
   
-        Text('\$239,746',style: f15TextgrayRegular_3,)
+        Text(property.price,style: f15TextgrayRegular_3,)
   
       ],
   

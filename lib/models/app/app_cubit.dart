@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/models/app/app_states.dart';
-import 'package:newavenue/modules/auth_screens/login.dart';
-
+import 'package:newavenue/shared/network/local/cache_helper.dart';
+import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import '../../modules/agent/account.dart';
-import '../../modules/connections/connections.dart';
 import '../../modules/home_page.dart';
-import '../../modules/notifications/notifications_scree.dart';
 import '../../modules/properties/saved_screen.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -39,9 +38,7 @@ class AppCubit extends Cubit<AppStates> {
 
   List<Widget> screens =  [
     const HomePage(),
-    const ConnectionsScreen(),
     const SavedScreen(),
-    const NotificationsScreen(),
     const AccountScreen()
   ];
   int currentOnboardingScreen = 0;
@@ -50,11 +47,8 @@ class AppCubit extends Cubit<AppStates> {
 
   List<BottomNavigationBarItem> items = const [
     BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.chat_bubble_rounded), label: "Connections"),
     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Saved"),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.notifications), label: "Notifications"),
+    
     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
   ];
 
@@ -68,14 +62,30 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangeOnBoardingScreen());
   }
 
-  nextOnBoardingScreen(BuildContext context) {
-    currentOnboardingScreen < 2
-        ? pageController.nextPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.ease)
-        : Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const LogIn();
+  
+
+  nextOnBoardingScreen(BuildContext context) async{
+
+    if(currentOnboardingScreen < 2){
+      pageController.nextPage(
+            duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    }else{
+
+      await dioHelper.getData(url: '/customer/create-new-customer').then((value){
+        
+        CacheHelper.putInt(key: 'id', value: value.data["id"]);
+      }).onError((error, stackTrace){
+        
+      });
+
+      Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return const BottomNavBar();
           }));
 
+    
+    }
     emit(NextOnBoardingScreen());
+    
+
   }
 }

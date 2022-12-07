@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/properties/filter_screen.dart';
+import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/property_widget.dart';
 
 import '../../shared/styles/colors.dart';
@@ -46,7 +47,15 @@ class ExploreScreen extends StatelessWidget {
         elevation: 0.0,
       ),
       backgroundColor: white,
-      body: Container(
+      body: cubit.exploreLoading? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          const Text('Loading') , 
+          const SizedBox(height: 10,) , 
+          customLoading()
+        ]),
+      ) :Container(
         margin: const EdgeInsets.only(left:16,),
         child: ListView(
           scrollDirection: Axis.vertical,
