@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/property_model.dart';
-import 'package:newavenue/modules/properties/property_screen.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -50,7 +49,10 @@ Widget propertyWidget(
                         },
                         viewportFraction: 1)),
                 AnimatedSmoothIndicator(
+
                     effect: ScrollingDotsEffect(
+                      dotWidth: 10,
+                      dotHeight: 10,
                         dotColor: gray_2, activeDotColor: gray_3),
                     activeIndex: property.currentImage,
                     count: property.images.length

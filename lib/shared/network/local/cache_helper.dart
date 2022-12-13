@@ -23,6 +23,17 @@ class CacheHelper{
     return await sharedPreferences.setString(key,value );
   }
 
+  static Future putList({
+    required String key, 
+    required List<String> value
+  })async{
+    return await sharedPreferences.setStringList(key, value);
+  }
+
+  static getList({required String key}){
+    return sharedPreferences.getStringList(key);
+  } 
+
   static getData({
     required String key
   }){

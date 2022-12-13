@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/shared/components/custom_button.dart';
-import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

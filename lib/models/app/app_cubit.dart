@@ -4,7 +4,6 @@ import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
-import '../../modules/agent/account.dart';
 import '../../modules/home_page.dart';
 import '../../modules/properties/saved_screen.dart';
 
@@ -37,9 +36,8 @@ class AppCubit extends Cubit<AppStates> {
   ];
 
   List<Widget> screens =  [
-    const HomePage(),
+     HomePage(),
     const SavedScreen(),
-    const AccountScreen()
   ];
   int currentOnboardingScreen = 0;
   int currentIndex = 0;
@@ -49,7 +47,6 @@ class AppCubit extends Cubit<AppStates> {
     BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Saved"),
     
-    BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
   ];
 
   changeIndex(int index) {
@@ -71,7 +68,7 @@ class AppCubit extends Cubit<AppStates> {
             duration: const Duration(milliseconds: 300), curve: Curves.ease);
     }else{
 
-      await dioHelper.getData(url: '/customer/create-new-customer').then((value){
+      await DioHelper.getData(url: '/customer/create-new-customer').then((value){
         
         CacheHelper.putInt(key: 'id', value: value.data["id"]);
       }).onError((error, stackTrace){

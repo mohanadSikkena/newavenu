@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
+import 'package:newavenue/models/filter/filter_cubit.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
+import 'package:newavenue/models/search/search_cubit.dart';
 import 'package:newavenue/modules/onboarding/onboarding.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
@@ -20,15 +22,16 @@ class Test{
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
-  dioHelper.init();
+  DioHelper.init();
   await CacheHelper.init();
   // await CacheHelper.sharedPreferences.clear();
-  print(CacheHelper.getData(key: "id"));
-  runApp(const MyApp());
+  bool firstTime=await CacheHelper.getData(key: "id")==null;
+  runApp( MyApp(firstTime:firstTime) ,);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final  bool firstTime;
+  const MyApp({Key? key , required this.firstTime}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -36,13 +39,20 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => AppCubit()),
-          BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()..getAds())
+          BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()..getAds()), 
+          BlocProvider(create: (context) => SearchCubit()), 
+          BlocProvider(create: (context) => FilterCubit())
           ],
         child: BlocConsumer<AppCubit, AppStates>(
             builder: (context, states) {
 
               return MaterialApp(
-                home: CacheHelper.getData(key: "id")==null? OnBoardingScreen():BottomNavBar(),
+                // home: OnBoardingScreen(),
+                home: 
+                
+                firstTime?
+                const OnBoardingScreen()
+                :const BottomNavBar(),
               );
             },
             listener: (context, states) {

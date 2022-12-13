@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/property_model.dart';
-import 'package:newavenue/modules/properties/property_screen.dart';
-import 'package:newavenue/shared/styles/colors.dart';
+
 import 'package:newavenue/shared/styles/styles.dart';
 
 

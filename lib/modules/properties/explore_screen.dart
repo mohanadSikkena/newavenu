@@ -28,7 +28,7 @@ class ExploreScreen extends StatelessWidget {
           IconButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (_){
-                return const FilterScreen();
+                return  FilterScreen();
               }));
             },
             // ignore: prefer_const_constructors

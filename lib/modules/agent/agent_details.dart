@@ -11,6 +11,7 @@ import 'package:newavenue/shared/styles/styles.dart';
 import '../../shared/styles/colors.dart';
 
 
+// ignore: must_be_immutable
 class AgentDetails extends StatelessWidget {
   Agent agent;
   AgentDetails({ Key? key , required this.agent}) : super(key: key);

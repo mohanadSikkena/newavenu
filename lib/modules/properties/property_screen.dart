@@ -14,7 +14,7 @@ import '../../shared/styles/colors.dart';
 
 class PropertyScreen extends StatelessWidget {
    // ignore: use_key_in_widget_constructors
-  PropertyScreen({Key? key ,
+  const PropertyScreen({Key? key ,
   }) ;
 
 
@@ -38,6 +38,9 @@ class PropertyScreen extends StatelessWidget {
               itemBuilder: (context,i,j){
                 return Container(
                   child: Image(
+                    loadingBuilder: (context, child, loadingProgress) {
+                      return loadingProgress==null?child:customLoading();
+                    },
                     filterQuality: FilterQuality.high,
                     excludeFromSemantics: true,
                     fit: BoxFit.fill,
@@ -348,7 +351,7 @@ Widget featuresWidget({
     ),
   
     margin: const EdgeInsets.only(right: 16),
-    padding: EdgeInsets.only(left: 10,right: 10),
+    padding: const EdgeInsets.only(left: 10,right: 10),
   
     child: Text(feature,style: f13TextPrimarySemibold,),
   

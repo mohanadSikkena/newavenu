@@ -1,6 +1,9 @@
+import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:newavenue/models/filter/filter_cubit.dart';
+import 'package:newavenue/models/filter/filter_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/custom_button.dart';
@@ -8,14 +11,23 @@ import 'package:newavenue/shared/styles/styles.dart';
 
 import '../../shared/styles/colors.dart';
 
+// ignore: must_be_immutable
 class FilterScreen extends StatelessWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+   FilterScreen({Key? key}) : super(key: key);
+  CurrencyFormatterSettings egpSettings = CurrencyFormatterSettings(
+  symbol: 'EGP',
+  symbolSide: SymbolSide.right,
+  thousandSeparator: ',',
+  decimalSeparator: '.',
+  symbolSeparator: ' ',
+  
+);
 
   @override
   Widget build(BuildContext context) {
-    PropertiesCubit cubit = PropertiesCubit.get(context);
+    FilterCubit cubit = FilterCubit.get(context);
 
-    return BlocConsumer<PropertiesCubit, PropertiesStates>(
+    return BlocConsumer<FilterCubit, FilterStates>(
         builder: (context, states) {
           return Scaffold(
             backgroundColor: white,
@@ -51,53 +63,29 @@ class FilterScreen extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.vertical,
                 children: [
-                  Text(
-                    "Sort Options",
-                    style: f15TextGraySemibold_1,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  for (int i = 0; i < cubit.sortOptionsList.length; i++)
-                    sortOptions(
-                        text: cubit.sortOptionsList[i],
-                        function: () {
-                          cubit.changeSortOptions(i);
-                        },
-                        isSelected: cubit.currentSortIption == i,
-                        height: 35,
-                        topMargin:10),
-                  const SizedBox(
-                    height: 27,
-                  ),
-                  Text(
-                    'Options',
-                    style: f15TextGraySemibold_1,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
+                  
+
+                                    Row(
                     children: [
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            cubit.changeCurrentOption(0);
+                            cubit.changeSaleType(0);
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            height: 30,
+                            height: 35,
                             decoration: BoxDecoration(
-                                color: cubit.currentOption == 0 ? primaryColor : white,
-                                border: cubit.currentOption == 1
+                                color: cubit.saleType == 0 ? primaryColor : white,
+                                border: cubit.saleType == 1
                                     ? Border.all(color: primaryColor, width: 1)
                                     : null,
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
                             child: Text(
-                              'Resail',
-                              style: cubit.currentOption == 0
+                              'Buy',
+                              style: cubit.saleType == 0
                                   ? f13TextWhiteSemibold
                                   : f13TextPrimarySemibold,
                             ),
@@ -107,23 +95,23 @@ class FilterScreen extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            cubit.changeCurrentOption(1);
+                            cubit.changeSaleType(1);
                           },
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: cubit.currentOption == 0 ? white : primaryColor,
-                              border: cubit.currentOption == 0
+                              color: cubit.saleType == 0 ? white : primaryColor,
+                              border: cubit.saleType == 0
                                   ? Border.all(color: primaryColor, width: 1)
                                   : null,
                               borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(10),
                                   bottomRight: Radius.circular(10)),
                             ),
-                            height: 30,
+                            height: 35,
                             child: Text(
-                              'Primary',
-                              style: cubit.currentOption == 0
+                              'Rent',
+                              style: cubit.saleType == 0
                                   ? f13TextPrimarySemibold
                                   : f13TextWhiteSemibold,
                             ),
@@ -133,12 +121,107 @@ class FilterScreen extends StatelessWidget {
                       const SizedBox(width: 16,)
                     ],
                   ),
+                  
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  
+                  BlocBuilder<PropertiesCubit,PropertiesStates>(builder: (context,states){
+                    return PropertiesCubit.get(context).fromSearch==0?const SizedBox():Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text( 
+                    'Category',
+                    style: f15TextGraySemibold_1,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                        Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                cubit.changeCurrentOption(0);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: cubit.currentOption == 0 ? primaryColor : white,
+                                    border: cubit.currentOption == 1
+                                        ? Border.all(color: primaryColor, width: 1)
+                                        : null,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10))),
+                                child: Text(
+                                  'Primary',
+                                  style: cubit.currentOption == 0
+                                      ? f13TextWhiteSemibold
+                                      : f13TextPrimarySemibold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                cubit.changeCurrentOption(1);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: cubit.currentOption == 0 ? white : primaryColor,
+                                  border: cubit.currentOption == 0
+                                      ? Border.all(color: primaryColor, width: 1)
+                                      : null,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)),
+                                ),
+                                height: 35,
+                                child: Text(
+                                  'Resail',
+                                  style: cubit.currentOption == 0
+                                      ? f13TextPrimarySemibold
+                                      : f13TextWhiteSemibold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16,)
+                        ],
+                  ),
+                      ],
+                    );
+                  
+                    
+                  })
+                  ,
+                  
                   const SizedBox(
                     height: 27,
                   ),
-                  Text(
-                    "Price Range",
-                    style: f15TextGraySemibold_1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Price Range",
+                        style: f15TextGraySemibold_1,
+                      ),
+                      Padding(
+                        padding:const EdgeInsets.only(right: 16),
+                        child: Text(
+                          cubit.currentRangeValues.start==0&&cubit.currentRangeValues.end==20000000?"~Any~":
+                          "${CurrencyFormatter
+                                .format(cubit.currentRangeValues.start.toInt(),egpSettings ,compact:true ) } - ${
+                                  CurrencyFormatter
+                                .format(cubit.currentRangeValues.end.toInt(), egpSettings , compact:true)}",
+                          style: f15TextGraySemibold_1,
+                        ),
+                      ),
+                    ],
                   ),
                   Container(
                     margin: const EdgeInsets.only(
@@ -156,8 +239,8 @@ class FilterScreen extends StatelessWidget {
                         min: 0,
                         divisions: 50,
                         labels: RangeLabels(
-                            NumberFormat.currency(symbol: 'EGP ')
-                                .format(cubit.currentRangeValues.start),
+                            NumberFormat.currency(symbol: 'EGP '  , )
+                                .format(cubit.currentRangeValues.start ,) ,
                             NumberFormat.currency(symbol: 'EGP ')
                                 .format(cubit.currentRangeValues.end)),
                         values: cubit.currentRangeValues,
@@ -170,9 +253,21 @@ class FilterScreen extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Text(
-                    "Area Sqm",
-                    style: f15TextGraySemibold_1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Property Size (Sqm)",
+                        style: f15TextGraySemibold_1,
+                      ),
+                      Padding(padding:const EdgeInsets.only(right: 16) ,
+                       child:Text(
+                        cubit.areaRangeValues.start==0&&cubit.areaRangeValues.end==4000?"~Any~":
+                        "${cubit.areaRangeValues.start.toInt()} - ${cubit.areaRangeValues.end.toInt()} sqm",
+                        style: f15TextGraySemibold_1,
+                      ), 
+                       )
+                    ],
                   ),
                   Container(
                     margin: const EdgeInsets.only(
@@ -190,8 +285,8 @@ class FilterScreen extends StatelessWidget {
                         min: 0,
                         divisions: 100,
                         labels: RangeLabels(
-                            cubit.areaRangeValues.start.round().toString() + " M",
-                            cubit.areaRangeValues.end.round().toString() + " M"),
+                            cubit.areaRangeValues.start.round().toString() + " sqm",
+                            cubit.areaRangeValues.end.round().toString() + " sqm"),
                         values: cubit.areaRangeValues,
                         onChanged: (values) {
                           cubit.changeAreaRangeValue(values);
@@ -205,7 +300,7 @@ class FilterScreen extends StatelessWidget {
                         height: 50,
                         text: "Apply Filters",
                         function: () {
-                          cubit.applyFilter(context);
+                          PropertiesCubit.get(context).applyFilter(context);
                         }),
                   )
                 ],

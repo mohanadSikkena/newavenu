@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/models/filter/filter_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/modules/properties/categories.dart';
@@ -18,15 +18,14 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
   FocusNode homePageSearchNode = FocusNode();
 
-
+  ScrollController scrollController = ScrollController();
+  
   List<AgentProperty>agentRent=[];
   List<AgentProperty>agentSale=[];
-
+  bool loadingPage=false;
   late Property currentProperty;
   List<Property> mostViewd=[];
-  List<Property> rent=[];
-  List<Property> buy=[];
-  List<Property> allProperties = [];
+  List<Property> homeProperties = [];
   List<Property> exploreProperties = [];
   List<FavouriteProperty> favouriteProperties=[];
   List<int>favourites=[];
@@ -36,6 +35,9 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   bool mostViewsLoading=true;
   bool allPropertiesLoading=true;
   bool propertyLoading=true;
+  late String searchWord;
+  late int count;
+  int currentPage=1;
 
 
 
@@ -134,8 +136,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   String homePageSelected = 'buy';
   String categoriesSelected = 'buy';
   bool filterApplied = false;
-  bool fromCategories = false;
-  bool fromSearch = false;
+  int fromSearch = 0;
   bool exploreLoading=true;
   bool favouritesLoading=true;
   late int selectedCategory;
@@ -144,21 +145,13 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
   //******************Filter */
 
-  RangeValues currentRangeValues = const RangeValues(0, 20000000);
-  RangeValues areaRangeValues = const RangeValues(0, 4000);
-  int currentOption = 0;
-  int currentSortIption = 0;
-  List<String> sortOptionsList = [
-    'Listing Price (High to Low)',
-    'Listing Price (Low to High)',
-    'Year Built (Newer to Older)',
-    'Square Feet (High to Small)',
-    'Lot Size (Big to Small)',
-  ];
+  
+  
   //**************************** */
-  changeSelectedHomePage(String selected) {
+  changeSelectedHomePage(String selected) async{
     homePageSelected = selected;
     emit(ChangeHomePageSelected());
+    await getHomeProperties();
   }
 
   changeCategoriesSelected(String selected) {
@@ -187,10 +180,10 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     propertyLoading=true;
     emit(PropertyLoading());
     Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return PropertyScreen();
+        return const PropertyScreen();
       })
       );
-    await dioHelper.getData(url: "/properties/$id").then((value) {
+    await DioHelper.getData(url: "/properties/$id").then((value) {
       value.data["agent"]=Agent.fromMap(value.data["agent"]);
 
       currentProperty=Property.fromMap(value.data);
@@ -212,7 +205,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     mostViewd=[];
     mostViewsLoading=true;
     emit(MostViewsLoading());
-    await dioHelper.getData(url: '/properties/most-views').then((value){
+    await DioHelper.getData(url: '/properties/most-views').then((value){
       value.data.forEach((element){
         element["agent"]=Agent.fromMap(element["agent"]);
         Property property = Property.fromMap(element);
@@ -229,7 +222,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     ads=[];
     adsLoading =true;
     emit(AdsLoading());
-    await dioHelper.getData(url: '/properties/ads').then((value){
+    await DioHelper.getData(url: '/properties/ads').then((value){
       value.data.forEach((map){
         Ad ad =Ad.fromMap(map);
         ads.add(ad);
@@ -245,7 +238,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     favouritesLoading=true;
     emit(ChangeFavouritesLoading());
     int id =await CacheHelper.getData(key: 'id');
-    await dioHelper.getData(url: '/customer/$id/favourite').then((value){
+    await DioHelper.getData(url: '/customer/$id/favourite').then((value){
       value.data["favourite"].forEach((fav){    
         favourites.add(fav["id"]);
         FavouriteProperty property=FavouriteProperty.fromMap(fav);
@@ -258,24 +251,47 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
   }
   index() async{
-    allProperties=[];
+    homeProperties=[];
     
     await getFavourites();
+
+
+    getHomeProperties();
+    
+  }
+
+  getHomeProperties()async{
+    homeProperties=[];
     allPropertiesLoading=true;
     emit(AllPropertiesLoading());
-     
-         
-    
-   Response response =await dioHelper.getData(url: '/properties/');
-    response.data.forEach((element) {
+    await DioHelper.getData(url: '/properties?sell_type=$homePageSelected').then((response) {
+      response.data["properties"]['data'].forEach((element) {
       element["agent"]=Agent.fromMap(element["agent"]);
       Property property = Property.fromMap(element);
       favourites.contains(property.id)?property.isFavourite=true:property.isFavourite=false;
-      allProperties.add(property);
+      homeProperties.add(property);
     });
+    count=response.data['count'];
     allPropertiesLoading=false;
-
+    });
     emit(GetAllProperties());
+  }
+
+
+  getHomePagePaginate()async{
+    currentPage+=1;
+    loadingPage=true;
+    emit(ChangePaginationLoading());
+    await DioHelper.getData(url: '/properties?sell_type=$homePageSelected&page=$currentPage').then((response){
+      response.data["properties"]['data'].forEach((element) {
+      element["agent"]=Agent.fromMap(element["agent"]);
+      Property property = Property.fromMap(element);
+      favourites.contains(property.id)?property.isFavourite=true:property.isFavourite=false;
+      homeProperties.add(property);
+    });
+    loadingPage=false;
+    emit(GetAllProperties());
+    });
   }
 
 
@@ -286,7 +302,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     agentRent=[];
     agentSale=[];
     agentPropertiesLoading=true;
-    await dioHelper.getData(url: '/agents/$id/properties').then((value) {
+    await DioHelper.getData(url: '/agents/$id/properties').then((value) {
       value.data.forEach((map){
         AgentProperty property = AgentProperty.fromMap(map);
         map['sell_type_id']==1?agentSale.add(property):agentRent.add(property);
@@ -299,33 +315,15 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
 
 
-  resetFilter() {
-    currentRangeValues = const RangeValues(0, 20000000);
-    areaRangeValues = const RangeValues(0, 4000);
-    currentOption = 0;
-    currentSortIption = 0;
-    emit(ResetFilter());
-  }
+  
 
-  changeSortOptions(int i) {
-    currentSortIption = i;
-    emit(ChangeSortOption());
-  }
+  
 
-  changeCurrentOption(int i) {
-    currentOption = i;
-    emit(ChangeCurrentOption());
-  }
 
-  changePriceRangeValues(value) {
-    currentRangeValues = value;
-    emit(ChangePriceRangeValue());
-  }
 
-  changeAreaRangeValue(values) {
-    areaRangeValues = values;
-    emit(ChangeAreaRangeValue());
-  }
+ 
+
+  
 
   // navigateToCategoriesExplore(int i, context) {
   //   fromCategories = true;
@@ -347,7 +345,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     Navigator.push(context, MaterialPageRoute(builder: (_){
       return const ExploreScreen();
     }));
-    await dioHelper.getData(url: '/properties/get-by-category?category_id=$selectedCategory&sub_category_id=$selectedSubCategory').then((value) {
+    await DioHelper.getData(url: '/properties/get-by-category?category_id=$selectedCategory&sub_category_id=$selectedSubCategory').then((value) {
       value.data.forEach((map){
         map["agent"]=Agent.fromMap(map["agent"]);
         Property property=Property.fromMap(map);
@@ -368,7 +366,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
     emit(ChangeCategory());
     Navigator.push(context,MaterialPageRoute(builder: (_){
-      return CategoriesScreen();
+      return const CategoriesScreen();
     }) );
   }
 
@@ -377,11 +375,12 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     
     exploreProperties=[];
     emit(ExploreLoading());
-    fromSearch = true;
+    fromSearch = 1;
+    searchWord=search;
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return const ExploreScreen();
     }));
-    await dioHelper.getData(url: '/properties/search?word=$search').then((value){
+    await DioHelper.getData(url: '/properties/search?word=$search').then((value){
       value.data.forEach((map){
         map["agent"]=Agent.fromMap(map["agent"]);
         Property property=Property.fromMap(map);
@@ -405,7 +404,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
         emit(ChangePropertyFavourite());
 
        int id = CacheHelper.getData(key: 'id');
-    await dioHelper.setData(query:{"property_id":property.id,"customer_id":id},url:"/customer/add-to-favourite").then((value) {
+    await DioHelper.setData(query:{"property_id":property.id,"customer_id":id},url:"/customer/add-to-favourite").then((value) {
     }) ;
 
 
@@ -432,7 +431,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     // :
     // favouriteProperties.contains(property)?favouriteProperties.remove(property):null;
     int id = CacheHelper.getData(key: 'id');
-    await dioHelper.setData(query:{"property_id":property.id,"customer_id":id},url:"/customer/add-to-favourite").then((value) {
+    await DioHelper.setData(query:{"property_id":property.id,"customer_id":id},url:"/customer/add-to-favourite").then((value) {
     }) ;
 
 
@@ -443,34 +442,73 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
   exploreBackFunction(BuildContext context) {
     exploreProperties = [];
-    fromSearch = false;
-    fromCategories = false;
+    fromSearch = 0;
     filterApplied = false;
     searchValue = '';
-    resetFilter();
+    FilterCubit.get(context).resetFilter();
     Navigator.pop(context);
 
     emit(ExploreBackState());
   }
 
-  applyFilter(context) {
+  applyFilter(context) async{
+    exploreLoading=true;
+    exploreProperties=[];
+    emit(ExploreLoading());
+    // Navigator.push(context, MaterialPageRoute(builder: (_) {
+    //   return const ExploreScreen();
+    // }));
+        Navigator.pop(context);
+
+    FilterCubit cubit = FilterCubit.get(context);
     // List options = ['resail', 'primary'];
-    // double minPrice = currentRangeValues.start;
-    // double maxPrice = currentRangeValues.end;
-    // double minArea = areaRangeValues.start;
-    // double maxArea = areaRangeValues.end;
-    // String option = options[currentOption];
-    // String sort = sortOptionsList[currentSortIption];
-    fromSearch
-        ? 'search then apply filter'
-        : 'get from category then apply filter';
-    // exploreProperties= properties comming from DB;
-    Navigator.pop(context);
-  }
+    // int type=cubit.currentOption;
+  
+    // double minPrice = ;
+      // double maxPrice = ;
+      // double minArea = cubit.areaRangeValues.start;
+      // double maxArea = cubit.areaRangeValues.end;
+      // String option = cubit.options[currentOption];
+      // fromSearch
+      //     ? 'search then apply filter'
+      //     : 'get from category then apply filter';
+      // exploreProperties= properties comming from DB;
+
+
+    await DioHelper.getData(
+      url: 
+      '/properties/filter?from_search=$fromSearch&word=${
+        fromSearch==1?searchWord:null}&sub_category_id=$selectedSubCategory&min_price=${
+        cubit.currentRangeValues.start.toInt()
+        
+        }&max_price=${
+        cubit.currentRangeValues.end.toInt()
+        
+        }&min_area=${
+          
+          cubit.areaRangeValues.start.toInt()
+          }&max_area=${
+            
+            cubit.areaRangeValues.end.toInt()
+            }&sale_type=${
+              cubit.saleType+1
+            }&category=${cubit.currentOption+1}').
+        then((value) {
+          
+              value.data.forEach((map){ 
+                map["agent"]=Agent.fromMap(map["agent"]);
+                Property property=Property.fromMap(map);
+                favourites.contains(property.id)?property.isFavourite=true:null;
+                exploreProperties.add(property);
+              });
+      
+    });
+    exploreLoading=false;
+    emit(GetFilterProperties());
+    }
 
   
-
+// &min_area=200&max_area=600&sale_type=2&category=1
 }
 
 
-// GET * FROM properties WHERE 

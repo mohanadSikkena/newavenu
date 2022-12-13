@@ -50,3 +50,5 @@ class PropertyLoading extends PropertiesStates{}
 
 class GetFavourites extends PropertiesStates{}
 class ChangeFavouritesLoading extends PropertiesStates{}
+class GetFilterProperties extends PropertiesStates{}
+class ChangePaginationLoading extends PropertiesStates{}

@@ -1,9 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:convert';
 
 import 'package:currency_formatter/currency_formatter.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:newavenue/models/agent/agent_model.dart';
 
@@ -20,7 +18,7 @@ class Ad {
   factory Ad.fromMap(Map<String, dynamic> map) {
     return Ad(
       image:'http://192.168.1.7:81/'+ map['cover_image'],
-      id: map['id'],
+      id: map['property_id'],
     );
   }
 
@@ -46,7 +44,7 @@ class FavouriteProperty {
       location: map['location'] as String,
       img:'http://192.168.1.7:81/'+map['images'][0]["image"],
       price: CurrencyFormatter.
-      format(int.parse(map['price']  ), 
+      format(map['price']  , 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
       symbolSide: SymbolSide.right)).toString(),
     );
@@ -70,7 +68,7 @@ class AgentProperty {
       img: 'http://192.168.1.7:81/'+map['images'][0]["image"],
       location: map['location'] as String,
       price: CurrencyFormatter.
-      format(int.parse(map['price']  ), 
+      format(map['price']  , 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
       symbolSide: SymbolSide.right)).toString(),
     );
@@ -82,7 +80,7 @@ class Property {
   int id;
   Agent agent;
   String name;
-  String area;
+  int area;
   String price;
   String saleType;
   String description;
@@ -154,14 +152,14 @@ class Property {
       // agentName: map['agent']['name'],
       // agentImage: 'http://192.168.1.7:81/'+map['agent']['img'],
       price: CurrencyFormatter.
-      format(int.parse(map['price']  ), 
+      format(map['price']  , 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
       symbolSide: SymbolSide.right)).toString(),
       details:map["details"] ,
       features: newFeatures,
       id: map['id'] as int,
       name: map['name'] as String,
-      area: map['area'] as String,
+      area: map['area'] as int,
       // agentId: map['agent_id'] as int,
       description: map['description'] as String,
       location: map['location'] as String,

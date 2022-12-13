@@ -43,7 +43,7 @@ Widget allCategoriesWidget(
           children: [
   
             Container(
-              padding: EdgeInsets.only(bottom: 16),
+              padding:const EdgeInsets.only(bottom: 16),
   
               height: 80,
   
