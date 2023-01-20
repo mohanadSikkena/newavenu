@@ -7,6 +7,7 @@ import 'package:newavenue/modules/agent/agent_details.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../shared/styles/colors.dart';
 
@@ -301,16 +302,22 @@ class PropertyScreen extends StatelessWidget {
                         borderRadius: const BorderRadius.only(topRight: Radius.circular(10),bottomRight:  Radius.circular(10) )
                       ),
                       height: 50,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.call,color: white),
-                              const SizedBox(width: 10,),
-                              Text('Call',style: f17TextWhiteSemibold,)
-                          ],
-                        ),
+                      child: InkWell(
+                        onTap: ()async{
+                          await launchUrl(Uri(scheme: 'tel',path: cubit.phone));
+
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.call,color: white),
+                                const SizedBox(width: 10,),
+                                Text('Call',style: f17TextWhiteSemibold,)
+                            ],
+                          ),
+                      ),
                     ),
                   )
                   ],

@@ -19,7 +19,8 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   FocusNode homePageSearchNode = FocusNode();
 
   ScrollController scrollController = ScrollController();
-  
+  final String _phone="01154973622";
+  String get phone=>_phone;
   List<AgentProperty>agentRent=[];
   List<AgentProperty>agentSale=[];
   bool loadingPage=false;
@@ -478,7 +479,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     await DioHelper.getData(
       url: 
       '/properties/filter?from_search=$fromSearch&word=${
-        fromSearch==1?searchWord:null}&sub_category_id=$selectedSubCategory&min_price=${
+        fromSearch==1?searchWord:null}&sub_category_id=${fromSearch==1?null :selectedSubCategory}&min_price=${
         cubit.currentRangeValues.start.toInt()
         
         }&max_price=${

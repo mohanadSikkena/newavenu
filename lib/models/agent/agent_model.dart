@@ -2,6 +2,8 @@
 
 
 
+import 'package:newavenue/shared/network/remote/dio_helper.dart';
+
 class Agent {
   String name;
   String img;
@@ -22,7 +24,7 @@ class Agent {
   factory Agent.fromMap(Map<String, dynamic> map) {
     return Agent(
       name: map['name'] as String,
-      img: 'http://192.168.1.7:81/'+map['img'] ,
+      img: DioHelper.url+map['img'] ,
       description: map['description'] as String,
       id: map['id'] as int,
       about: map['about'] as String,

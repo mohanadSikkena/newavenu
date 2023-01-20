@@ -4,6 +4,7 @@
 import 'package:currency_formatter/currency_formatter.dart';
 
 import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/shared/network/remote/dio_helper.dart';
 
 class Ad {
   String image;
@@ -17,7 +18,7 @@ class Ad {
 
   factory Ad.fromMap(Map<String, dynamic> map) {
     return Ad(
-      image:'http://192.168.1.7:81/'+ map['cover_image'],
+      image:DioHelper.url+ map['cover_image'],
       id: map['property_id'],
     );
   }
@@ -42,7 +43,7 @@ class FavouriteProperty {
     return FavouriteProperty(
       id: map['id'] as int,
       location: map['location'] as String,
-      img:'http://192.168.1.7:81/'+map['images'][0]["image"],
+      img:DioHelper.url+map['images'][0]["image"],
       price: CurrencyFormatter.
       format(map['price']  , 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
@@ -65,7 +66,7 @@ class AgentProperty {
   factory AgentProperty.fromMap(Map<String, dynamic> map) {
     return AgentProperty(
       id: map['id'] as int,
-      img: 'http://192.168.1.7:81/'+map['images'][0]["image"],
+      img: DioHelper.url+map['images'][0]["image"],
       location: map['location'] as String,
       price: CurrencyFormatter.
       format(map['price']  , 
@@ -80,7 +81,7 @@ class Property {
   int id;
   Agent agent;
   String name;
-  int area;
+  String area;
   String price;
   String saleType;
   String description;
@@ -139,7 +140,7 @@ class Property {
   factory Property.fromMap(Map<String, dynamic> map) {
     List<String>newImages=[];
     map['images'].forEach((image){
-      newImages.add('http://192.168.1.7:81/'+image['image']) ;
+      newImages.add(DioHelper.url+image['image']) ;
     });
     List<String> newFeatures=[];
     map['features'].forEach((feature){
@@ -150,7 +151,7 @@ class Property {
       saleType: map["sell_type_id"]==1?"Sale":"Rent",
       // agentAbout: map['agent']['about'],
       // agentName: map['agent']['name'],
-      // agentImage: 'http://192.168.1.7:81/'+map['agent']['img'],
+      // agentImage: DioHelper.url+map['agent']['img'],
       price: CurrencyFormatter.
       format(map['price']  , 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
@@ -159,7 +160,7 @@ class Property {
       features: newFeatures,
       id: map['id'] as int,
       name: map['name'] as String,
-      area: map['area'] as int,
+      area: map['area'] as String,
       // agentId: map['agent_id'] as int,
       description: map['description'] as String,
       location: map['location'] as String,

@@ -4,10 +4,13 @@ import 'package:dio/dio.dart';
 
 class DioHelper{
   static late Dio dio;
+  static const String _url='http://192.168.1.9:81/';
+  static  String get url=>_url;
 
   static init(){
     dio = Dio(
-      BaseOptions(baseUrl:'http://192.168.1.7:81/api',receiveDataWhenStatusError: true )
+      
+      BaseOptions(baseUrl:_url+'api',receiveDataWhenStatusError: true , )
     );  
   }
 
@@ -16,6 +19,7 @@ class DioHelper{
   static Future<Response> getData(
     {
       required String url,
+
 
     }
   )async{

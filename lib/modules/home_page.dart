@@ -119,9 +119,10 @@ Widget build(BuildContext context) {
               ,
               const SizedBox(height: 16,),
               cubit.adsLoading? customLoading():CarouselSlider.builder(
-
                 options: CarouselOptions(
               autoPlay: true,
+              
+
               enlargeCenterPage: true,
               autoPlayInterval:const   Duration(seconds: 10),
 
@@ -134,7 +135,9 @@ Widget build(BuildContext context) {
                 itemCount: cubit.ads.length,
                 itemBuilder: (context,i,j){
                   
-                  return adWidget(context: context, ad: cubit.ads[i]);
+                  return cubit.ads.length>0?adWidget(context: context, ad: cubit.ads[i]):
+                  Container()
+                  ;
                 }),
 
 
