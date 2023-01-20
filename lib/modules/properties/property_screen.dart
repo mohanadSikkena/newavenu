@@ -99,9 +99,7 @@ class PropertyScreen extends StatelessWidget {
                             icon: Icon(
                               cubit.currentProperty.isFavourite? Icons.favorite:Icons.favorite_border,
                               color: cubit.currentProperty.isFavourite?favoriteColor: white,),),
-                            IconButton(
-                            onPressed: (){}, 
-                            icon: Icon(Icons.ios_share,color: white,),),
+                            
                         ],
                       )
                     ],
@@ -245,17 +243,7 @@ class PropertyScreen extends StatelessWidget {
             Container(
             margin: const EdgeInsets.only(left: 16,top: 16),
             child: Text(cubit.currentProperty.location, style: f15TextWhiteRegular,)),
-            // Container(
-            //   height: 224,
-            //   margin: const EdgeInsets.only(top: 16,right: 16,left: 16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.grey,
-            //     borderRadius: BorderRadius.circular(10)
-            //   ),
-            // ),
-            // Container(
-            // margin: const EdgeInsets.only(left: 16,top: 16),
-            // child: Text('More Information ', style: f15TextGraySemibold_1,)),
+           
             const SizedBox(
               height: 16,
             ),
@@ -282,15 +270,20 @@ class PropertyScreen extends StatelessWidget {
                             color: gray_2,width: 1
                           ))
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.chat_bubble_rounded,color: white),
-                              const SizedBox(width: 10,),
-                              Text('Chat',style: f17TextWhiteSemibold,)
-                          ],
+                        child: InkWell(
+                          onTap: ()async{
+                            await launchUrl(Uri.parse("whatsapp://send?phone=" + cubit.phone + "&text= "));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.chat_bubble_rounded,color: white),
+                                const SizedBox(width: 10,),
+                                Text('Chat',style: f17TextWhiteSemibold,)
+                            ],
+                          ),
                         ),
                       ),
                     ),

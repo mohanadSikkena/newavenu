@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
-import 'package:newavenue/modules/properties/filter_screen.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/property_widget.dart';
 
@@ -24,22 +23,7 @@ class ExploreScreen extends StatelessWidget {
         
         actionsIconTheme: IconThemeData(color: black),
         
-        actions: [
-          IconButton(
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (_){
-                return  FilterScreen();
-              }));
-            },
-            // ignore: prefer_const_constructors
-            icon: Icon(
-              Icons.filter_alt_sharp,
-            ),
-          ),
-          IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.map_sharp))
-        ],
+        
         leading:IconButton(onPressed: (){
           cubit.exploreBackFunction(context);
         }, icon: const Icon(Icons.arrow_back_ios),color: black,) ,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/shared/components/custom_button.dart';
+import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -27,7 +28,7 @@ class OnBoardingScreen extends StatelessWidget {
                   itemBuilder: (context, i) {
                     return OnboardingContent(
                         
-                        screenDetails: cubit.onBoardingScreens,
+                        screenDetails: Constant.onBoardingScreens,
                         currentScreen: i);
                   }),
               Align(

@@ -11,32 +11,10 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
 
-  List<Map<String, dynamic>> onBoardingScreens = [
-    {
-      "title": "Discover place near you",
-      "details":
-          "Find the best place you want by your location or neighborhood",
-      "img":
-          "images/onboarding/onboarding-1.jpg"
-    },
-    {
-      "title": "Search for place easily",
-      "details":
-          "Decide where to sleep with family and friends to enjoy the beautiful day",
-      "img":
-          "images/onboarding/onboarding-2.jpg"
-    },
-    {
-      "title": "Ready to move in beautiful place",
-      "details":
-          "A beautiful day with hot chocolate in a new place with loved ones",
-      "img":
-          "images/onboarding/onboarding-3.jpg"
-    }
-  ];
+  
 
   List<Widget> screens =  [
-     HomePage(),
+    const HomePage(),
     const SavedScreen(),
   ];
   int currentOnboardingScreen = 0;

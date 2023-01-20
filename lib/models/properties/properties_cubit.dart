@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
-import 'package:newavenue/models/filter/filter_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/modules/properties/categories.dart';
@@ -19,7 +18,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   FocusNode homePageSearchNode = FocusNode();
 
   ScrollController scrollController = ScrollController();
-  final String _phone="01154973622";
+  final String _phone="+201154973622";
   String get phone=>_phone;
   List<AgentProperty>agentRent=[];
   List<AgentProperty>agentSale=[];
@@ -42,102 +41,11 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
 
 
-  List<Map<String, dynamic>> categories = [
-    {
-      'name': "Primary",
-      "img":
-          "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-    },
-    {
-      'name': "Brokrage",
-      "img":
-          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    },
-    
-  ];
-  List<Map<String,dynamic>>subCategories=[
-    {
-      "id":1,
-      "name":"show rooms",
-      "img":"https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"   
-    },
-    {
-      "id":2,
-      "name":"retails",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
   
-    },
-    {
-      "id":3,
-      "name":"food and bavrege",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+ 
   
-    },
-    {
-      "id":4,
-      "name":"malls",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":5,
-      "name":"offices",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":6,
-      "name":"buildings",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":7,
-      "name":"co-work space",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":8,
-      "name":"factories",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":9,
-      "name":"warehouses",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":10,
-      "name":"car service stations",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":11,
-      "name":"clinic",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":12,
-      "name":"hospital",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-    {
-      "id":13,
-      "name":"income property",
-      "img":          "https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-  
-    },
-  ];
   String homePageSelected = 'buy';
   String categoriesSelected = 'buy';
-  bool filterApplied = false;
-  int fromSearch = 0;
   bool exploreLoading=true;
   bool favouritesLoading=true;
   late int selectedCategory;
@@ -376,7 +284,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     
     exploreProperties=[];
     emit(ExploreLoading());
-    fromSearch = 1;
     searchWord=search;
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return const ExploreScreen();
@@ -443,70 +350,12 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
   exploreBackFunction(BuildContext context) {
     exploreProperties = [];
-    fromSearch = 0;
-    filterApplied = false;
     searchValue = '';
-    FilterCubit.get(context).resetFilter();
     Navigator.pop(context);
 
     emit(ExploreBackState());
   }
 
-  applyFilter(context) async{
-    exploreLoading=true;
-    exploreProperties=[];
-    emit(ExploreLoading());
-    // Navigator.push(context, MaterialPageRoute(builder: (_) {
-    //   return const ExploreScreen();
-    // }));
-        Navigator.pop(context);
-
-    FilterCubit cubit = FilterCubit.get(context);
-    // List options = ['resail', 'primary'];
-    // int type=cubit.currentOption;
-  
-    // double minPrice = ;
-      // double maxPrice = ;
-      // double minArea = cubit.areaRangeValues.start;
-      // double maxArea = cubit.areaRangeValues.end;
-      // String option = cubit.options[currentOption];
-      // fromSearch
-      //     ? 'search then apply filter'
-      //     : 'get from category then apply filter';
-      // exploreProperties= properties comming from DB;
-
-
-    await DioHelper.getData(
-      url: 
-      '/properties/filter?from_search=$fromSearch&word=${
-        fromSearch==1?searchWord:null}&sub_category_id=${fromSearch==1?null :selectedSubCategory}&min_price=${
-        cubit.currentRangeValues.start.toInt()
-        
-        }&max_price=${
-        cubit.currentRangeValues.end.toInt()
-        
-        }&min_area=${
-          
-          cubit.areaRangeValues.start.toInt()
-          }&max_area=${
-            
-            cubit.areaRangeValues.end.toInt()
-            }&sale_type=${
-              cubit.saleType+1
-            }&category=${cubit.currentOption+1}').
-        then((value) {
-          
-              value.data.forEach((map){ 
-                map["agent"]=Agent.fromMap(map["agent"]);
-                Property property=Property.fromMap(map);
-                favourites.contains(property.id)?property.isFavourite=true:null;
-                exploreProperties.add(property);
-              });
-      
-    });
-    exploreLoading=false;
-    emit(GetFilterProperties());
-    }
 
   
 // &min_area=200&max_area=600&sale_type=2&category=1

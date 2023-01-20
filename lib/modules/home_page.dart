@@ -10,6 +10,7 @@ import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/custom_text_field.dart';
 import 'package:newavenue/shared/components/nearby_widget.dart';
 import 'package:newavenue/shared/components/property_widget.dart';
+import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
@@ -17,7 +18,7 @@ import 'package:newavenue/shared/styles/styles.dart';
 
 
 class HomePage extends StatelessWidget {
-   HomePage({ Key? key }) : super(key: key);
+   const HomePage({ Key? key }) : super(key: key);
 
 
   @override
@@ -45,9 +46,8 @@ Widget build(BuildContext context) {
           
             
           children:  [
+            const SizedBox(height: 10,),
 
-
-            
             Text('Browse',
             style:f34DisplayBlackBold
             ),
@@ -106,10 +106,10 @@ Widget build(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    categoryWidget(name: cubit.categories[0]['name'], image:cubit.categories[0]['img'] , function: (){
+                    categoryWidget(name: Constant.categories[0]['name'], image:Constant.categories[0]['img'] , function: (){
                       cubit.navigateToSubCategories(i: 1, context: context);
                     }),
-                    categoryWidget(name: cubit.categories[1]['name'], image:cubit.categories[1]['img'] , function: (){
+                    categoryWidget(name: Constant.categories[1]['name'], image:Constant.categories[1]['img'] , function: (){
                       cubit.navigateToSubCategories(i: 2, context: context);
                     })
                 ],)
@@ -118,9 +118,11 @@ Widget build(BuildContext context) {
               )
               ,
               const SizedBox(height: 16,),
-              cubit.adsLoading? customLoading():CarouselSlider.builder(
+              cubit.adsLoading? customLoading():
+              cubit.ads.isNotEmpty?
+              CarouselSlider.builder(
                 options: CarouselOptions(
-              autoPlay: true,
+                autoPlay: true,
               
 
               enlargeCenterPage: true,
@@ -135,16 +137,16 @@ Widget build(BuildContext context) {
                 itemCount: cubit.ads.length,
                 itemBuilder: (context,i,j){
                   
-                  return cubit.ads.length>0?adWidget(context: context, ad: cubit.ads[i]):
-                  Container()
+                  return adWidget(context: context, ad: cubit.ads[i])
+                  
                   ;
-                }),
+                }):const SizedBox(),
 
 
               const SizedBox(height: 16),     
-              Text('Most Views',style: f15TextGraySemibold_1,),
+              cubit.mostViewd.isNotEmpty? Text('Most Views',style: f15TextGraySemibold_1,):const SizedBox(),
               const SizedBox(height:15,),
-              SizedBox(
+              cubit.mostViewd.isNotEmpty? SizedBox(
                 height:266,
                 child:cubit.mostViewsLoading? customLoading():ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -156,7 +158,7 @@ Widget build(BuildContext context) {
                       
                     );
                   }),
-              ),
+              ):const SizedBox(),
               Text(cubit.allPropertiesLoading?"Loading":"Explore all ${cubit.count}+ properties",style: f15TextGraySemibold_1,),
               
               cubit.allPropertiesLoading?customLoading() :
@@ -180,7 +182,6 @@ Widget build(BuildContext context) {
   
         }, 
         listener: (context,states){
-          print(states);
         });
     
 

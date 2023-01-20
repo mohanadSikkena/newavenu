@@ -6,6 +6,7 @@ import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/all_categories_widget.dart';
 import 'package:newavenue/shared/components/buy_rent_custom_button.dart';
+import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
@@ -65,13 +66,13 @@ class CategoriesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              for(int i=0;i<cubit.subCategories.length;i++)
+              for(int i=0;i<Constant.subCategories.length;i++)
               allCategoriesWidget(
-                name: cubit.subCategories[i]["name"],
-                img :cubit.subCategories[i]["img"],
+                name: Constant.subCategories[i]["name"],
+                img :Constant.subCategories[i]["img"],
                 
                 function: (){
-                cubit.navigateToExploreFromCategory(context: context, i: cubit.subCategories[i]["id"]);
+                cubit.navigateToExploreFromCategory(context: context, i: Constant.subCategories[i]["id"]);
                 
               })
               

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
-import 'package:newavenue/models/filter/filter_cubit.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/search/search_cubit.dart';
 import 'package:newavenue/modules/onboarding/onboarding.dart';
@@ -41,12 +40,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => AppCubit()),
           BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()..getAds()), 
           BlocProvider(create: (context) => SearchCubit()), 
-          BlocProvider(create: (context) => FilterCubit())
           ],
         child: BlocConsumer<AppCubit, AppStates>(
             builder: (context, states) {
 
               return MaterialApp(
+                title: "Newavenue",
                 // home: OnBoardingScreen(),
                 home: 
                 
