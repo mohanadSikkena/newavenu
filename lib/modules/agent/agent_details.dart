@@ -55,26 +55,7 @@ class AgentDetails extends StatelessWidget {
                   agent.about,
                   style: f15TextgrayRegular_1,
                 ),
-                // Container(
-                //   margin: const EdgeInsets.only(
-                //     top: 17,
-                //   ),
-                //   height: 80,
-                //   width:190,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       iconWithText(
-                //           text: "Favourite",
-                //           icon: Icons.favorite_border,
-                //           isFavourite: true,
-                //           ),
-                //       iconWithText(
-                //           text: "Chat", icon: Icons.chat_bubble, ),
-                //       iconWithText(text: "Call", icon: Icons.call, )
-                //     ],
-                //   ),
-                // ),
+                
                 const SizedBox(
                   height: 20,
                 )
@@ -95,26 +76,26 @@ class AgentDetails extends StatelessWidget {
                         'Units For Sale',
                         style: f15TextGraySemibold_1,
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return const ExploreScreen();
-                          }));
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              'See all',
-                              style: f11TextPrimarySemibold,
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: primaryColor,
-                            )
-                          ],
-                        ),
-                      )
+                      // InkWell(
+                      //   onTap: () {
+                      //     // Navigator.push(context,
+                      //     //     MaterialPageRoute(builder: (_) {
+                      //     //   return const ExploreScreen();
+                      //     // }));
+                      //   },
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         'See all',
+                      //         style: f11TextPrimarySemibold,
+                      //       ),
+                      //       Icon(
+                      //         Icons.chevron_right_rounded,
+                      //         color: primaryColor,
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ]),
                 Container(
                   height: 172,
@@ -139,26 +120,26 @@ class AgentDetails extends StatelessWidget {
                         'Units For Rent',
                         style: f15TextGraySemibold_1,
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return const ExploreScreen();
-                          }));
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              'See all',
-                              style: f11TextPrimarySemibold,
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: primaryColor,
-                            )
-                          ],
-                        ),
-                      )
+                      // InkWell(
+                      //   onTap: () {
+                      //     // Navigator.push(context,
+                      //     //     MaterialPageRoute(builder: (_) {
+                      //     //   return const ExploreScreen();
+                      //     // }));
+                      //   },
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         'See all',
+                      //         style: f11TextPrimarySemibold,
+                      //       ),
+                      //       Icon(
+                      //         Icons.chevron_right_rounded,
+                      //         color: primaryColor,
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ]),
                 Container(
                   margin: const EdgeInsets.only(top: 15,bottom: 20),

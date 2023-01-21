@@ -39,6 +39,7 @@ dependencies:
   multi_select_flutter: ^4.1.2
   url_launcher: ^6.1.6
   flutter_native_splash: ^2.2.16
+  photo_view: ^0.14.0
   
   
 
@@ -75,7 +76,6 @@ flutter:
     - images/onboarding/onboarding-1.jpg
     - images/onboarding/onboarding-2.jpg
     - images/onboarding/onboarding-3.jpg
-    - images/login/login.jpg
     - images/logo.png
 
 

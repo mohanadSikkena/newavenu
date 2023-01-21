@@ -63,9 +63,14 @@ Widget nearbyWidget(
   
         style: f15TextBlackSemibold,),
   
-        Text(property.price,style:f15TextgrayRegular_3 ,)
-  
-  
+        Text(property.price,style:f15TextgrayRegular_3 ,),
+
+        Row(
+          children: [
+            Text('${property.category}  ',style: f13TextGrayRegular_1,),
+            Text(property.subCategory,style: f13TextGrayRegular_1,),
+          ],
+        )
   
       ]
   

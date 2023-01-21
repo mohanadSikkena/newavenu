@@ -57,12 +57,7 @@ class OnBoardingScreen extends StatelessWidget {
                         height: 50,
                         width: 150,
                         function: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (_){
-                          //   return widget.currentScreen<2?
-                          //    OnboardingScreen(currentScreen: widget.currentScreen+1,):
-                          //    const BottomNavBar();
-                          // }));
-                          
+                       
                             cubit.nextOnBoardingScreen(context);
                           
                         },

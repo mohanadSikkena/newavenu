@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/agent/agent_details.dart';
+import 'package:newavenue/modules/properties/image_screen.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -38,14 +39,21 @@ class PropertyScreen extends StatelessWidget {
                 itemCount: cubit.currentProperty.images.length, 
               itemBuilder: (context,i,j){
                 return Container(
-                  child: Image(
-                    loadingBuilder: (context, child, loadingProgress) {
-                      return loadingProgress==null?child:customLoading();
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (_){
+                        return const ImageScreen();
+                      }));
                     },
-                    filterQuality: FilterQuality.high,
-                    excludeFromSemantics: true,
-                    fit: BoxFit.fill,
-                    image: NetworkImage(cubit.currentProperty.images[i])),
+                    child: Image(
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress==null?child:customLoading();
+                      },
+                      filterQuality: FilterQuality.high,
+                      excludeFromSemantics: true,
+                      fit: BoxFit.fill,
+                      image: NetworkImage(cubit.currentProperty.images[i])),
+                  ),
               // ignore: prefer_const_constructors
               decoration: BoxDecoration(
                 border: BorderDirectional(bottom: BorderSide(
@@ -53,12 +61,6 @@ class PropertyScreen extends StatelessWidget {
                   color: gray_3
                 )),
           
-                // ignore: prefer_const_constructors
-                // image: DecorationImage(
-                //   // ignore: prefer_const_constructors
-                //   image:NetworkImage(
-                //     )
-                //   ,fit: BoxFit.fill )
               ),
               
               
@@ -121,7 +123,6 @@ class PropertyScreen extends StatelessWidget {
                           child: Text('${cubit.currentProperty.currentImage+1}/${cubit.currentProperty.images.length}',style: f13TextWhiteRegular,),
                         ),
                         Text('${cubit.currentProperty.area} Sqm',style: f17TextWhiteMedium,),
-                        Text(cubit.currentProperty.name,style: f34DisplayWhiteBold,),
                         Row(
                           children: [
                             Text(cubit.currentProperty.price,style: f20TextWhiteSemibold,),
@@ -137,6 +138,13 @@ class PropertyScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10)
                               ),
                             ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(cubit.currentProperty.category,style: f15TextWhiteSemibold,),
+                            const SizedBox(width: 10,) ,
+                            Text(cubit.currentProperty.subCategory,style: f15TextWhiteSemibold,),
                           ],
                         ),
                         
@@ -203,6 +211,9 @@ class PropertyScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(left: 16,top: 16),
             child: Text('Description ', style: f15TextGraySemibold_1,)),
+            Container(
+            margin: const EdgeInsets.only(left: 16,top: 16),
+            child: Text(cubit.currentProperty.description, style: f15TextWhiteRegular,)),
             for(int i=0;i<cubit.currentProperty.details.length;i++)
             Row(
               children: [

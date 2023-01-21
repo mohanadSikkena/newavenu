@@ -4,6 +4,7 @@
 import 'package:currency_formatter/currency_formatter.dart';
 
 import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 
 class Ad {
@@ -78,9 +79,11 @@ class AgentProperty {
 }
 
 class Property {
+  
   int id;
   Agent agent;
-  String name;
+  String category;
+  String subCategory;
   String area;
   String price;
   String saleType;
@@ -93,13 +96,14 @@ class Property {
 
   List<String> features;
   Property({
+    required this.category, 
+    required this.subCategory,
     required this.agent,
     required this.saleType,
     required this.price,
     required this.details,
     required this.features,
     required this.id,
-    required this.name,
     required this.area,
     required this.description,
     required this.location,
@@ -107,36 +111,6 @@ class Property {
     required this.isFavourite,
     required this.images,
   });
-  
-
-  
-
-
-  // Property copyWith({
-  //   int? id,
-  //   String? name,
-  //   int? area,
-  //   int? agentId,
-  //   String? description,
-  //   String? location,
-  //   int? currentImage,
-  //   bool? isFavourite,
-  //   List<String>? images,
-  // }) {
-  //   return Property(
-  //     id: id ?? this.id,
-  //     name: name ?? this.name,
-  //     area: area ?? this.area,
-  //     agentId: agentId ?? this.agentId,
-  //     description: description ?? this.description,
-  //     location: location ?? this.location,
-  //     currentImage: currentImage ?? this.currentImage,
-  //     isFavourite: isFavourite ?? this.isFavourite,
-  //     images: images ?? this.images,
-  //   );
-  // }
-
-
   factory Property.fromMap(Map<String, dynamic> map) {
     List<String>newImages=[];
     map['images'].forEach((image){
@@ -147,30 +121,23 @@ class Property {
       newFeatures.add(feature['name']) ;
     });
     return Property(
+      category:Constant.categories[map["category_id"]-1]["name"] ,
+      subCategory:Constant.subCategories[map["sub_category_id"]-1]["name"] ,
       agent: map["agent"],
       saleType: map["sell_type_id"]==1?"Sale":"Rent",
-      // agentAbout: map['agent']['about'],
-      // agentName: map['agent']['name'],
-      // agentImage: DioHelper.url+map['agent']['img'],
       price: CurrencyFormatter.
-      format(map['price']  , 
+      format(map['price'], 
       CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
-      symbolSide: SymbolSide.right)).toString(),
+      symbolSide: SymbolSide.right)).toString() + (map["sell_type_id"]==2?' P/M':'') ,
       details:map["details"] ,
       features: newFeatures,
       id: map['id'] as int,
-      name: map['name'] as String,
       area: map['area'] as String,
-      // agentId: map['agent_id'] as int,
       description: map['description'] as String,
       location: map['location'] as String,
-      // currentImage: map['currentImage'] as int,
       currentImage: 0,
-      // isFavourite: map['isFavourite'] as bool,
       isFavourite: false,
-    //   images: List<String>.from((map['images'] as List<String>
-    //   ),
-    // )
+
     images: newImages
     );
   }

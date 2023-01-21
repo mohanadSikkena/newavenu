@@ -5,6 +5,8 @@ import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/modules/properties/property_screen.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
+import '../../models/properties/properties_cubit.dart';
+
 
 
 Widget profilePropertyWidget({
@@ -13,12 +15,14 @@ Widget profilePropertyWidget({
   required AgentProperty property,
   required BuildContext context
 })=>InkWell(
+  excludeFromSemantics: false,
   onTap: (){
-    // Navigator.push(context, MaterialPageRoute(builder: (_){
-    //   // return PropertyScreen();
-    // }));
+    PropertiesCubit.get(context).getProperty(property.id, context);
   },
   child:   Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10)
+    ),
   
     width: width*0.4133333333333333,
   

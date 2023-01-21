@@ -61,10 +61,22 @@ Widget propertyWidget(
             ),
           ),
           const SizedBox(height: 10,),
-          Text(
-            '${property.area} Sqm',
+          Row(
+            children: [
+              Text(
+            '${property.area} Sqm ',
             style: f13TextGrayRegular_1,
           ),
+          Text(
+            ' ${property.category}  ',
+            style: f13TextGrayRegular_1,
+          ),
+          Text(
+            property.subCategory,
+            style: f13TextGrayRegular_1,
+          ),
+          ],
+          ), 
           Text(
             property.location,
             style: f17TextBlackSemibold,
