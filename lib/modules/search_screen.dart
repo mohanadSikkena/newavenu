@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/search/search_cubit.dart';
 import 'package:newavenue/models/search/search_states.dart';
@@ -20,16 +21,13 @@ class SearchScreen extends StatelessWidget {
     return BlocConsumer<SearchCubit, SearchStates>(
         builder: (context, states) {
           return Scaffold(
-            backgroundColor: white,
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  navigatorKey.currentState!.pop(context);
                 },
                 icon: const Icon(Icons.arrow_back_ios),
-                color: black,
               ),
-              backgroundColor: white,
               elevation: 0.0,
             ),
             body: Container(
@@ -38,7 +36,7 @@ class SearchScreen extends StatelessWidget {
                   left: 16,
                 ),
                 child: ListView(scrollDirection: Axis.vertical, children: [
-                  Text('Search', style: f34DisplayBlackBold),
+                  Text('Search', style: Theme.of(context).textTheme.displayLarge),
                   customTextField(
                       controller: searchController,
                       onTapFunction: () {},
@@ -47,7 +45,6 @@ class SearchScreen extends StatelessWidget {
                             searchController.text, context);
                             cubit.saveSearch(search: searchController.text);
                       },
-                      height: 36,
                       node: node,
                       text: 'Search'),
                   const SizedBox(
@@ -95,7 +92,7 @@ Widget searchHistory({required String text, required BuildContext context}) => I
   
                   text,
   
-                  style: f17TextBlackSemibold,
+                  style: Theme.of(context).textTheme.headlineLarge,
   
                 )),
   

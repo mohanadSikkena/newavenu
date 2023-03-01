@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/models/properties/location_model.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/modules/properties/categories.dart';
+import 'package:newavenue/modules/properties/primary_categories.dart';
+import 'package:newavenue/modules/properties/primary_screen.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 
+import '../../main.dart';
 import '../../modules/properties/explore_screen.dart';
 import '../../modules/properties/property_screen.dart';
 import '../../modules/search_screen.dart';
@@ -45,10 +49,9 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
  
   
   String homePageSelected = 'buy';
-  String categoriesSelected = 'buy';
+  // String categoriesSelected = 'buy';
   bool exploreLoading=true;
   bool favouritesLoading=true;
-  late int selectedCategory;
   late int selectedSubCategory;
   late String searchValue;
 
@@ -63,15 +66,15 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     await getHomeProperties();
   }
 
-  changeCategoriesSelected(String selected) {
-    categoriesSelected = selected;
-    emit(ChangeCategoriesSelected());
-  }
+  // changeCategoriesSelected(String selected) {
+  //   categoriesSelected = selected;
+  //   emit(ChangeCategoriesSelected());
+  // }
 
   homePageSearchFunction(BuildContext context) {
     homePageSearchNode.unfocus();
     emit(HomePageSearchUnfocus());
-    Navigator.push(context, MaterialPageRoute(builder: (_) {
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
       return SearchScreen();
     }));
   }
@@ -81,14 +84,40 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     emit(ChangePropertyWidgetImage());
   }
 
+  changeHomePagePrimaryImage(int currentIndex, ExplorePrimary property) {
+    property.currentImage = currentIndex;
+    emit(ChangePropertyWidgetImage());
+  }
 
+  changePrimaryImage(int currentIndex, Primary property) {
+    property.currentImage = currentIndex;
+    emit(ChangePropertyWidgetImage());
+  }
+
+
+  late Primary currentPrimary;
+  bool primaryScreenLoading=true;
+
+  getPrimaryProperty({required int id,required BuildContext context})async{
+    primaryScreenLoading=true;
+    emit(PropertyLoading());
+    navigatorKey.currentState!.push( MaterialPageRoute(builder: (_){
+      return PrimaryScreen();
+    }));
+
+    await DioHelper.getData(url: '/primary/$id').then((value) {
+      currentPrimary=Primary.fromMap(value.data);
+      primaryScreenLoading=false;
+    emit(PropertyLoading());
+    });
+  }
 
 
 
   getProperty(int id,BuildContext context)async{
     propertyLoading=true;
     emit(PropertyLoading());
-    Navigator.push(context, MaterialPageRoute(builder: (_) {
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
         return const PropertyScreen();
       })
       );
@@ -223,26 +252,55 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
 
 
 
+  List<ExplorePrimary> primaryProperties=[];
+  bool primaryExploreLoading=true;
 
+  getPrimaryByLocation({required int id, required BuildContext context})async{
+    primaryExploreLoading=true;
+    primaryProperties=[];
+    emit(PrimaryPropertiesExploreLoading());
+
+    await DioHelper.getData(url: '/locations/$id/primary').then((value){
+      value.data.forEach((map){ 
+        ExplorePrimary property=ExplorePrimary.fromMap(map);
+        primaryProperties.add(property);
+      });
+      primaryExploreLoading=false;
+      emit(PrimaryPropertiesExploreLoading());
+    });
+
+    
+
+  }
   
 
-  
-
+  bool primaryCategoriesLoading=true;
+  List<Location>locations=[];
 
 
  
 
-  
+  navigateToPrimaryCategories({required BuildContext context})async{
+    primaryCategoriesLoading=true;
+    locations=[];
+    emit(ChangePrimaryCategoriesLoading());
+    await DioHelper.getData(url: '/locations').then((value) {
+      value.data.forEach((map){ 
+        Location location=Location.fromMap(map);
+        locations.add(location);
+      });
+      primaryCategoriesLoading=false;
+      emit(ChangePrimaryCategoriesLoading());
+      navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
+        return PrimaryCategories();
+      }));
 
-  // navigateToCategoriesExplore(int i, context) {
-  //   fromCategories = true;
-  //   categoriesSelected = testCategories[i]['name'];
-  //   exploreProperties.add(allProperties[0]);
-  //   Navigator.push(context, MaterialPageRoute(builder: (_) {
-  //     return const ExploreScreen();
-  //   }));
-  //   emit(RouteToExploreScreen());
-  // }
+
+    });
+
+  }
+
+  
 
   navigateToExploreFromCategory({
     required int i,
@@ -250,11 +308,12 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   })async{
     selectedSubCategory=i;
     exploreLoading=true;
+    exploreProperties=[];
     emit(ChangeSubCategory());
-    Navigator.push(context, MaterialPageRoute(builder: (_){
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
       return const ExploreScreen();
     }));
-    await DioHelper.getData(url: '/properties/get-by-category?category_id=$selectedCategory&sub_category_id=$selectedSubCategory').then((value) {
+    await DioHelper.getData(url: '/properties/get-by-category?sub_category_id=$selectedSubCategory').then((value) {
       value.data.forEach((map){
         map["agent"]=Agent.fromMap(map["agent"]);
         Property property=Property.fromMap(map);
@@ -267,17 +326,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     });
   }
 
-  navigateToSubCategories({
-    required int i,
-    required BuildContext context
-  }){
-    selectedCategory=i;
 
-    emit(ChangeCategory());
-    Navigator.push(context,MaterialPageRoute(builder: (_){
-      return const CategoriesScreen();
-    }) );
-  }
 
   navigeToSearchExplore(String search, context)async{
     exploreLoading=true;
@@ -285,7 +334,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     exploreProperties=[];
     emit(ExploreLoading());
     searchWord=search;
-    Navigator.push(context, MaterialPageRoute(builder: (_) {
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
       return const ExploreScreen();
     }));
     await DioHelper.getData(url: '/properties/search?word=$search').then((value){
@@ -351,7 +400,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   exploreBackFunction(BuildContext context) {
     exploreProperties = [];
     searchValue = '';
-    Navigator.pop(context);
+    navigatorKey.currentState!.pop(context);
 
     emit(ExploreBackState());
   }

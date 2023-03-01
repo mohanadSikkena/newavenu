@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 
+import 'dart:convert';
+
 import 'package:currency_formatter/currency_formatter.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/shared/constant.dart';
@@ -27,6 +30,114 @@ class Ad {
 
 }
 
+
+class ExplorePrimary {
+  int id;
+  List<String> images;
+  int currentImage;
+  String minSpace;
+  String maxSpace;
+  String name;
+  String price;
+  ExplorePrimary({
+    required this.id,
+    required this.images,
+    required this.currentImage,
+    required this.minSpace,
+    required this.maxSpace,
+    required this.name,
+    required this.price,
+  });
+  
+
+  
+
+
+
+  factory ExplorePrimary.fromMap(Map<String, dynamic> map) {
+    List<String>newImages=[];
+    map['images'].forEach((image){
+      newImages.add(DioHelper.url+image['image']) ;
+    });
+
+    return ExplorePrimary(
+      id: map['id'] as int,
+      images: newImages,
+      currentImage: 0,
+      minSpace: map['min_space'] as String,
+      maxSpace: map['max_space'] as String,
+      name: map['name'] as String,
+      price:  CurrencyFormatter.
+      format(map['price'], 
+      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
+      symbolSide: SymbolSide.right)).toString() 
+    );
+  }
+}
+
+ 
+class Primary {
+  int id;
+  int currentImage;
+  String name;
+  String deliveryDate;
+  String paymentPlan;
+  String developerName;
+  String address;
+  String minSpace;
+  String maxSpace;
+  String price;
+  List<String>images;
+  String location;
+  Primary({
+    required this.currentImage,
+    required this.images,
+    required this.id,
+    required this.name,
+    required this.deliveryDate,
+    required this.paymentPlan,
+    required this.developerName,
+    required this.address,
+    required this.minSpace,
+    required this.maxSpace,
+    required this.price,
+    required this.location,
+  });
+
+
+
+  
+
+  factory Primary.fromMap(Map<String, dynamic> map) {
+    List<String>newImages=[];
+    map['images'].forEach((image){
+      newImages.add(DioHelper.url+image['image']) ;
+    });
+    return Primary(
+      currentImage: 0,
+      images: newImages,
+      id: map['id'] as int,
+      name: map['name'] as String,
+      deliveryDate: map['delivery_date'] as String,
+      paymentPlan: map['payment_plan'] as String,
+      developerName: map['developer_name'] as String,
+      address: map['address'] as String,
+      minSpace: map['min_space'] as String,
+      maxSpace: map['max_space'] as String,
+      price: CurrencyFormatter.
+      format(map['price'], 
+      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
+      symbolSide: SymbolSide.right)).toString() ,
+      location: map['location']['name'] as String,
+    );
+  }
+
+
+
+  
+
+ 
+}
 
 class FavouriteProperty {
   int id;
@@ -82,7 +193,6 @@ class Property {
   
   int id;
   Agent agent;
-  String category;
   String subCategory;
   String area;
   String price;
@@ -96,7 +206,6 @@ class Property {
 
   List<String> features;
   Property({
-    required this.category, 
     required this.subCategory,
     required this.agent,
     required this.saleType,
@@ -121,7 +230,6 @@ class Property {
       newFeatures.add(feature['name']) ;
     });
     return Property(
-      category:Constant.categories[map["category_id"]-1]["name"] ,
       subCategory:Constant.subCategories[map["sub_category_id"]-1]["name"] ,
       agent: map["agent"],
       saleType: map["sell_type_id"]==1?"Sale":"Rent",

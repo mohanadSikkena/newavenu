@@ -17,10 +17,10 @@ class BottomNavBar extends StatelessWidget {
           return Scaffold(
             bottomNavigationBar: Container(
                 decoration: BoxDecoration(
-                    color: white,
                     border: BorderDirectional(
                         top: BorderSide(color: gray_2, width: 1))),
                 child: BottomNavigationBar(
+                  
                   currentIndex: cubit.currentIndex,
                   onTap: (index) {
                     cubit.changeIndex(index);
@@ -28,7 +28,6 @@ class BottomNavBar extends StatelessWidget {
                   items: cubit.items,
                   elevation: 0.0,
                   iconSize: 28,
-                  backgroundColor: white,
                   unselectedItemColor: gray_2,
                   selectedItemColor: primaryColor,
                   selectedLabelStyle: f10TextPrimaryRegular,

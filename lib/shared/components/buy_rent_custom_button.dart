@@ -6,7 +6,8 @@ import '../styles/colors.dart';
 import '../styles/styles.dart';
 Widget buyRentButton({
   required String text,
-  bool selected=false
+  bool selected=false, 
+  required BuildContext context
   })=> 
   Container(
     height: 32,
@@ -23,5 +24,9 @@ Widget buyRentButton({
  child: 
     Text(
     text,
-      style:selected? f17TextBlackSemibold:f17TextGraySemibold_2,));
+      style:selected? 
+      Theme.of(context).textTheme.headlineLarge
+      
+      :f17TextGraySemibold_2,
+      ));
                     

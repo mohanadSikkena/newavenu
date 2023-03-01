@@ -33,6 +33,17 @@ Container(
               borderRadius: BorderRadius.circular(6)
             ),
   child:TextFormField(
+
+    validator: (value){
+  
+        if(value!.isEmpty){
+  
+          return 'this field required';
+  
+        }
+        return null;
+  
+      },
     
      
     

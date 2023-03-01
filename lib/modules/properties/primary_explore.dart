@@ -2,32 +2,35 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
+import 'package:newavenue/shared/components/primary_widget.dart';
 import 'package:newavenue/shared/components/property_widget.dart';
 
+import '../../shared/styles/colors.dart';
 import '../../shared/styles/styles.dart';
 
-class ExploreScreen extends StatelessWidget {
-  const ExploreScreen({ Key? key }) : super(key: key);
+class PrimaryExploreScreen extends StatelessWidget {
+  const PrimaryExploreScreen({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
       PropertiesCubit cubit = PropertiesCubit.get(context);
       return BlocConsumer<PropertiesCubit,PropertiesStates>(
         builder: (context,states){
-    return Scaffold(
+           return Scaffold(
       appBar: AppBar(
         
         
         
         leading:IconButton(onPressed: (){
-          cubit.exploreBackFunction(context);
-        }, icon: const Icon(Icons.arrow_back_ios)) ,
+          navigatorKey.currentState!.pop(context);
+        }, icon: const Icon(Icons.arrow_back_ios),color: black,) ,
         elevation: 0.0,
       ),
-      body: cubit.exploreLoading? Center(
+      body: cubit.primaryExploreLoading? Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -44,11 +47,11 @@ class ExploreScreen extends StatelessWidget {
             style:Theme.of(context).textTheme.displayLarge
             ),
             
-            Text("\n${cubit.exploreProperties.length} properties",style: f15TextGraySemibold_1,),
-            for(int i = 0;i < cubit.exploreProperties.length ;i ++)
-            propertyWidget(
+            Text("\n${cubit.primaryProperties.length} properties",style: f15TextGraySemibold_1,),
+            for(int i = 0;i < cubit.primaryProperties.length ;i ++)
+            primaryWidget(
               context: context,
-              property: cubit.exploreProperties[i],
+              property: cubit.primaryProperties[i],
 
             )
           ],

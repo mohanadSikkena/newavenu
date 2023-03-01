@@ -10,6 +10,7 @@ Widget allCategoriesWidget(
   {
     required String name,
     required String img,
+    required BuildContext context,
     required Function function
   }
 )=>InkWell(
@@ -36,7 +37,7 @@ Widget allCategoriesWidget(
   
       children: [
   
-        Text(name,style:f24DisplayBlackBold,),
+        Text(name,style:Theme.of(context).textTheme.displaySmall,),
   
         Row(
   

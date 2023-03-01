@@ -33,10 +33,6 @@ Widget nearbyWidget(
   
         Container(
   
-    
-  
-           
-  
           height: 168,
   
           decoration: BoxDecoration(
@@ -55,22 +51,17 @@ Widget nearbyWidget(
   
         ),
   
-        Text('${property.area} Sqm',style: f13TextGrayRegular_1,),
+        Flexible(child: Text('${property.area} Sqm',style: f13TextGrayRegular_1,)),
   
-        Text(property.location, 
-        overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: Text(property.location, 
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelLarge,),
+        ),
   
-  
-        style: f15TextBlackSemibold,),
-  
-        Text(property.price,style:f15TextgrayRegular_3 ,),
+        Flexible(child: Text(property.price,style:f15TextgrayRegular_3 ,overflow: TextOverflow.ellipsis,)),
 
-        Row(
-          children: [
-            Text('${property.category}  ',style: f13TextGrayRegular_1,),
-            Text(property.subCategory,style: f13TextGrayRegular_1,),
-          ],
-        )
+        Flexible(child: Text(property.subCategory,style: f13TextGrayRegular_1,overflow: TextOverflow.ellipsis,))
   
       ]
   

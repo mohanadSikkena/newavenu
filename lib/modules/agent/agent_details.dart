@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
@@ -27,7 +28,7 @@ class AgentDetails extends StatelessWidget {
           backgroundColor: white,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              navigatorKey.currentState!.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios),
             color: black,
@@ -49,7 +50,7 @@ class AgentDetails extends StatelessWidget {
                 ),
                 Text(
                   agent.name,
-                  style: f34DisplayBlackBold,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 Text(
                   agent.about,
@@ -162,7 +163,7 @@ class AgentDetails extends StatelessWidget {
                  Align(
                   alignment: Alignment.centerLeft,
                   child: Text(agent.description,
-                  style: f15TextBlackRegular,)),
+                  style: Theme.of(context).textTheme.labelMedium,)),
                   const SizedBox(height: 30,),
                   
                 
@@ -181,34 +182,5 @@ class AgentDetails extends StatelessWidget {
   }
 }
 
-  @override
-  Widget iconWithText ({
-      required String text,
-      required IconData icon,
-      bool isFavourite = false}) {
-    return Column(
-      children: [
-        Container(
-          width:40 ,
-          height:60 ,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: isFavourite ? white : primaryColor,
-              border: isFavourite
-                  ? Border.all(color: favoriteColor, width: 2)
-                  : null,
-              shape: BoxShape.circle),
-          child: Icon(
-            icon,
-            color: isFavourite ? favoriteColor : white,
-          ),
-        ),
-        Text(
-          text,
-          style: f11TextBlackRegular,
-        )
-      ],
-    );
-  }
-
+ 
 

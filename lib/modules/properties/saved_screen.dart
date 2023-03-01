@@ -21,7 +21,6 @@ class SavedScreen extends StatelessWidget {
   return BlocConsumer<PropertiesCubit,PropertiesStates>
   (builder:(context,states){
       return Scaffold(
-      backgroundColor: white,
       // appBar: AppBar(
       //   actionsIconTheme: IconThemeData(color: black),
       //   actions: [
@@ -49,7 +48,7 @@ class SavedScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 40,),
             Text('Saved',
-            style:f34DisplayBlackBold
+            style:Theme.of(context).textTheme.displayLarge
             ),
             
             Text("\n${cubit.favouriteProperties.length} properties",style: f15TextGraySemibold_1,),

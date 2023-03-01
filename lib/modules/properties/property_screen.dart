@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/agent/agent_details.dart';
@@ -10,6 +11,7 @@ import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../shared/network/remote/dynamic_helper.dart';
 import '../../shared/styles/colors.dart';
 
 
@@ -41,18 +43,28 @@ class PropertyScreen extends StatelessWidget {
                 return Container(
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_){
-                        return const ImageScreen();
+                      navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
+                        return  ImageScreen(images: cubit.currentProperty.images,);
                       }));
                     },
-                    child: Image(
-                      loadingBuilder: (context, child, loadingProgress) {
-                        return loadingProgress==null?child:customLoading();
-                      },
-                      filterQuality: FilterQuality.high,
-                      excludeFromSemantics: true,
-                      fit: BoxFit.fill,
-                      image: NetworkImage(cubit.currentProperty.images[i])),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image(
+                          loadingBuilder: (context, child, loadingProgress) {
+                            return loadingProgress==null?child:customLoading();
+                          },
+                          filterQuality: FilterQuality.high,
+                          excludeFromSemantics: true,
+                          fit: BoxFit.fill,
+                          image: NetworkImage(cubit.currentProperty.images[i])),
+                      Image(
+                        height: 200, 
+                        width: 200,
+                        image: AssetImage(
+                          'images/black_logo.png') ,fit:BoxFit.cover ,)
+                      ],
+                    ),
                   ),
               // ignore: prefer_const_constructors
               decoration: BoxDecoration(
@@ -88,7 +100,7 @@ class PropertyScreen extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: (){
-                          Navigator.pop(context);
+                          navigatorKey.currentState!.pop(context);
                         }
                       , icon: Icon(Icons.arrow_back_ios,color: white,)
                       ),
@@ -101,6 +113,14 @@ class PropertyScreen extends StatelessWidget {
                             icon: Icon(
                               cubit.currentProperty.isFavourite? Icons.favorite:Icons.favorite_border,
                               color: cubit.currentProperty.isFavourite?favoriteColor: white,),),
+                              IconButton(onPressed: (){
+                          HelperClass helperClass=HelperClass();
+                          helperClass.createDynamicLink(id: cubit.currentProperty.id, category: 'resail').then((value){
+                            helperClass.shareData(messege: value,);
+                          });
+                        }, icon: Icon(
+                          Icons.share, color: white,
+                        ))
                             
                         ],
                       )
@@ -125,7 +145,7 @@ class PropertyScreen extends StatelessWidget {
                         Text('${cubit.currentProperty.area} Sqm',style: f17TextWhiteMedium,),
                         Row(
                           children: [
-                            Text(cubit.currentProperty.price,style: f20TextWhiteSemibold,),
+                            Text(cubit.currentProperty.price,style: Theme.of(context).textTheme.displaySmall,),
                             Container(
                               alignment: Alignment.center,
                               height: 20,
@@ -140,13 +160,7 @@ class PropertyScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(cubit.currentProperty.category,style: f15TextWhiteSemibold,),
-                            const SizedBox(width: 10,) ,
-                            Text(cubit.currentProperty.subCategory,style: f15TextWhiteSemibold,),
-                          ],
-                        ),
+                        Text(cubit.currentProperty.subCategory,style: f15TextWhiteSemibold,),
                         
                       
                       
@@ -187,7 +201,7 @@ class PropertyScreen extends StatelessWidget {
           ListTile(
             onTap: (){
               cubit.getAgentProperties(cubit.currentProperty.agent.id);
-              Navigator.push(context, 
+              navigatorKey.currentState!.push( 
               MaterialPageRoute(builder: (_){
                 return AgentDetails( agent: cubit.currentProperty.agent, );
               }));
@@ -283,7 +297,9 @@ class PropertyScreen extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: ()async{
-                            await launchUrl(Uri.parse("whatsapp://send?phone=" + cubit.phone + "&text= "));
+                            HelperClass helperClass=HelperClass();
+                            String messege =await helperClass.createDynamicLink(category: 'resail', id: cubit.currentProperty.id);
+                            await launchUrl(Uri.parse("whatsapp://send?phone=" + cubit.phone + "&text=$messege"));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

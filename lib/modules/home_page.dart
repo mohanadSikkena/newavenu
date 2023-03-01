@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
+import 'package:newavenue/modules/properties/categories.dart';
 import 'package:newavenue/shared/components/ad_widget.dart';
 import 'package:newavenue/shared/components/buy_rent_custom_button.dart';
 import 'package:newavenue/shared/components/category_widget.dart';
@@ -13,6 +15,8 @@ import 'package:newavenue/shared/components/property_widget.dart';
 import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
+
+import 'contact_us.dart';
 
 
 
@@ -31,8 +35,26 @@ Widget build(BuildContext context) {
           
     return Scaffold(
 
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (){
+          navigatorKey.currentState!.push(
+            MaterialPageRoute(builder: (_){
+              return  ContactUsScreen();
+            })
+          );
+        },
+        backgroundColor: primaryColor, 
+        label: Row(
+          children:const [
+            Text('Contact Us') , 
+            SizedBox(width: 5,),
+            Icon(Icons.support_agent)
+          ],
+        )
+      ),
 
-      backgroundColor: white,
+
+      // backgroundColor: white,
       body: Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.only(left:16,),
@@ -48,9 +70,7 @@ Widget build(BuildContext context) {
           children:  [
             const SizedBox(height: 10,),
 
-            Text('Browse',
-            style:f34DisplayBlackBold
-            ),
+            Image.asset('images/black_logo.png', height: 200, ),
             customTextField(
               controller: TextEditingController(),
               onSubmit: (){},
@@ -60,7 +80,6 @@ Widget build(BuildContext context) {
                 cubit.homePageSearchFunction(context);
                 
               },
-              height: 40,  
               text: 'Where do you want to live?',
               ),
               const SizedBox(height: 10,),
@@ -78,14 +97,14 @@ Widget build(BuildContext context) {
                         cubit.changeSelectedHomePage("buy");
                       },
                       child: buyRentButton
-                      ( text: 'Buy',selected: cubit.homePageSelected=='buy'?true:false)
+                      ( context: context,text: 'Buy',selected: cubit.homePageSelected=='buy'?true:false)
                       ),
                     const SizedBox(width: 20,),
                     InkWell(
                       onTap: (){
                         cubit.changeSelectedHomePage("rent");
                       },
-                      child: buyRentButton( text: 'Rent',selected: cubit.homePageSelected=='rent'?true:false),
+                      child: buyRentButton( context: context,text: 'Rent',selected: cubit.homePageSelected=='rent'?true:false),
                     )
                    
                   ],
@@ -107,10 +126,12 @@ Widget build(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     categoryWidget(name: Constant.categories[0]['name'], image:Constant.categories[0]['img'] , function: (){
-                      cubit.navigateToSubCategories(i: 1, context: context);
+                      cubit.navigateToPrimaryCategories(context:context);
                     }),
                     categoryWidget(name: Constant.categories[1]['name'], image:Constant.categories[1]['img'] , function: (){
-                      cubit.navigateToSubCategories(i: 2, context: context);
+                      navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
+                       return CategoriesScreen();
+                      }));
                     })
                 ],)
 

@@ -18,7 +18,6 @@ Widget SavedWidget(
   height: 94,
   margin: const EdgeInsets.only(bottom: 14),
   decoration: BoxDecoration(
-    color: white,
     border: BorderDirectional(bottom: BorderSide(color: gray_2,width: 0.5))
   ),
   child: InkWell(
@@ -69,7 +68,7 @@ Widget SavedWidget(
             children: [
               // Text('${property.area} sqm',style: f13TextGrayRegular_1,),
               Text(property.location,
-              style: f15TextBlackSemibold,
+              style: Theme.of(context).textTheme.labelLarge,
               maxLines: 2,
               overflow: TextOverflow.ellipsis),
               Text(property.price,style: f15TextgrayRegular_3,)

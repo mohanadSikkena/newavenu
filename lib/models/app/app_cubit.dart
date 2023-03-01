@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
+import 'package:newavenue/main.dart';
 import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
@@ -53,7 +54,7 @@ class AppCubit extends Cubit<AppStates> {
         
       });
 
-      Navigator.push(context, MaterialPageRoute(builder: (_) {
+      navigatorKey.currentState!.push( MaterialPageRoute(builder: (_) {
             return const BottomNavBar();
           }));
 

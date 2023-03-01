@@ -52,7 +52,7 @@ Widget profilePropertyWidget({
   
         ),
   
-        Text(property.location,style: f15TextBlackSemibold,maxLines: 2, overflow: TextOverflow.ellipsis),
+        Text(property.location,style: Theme.of(context).textTheme.labelLarge,maxLines: 2, overflow: TextOverflow.ellipsis),
   
         Text(property.price,style: f15TextgrayRegular_3,)
   

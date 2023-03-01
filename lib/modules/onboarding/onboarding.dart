@@ -113,7 +113,8 @@ class OnboardingContent extends StatelessWidget {
                     height: 40,
                   ),
                   Text('${screenDetails[currentScreen]["title"]}',
-                      style: f40DisplayWhiteBold),
+                      style: f40DisplayWhiteBold
+                      ),
                   const SizedBox(
                     height: 17,
                   ),

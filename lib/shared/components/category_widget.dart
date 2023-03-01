@@ -1,7 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:newavenue/shared/styles/styles.dart';
+
+import '../styles/styles.dart';
 
 
 Widget  categoryWidget(
@@ -48,7 +49,7 @@ Widget  categoryWidget(
   
 
   
-          Text(name,style: f17TextWhiteSemibold,),
+          Text(name,style:f17TextWhiteSemibold,),
   
   
         ],
