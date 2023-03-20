@@ -4,11 +4,9 @@ import 'package:newavenue/main.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
-import 'package:newavenue/modules/properties/explore_screen.dart';
 import 'package:newavenue/shared/components/agent_profile_property_widget.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/styles/styles.dart';
-
 import '../../shared/styles/colors.dart';
 
 
@@ -22,16 +20,13 @@ class AgentDetails extends StatelessWidget {
     return BlocConsumer<PropertiesCubit,PropertiesStates>
     (builder: (context,states){
   return Scaffold(
-      backgroundColor: white,
       appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: white,
           leading: IconButton(
             onPressed: () {
               navigatorKey.currentState!.pop(context);
             },
-            icon: const Icon(Icons.arrow_back_ios),
-            color: black,
+            icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color),
           )),
       body: ListView(
         children: [
@@ -77,26 +72,6 @@ class AgentDetails extends StatelessWidget {
                         'Units For Sale',
                         style: f15TextGraySemibold_1,
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     // Navigator.push(context,
-                      //     //     MaterialPageRoute(builder: (_) {
-                      //     //   return const ExploreScreen();
-                      //     // }));
-                      //   },
-                      //   child: Row(
-                      //     children: [
-                      //       Text(
-                      //         'See all',
-                      //         style: f11TextPrimarySemibold,
-                      //       ),
-                      //       Icon(
-                      //         Icons.chevron_right_rounded,
-                      //         color: primaryColor,
-                      //       )
-                      //     ],
-                      //   ),
-                      // )
                     ]),
                 Container(
                   height: 172,
@@ -121,26 +96,6 @@ class AgentDetails extends StatelessWidget {
                         'Units For Rent',
                         style: f15TextGraySemibold_1,
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     // Navigator.push(context,
-                      //     //     MaterialPageRoute(builder: (_) {
-                      //     //   return const ExploreScreen();
-                      //     // }));
-                      //   },
-                      //   child: Row(
-                      //     children: [
-                      //       Text(
-                      //         'See all',
-                      //         style: f11TextPrimarySemibold,
-                      //       ),
-                      //       Icon(
-                      //         Icons.chevron_right_rounded,
-                      //         color: primaryColor,
-                      //       )
-                      //     ],
-                      //   ),
-                      // )
                     ]),
                 Container(
                   margin: const EdgeInsets.only(top: 15,bottom: 20),
