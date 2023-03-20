@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
+import 'package:newavenue/modules/contact_us.dart';
 import 'package:newavenue/modules/properties/categories.dart';
 import 'package:newavenue/shared/components/ad_widget.dart';
 import 'package:newavenue/shared/components/buy_rent_custom_button.dart';
@@ -16,7 +17,6 @@ import 'package:newavenue/shared/constant.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
-import 'contact_us.dart';
 
 
 
@@ -34,26 +34,22 @@ Widget build(BuildContext context) {
         builder: (context,states){
           
     return Scaffold(
-
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: primaryColor,
         onPressed: (){
-          navigatorKey.currentState!.push(
-            MaterialPageRoute(builder: (_){
-              return  ContactUsScreen();
-            })
-          );
-        },
-        backgroundColor: primaryColor, 
-        label: Row(
-          children:const [
-            Text('Contact Us') , 
-            SizedBox(width: 5,),
-            Icon(Icons.support_agent)
-          ],
-        )
+        
+        navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
+          return ContactUsScreen();
+        }));
+      }, label: Row(
+        children:const [
+          Text('Contact Us'), 
+          SizedBox(width: 8,),
+          Icon(Icons.support_agent)
+        ],
+      )
+      
       ),
-
-
       // backgroundColor: white,
       body: Container(
         alignment: Alignment.centerLeft,
@@ -68,20 +64,33 @@ Widget build(BuildContext context) {
           
             
           children:  [
-            const SizedBox(height: 10,),
 
-            Image.asset('images/black_logo.png', height: 200, ),
-            customTextField(
-              controller: TextEditingController(),
-              onSubmit: (){},
-              node: cubit.homePageSearchNode,
-              readOnly: true,
-              onTapFunction: (){
-                cubit.homePageSearchFunction(context);
-                
-              },
-              text: 'Where do you want to live?',
-              ),
+            const SizedBox(height: 10,),
+            
+            Row(
+              mainAxisSize: MainAxisSize.min,
+children: [
+
+  Padding(
+              padding: const EdgeInsets.only(right:12.0),
+              child: Image.asset(Theme.of(context).backgroundColor==black? 'images/white_logo_crop.png':'images/black_logo_crop.png',height:50 ,alignment: Alignment.center),
+            ),
+
+            Flexible(
+              child: customTextField(
+                controller: TextEditingController(),
+                onSubmit: (){},
+                node: cubit.homePageSearchNode,
+                readOnly: true,
+                onTapFunction: (){
+                  cubit.homePageSearchFunction(context);
+                  
+                },
+                text: 'Search...',
+                ),
+            ),
+],
+            ),
               const SizedBox(height: 10,),
               Container(
                 
@@ -130,7 +139,7 @@ Widget build(BuildContext context) {
                     }),
                     categoryWidget(name: Constant.categories[1]['name'], image:Constant.categories[1]['img'] , function: (){
                       navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
-                       return CategoriesScreen();
+                       return const CategoriesScreen();
                       }));
                     })
                 ],)

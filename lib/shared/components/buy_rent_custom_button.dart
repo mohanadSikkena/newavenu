@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-
 import '../styles/colors.dart';
 import '../styles/styles.dart';
 Widget buyRentButton({

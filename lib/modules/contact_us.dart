@@ -1,81 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newavenue/models/user/user_cubit.dart';
-import 'package:newavenue/models/user/user_states.dart';
+import 'package:newavenue/models/customer/customer_cubit.dart';
 import 'package:newavenue/shared/components/custom_button.dart';
 import 'package:newavenue/shared/components/custom_text_field.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 
+import '../main.dart';
+
 class ContactUsScreen extends StatelessWidget {
-   ContactUsScreen({Key? key}) : super(key: key);
-  GlobalKey<FormState> mainKey=GlobalKey<FormState>();
+  ContactUsScreen({Key? key}) : super(key: key);
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  GlobalKey<FormState> mainKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    UserCubit cubit=UserCubit.get(context);
+    return Scaffold(
+      appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              navigatorKey.currentState!.pop(context);
+            },
+            icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color),
+          )),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Form(
+          key: mainKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 40,
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Theme.of(context).backgroundColor == black
+                      ? Image.asset('images/white_logo_crop.png')
+                      : Image.asset('images/black_logo_crop.png')),
+              SizedBox(
+                height: 20,
+              ),
+              Flexible(
+                  flex: 2,
+                  child: Card(
+                    elevation: 20,
+                    color: Theme.of(context).backgroundColor,
+                    shadowColor: Theme.of(context).backgroundColor == black
+                        ? white
+                        : black,
+                    surfaceTintColor: Theme.of(context).backgroundColor,
+                    margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Contact Us',
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 16, top: 16),
+                              child: customTextField(
+                                  controller: nameController, text: 'Name')),
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 16),
+                              child: customTextField(
+                                  controller: phoneController, text: 'Phone')),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: customButton(
+                                text: 'Submit',
+                                function: () async {
+                                  if (mainKey.currentState!.validate()) {
+                                    // await DioHelper.setData(url: '/customer/add-customer-property', query: {"name":nameController.text,"phone":phoneController.text}).
+                                    // then((value) {
 
-    return BlocConsumer<UserCubit,UserStates>(
-      builder:(context,state){
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text('Support', style: Theme.of(context).textTheme.titleLarge ,),
-            elevation: 0.0,
-            
-            leading: IconButton(onPressed: (){
-              cubit.nameController.clear();
-              cubit.phoneController.clear();
-              Navigator.pop(context);
-            }, icon: Icon(
-              Icons.arrow_back_ios, 
-              color: Theme.of(context).iconTheme.color,
-            )), 
+                                    // }).onError((error, stackTrace) {
+
+                                    // });
+
+                                    CustomerCubit.get(context).sendCustomerProperty(
+                                      context: context, 
+                                      name: nameController.text,
+                                      phone: phoneController.text
+
+                                    );
+
+                                    
+                                  }
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+              Expanded(flex: 1, child: Container()),
+            ],
           ),
-          body: 
-              Form(
-                key: mainKey,
-                
-                   child: ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [
-                     Image.asset(
-                      Theme.of(context).backgroundColor==black?
-                      'images/white_logo.png':
-                      'images/black_logo.png'
-                      , height: 200,
-                      ), 
-
-                    customTextField(
-                      height: 60,
-                      marginLeft: 16,
-                      marginRight: 16,
-                      controller: cubit.nameController, node: FocusNode(), onTapFunction: (){}, onSubmit: (){}, text: 'Your Name'),
-                    const SizedBox(height: 20,),
-                    customTextField(
-                      height: 60,
-                      marginLeft: 16,
-                      marginRight: 16,controller: cubit.phoneController, node: FocusNode(), onTapFunction: (){}, onSubmit: (){}, text: 'Your Phone'),
-                  Container(
-                  margin:const  EdgeInsets.only(top: 80 ,left: 16, right: 16),
-                  child: customButton(
-                        text: 'Submit', function: (){
-                          if(mainKey.currentState!.validate()){
-                            showDialog(context: context, builder: (context){
-                              return Dialog(
-                                child: Text('Your Request Sent Successfully And We Will Call You Soon'),
-                              );
-                            });
-                          }
-                      
-                      }),
-                ),
-                   ]),
-                  
-                 ) , 
-                
-                
-                
-           
-        );
-      } , listener: (context,state){});
+        ),
+      ),
+    );
   }
 }

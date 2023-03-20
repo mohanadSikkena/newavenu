@@ -1,10 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 
-import 'dart:convert';
 
 import 'package:currency_formatter/currency_formatter.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/shared/constant.dart';

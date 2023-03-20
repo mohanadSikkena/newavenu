@@ -6,7 +6,6 @@ import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/saved_widget.dart';
-import 'package:newavenue/shared/styles/colors.dart';
 
 import '../../shared/styles/styles.dart';
 

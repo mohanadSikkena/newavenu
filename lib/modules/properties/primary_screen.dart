@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/main.dart';
@@ -8,10 +7,8 @@ import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'image_screen.dart';
 
 class PrimaryScreen extends StatelessWidget {
   const PrimaryScreen({Key? key}) : super(key: key);
@@ -144,7 +141,7 @@ class PrimaryScreen extends StatelessWidget {
                     //   ),
                     // ],
                     
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,7 +164,7 @@ class PrimaryScreen extends StatelessWidget {
                       (index) {
                         return Container(
                           
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
@@ -175,7 +172,7 @@ class PrimaryScreen extends StatelessWidget {
                                 image: 
                               NetworkImage(cubit.currentPrimary.images[index]
                               )),
-                              Image(
+                             const  Image(
                                 height: 200, 
                                 width: 200,
                                 image: AssetImage('images/black_logo.png' ,) , fit: BoxFit.cover,)

@@ -6,7 +6,7 @@ import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/search/search_cubit.dart';
-import 'package:newavenue/models/user/user_cubit.dart';
+import 'package:newavenue/modules/contact_us.dart';
 import 'package:newavenue/modules/home_page.dart';
 import 'package:newavenue/modules/onboarding/onboarding.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
@@ -14,6 +14,8 @@ import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
+
+import 'models/customer/customer_cubit.dart';
    
    
    
@@ -47,15 +49,14 @@ class MyApp extends StatelessWidget {
   final  bool firstTime;
   const MyApp({Key? key , required this.firstTime}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     
 
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context)=>UserCubit()),
           BlocProvider(create: (context) => AppCubit()),
+          BlocProvider(create: (context)=>CustomerCubit()),
           BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()..getAds()), 
           BlocProvider(create: (context) => SearchCubit()), 
           ],
@@ -66,8 +67,7 @@ class MyApp extends StatelessWidget {
               return MaterialApp(
                 
                 theme: ThemeData(
-                  
-                  // useMaterial3: true,
+                  useMaterial3: true,
                   iconTheme: IconThemeData(color: black),
                   scaffoldBackgroundColor: white, 
                   backgroundColor: white, 
@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
                 
               
                 darkTheme:ThemeData(
-                  // useMaterial3: true,
+                  useMaterial3: true,
                   
                   appBarTheme: AppBarTheme(color: black),
 
@@ -127,7 +127,7 @@ class MyApp extends StatelessWidget {
                   )
                 ),
                 
-                themeMode: ThemeMode.system,
+                themeMode: ThemeMode.light,
                 
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
@@ -136,7 +136,7 @@ class MyApp extends StatelessWidget {
                 home: 
                 
                 firstTime? 
-                const HomePage()
+                 OnBoardingScreen()
                 :const BottomNavBar(),
               );
             },

@@ -24,7 +24,7 @@ class ExploreScreen extends StatelessWidget {
         
         leading:IconButton(onPressed: (){
           cubit.exploreBackFunction(context);
-        }, icon: const Icon(Icons.arrow_back_ios)) ,
+        }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color)) ,
         elevation: 0.0,
       ),
       body: cubit.exploreLoading? Center(

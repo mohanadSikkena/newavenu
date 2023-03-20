@@ -11,91 +11,73 @@ Widget customTextField({
   bool readOnly=false,
   bool blackText=false,
   bool search=true,
-  double height=40,
-  double marginRight=16,
-  double marginLeft=0,
-  required TextEditingController controller ,
-  required FocusNode node,
-  required Function onTapFunction,
-  required Function onSubmit,
+  TextEditingController? controller ,
+   FocusNode ?node,
+   Function? onTapFunction,
+   Function? onSubmit,
+   Key?key,
+   
   
   required String text,})=>
-Container(
-  
-  height: height,
+TextFormField(
+  key: key,
 
+  validator: (value){
 
-  margin: EdgeInsets.only(top: 10,right: marginRight,left:marginLeft ),
-  
-  decoration: BoxDecoration(
-    
-              color: const Color(0xffEFEFF4),
-              borderRadius: BorderRadius.circular(6)
-            ),
-  child:TextFormField(
+      if(value!.isEmpty){
 
-    validator: (value){
-  
-        if(value!.isEmpty){
-  
-          return 'this field required';
-  
-        }
-        return null;
-  
-      },
-    
-     
-    
-    obscureText: obSecure,
-    controller: controller,
-    onFieldSubmitted: (done){
-      onSubmit();
+        return 'This field is required';
+
+      }
+      return null;
+
     },
-    
+  obscureText: obSecure,
+  controller: controller,
+  onFieldSubmitted: (done){
+    onSubmit==null?null: onSubmit();
+  },
+  
 
-    cursorColor: gray_1,
-    readOnly: readOnly,
-    focusNode: node,
-    onTap: (){
-          onTapFunction();
-          
-        },
-  
-        // key: key,
-  
-        decoration: InputDecoration(
-          
-          
-  
-            prefixIcon: search?Icon(
-              Icons.search,
-              color: gray_1,
-            ):null,
-  
-            border: OutlineInputBorder(
-              
-  
-                borderRadius: BorderRadius.circular(10),
-  
-                borderSide: BorderSide.none),
-  
-            errorBorder: OutlineInputBorder(
-  
-                borderRadius: BorderRadius.circular(10),
-  
-                borderSide: const BorderSide(color: Colors.red,width: 0.5)
-  
-            ),
-  
-            labelText: text,
-            labelStyle:blackText?
-  
-            f17TextBlackRegular
-            :f17TextGrayRegular_1
-  
-        ),
-  
+  cursorColor: gray_1,
+  readOnly: readOnly,
+  focusNode: node,
+  onTap: (){
+        // onTapFunction?? onTapFunction!();
+        onTapFunction==null?null:onTapFunction();
+        
+      },
+
+      // key: key,
+
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        errorStyle:const TextStyle(color: Colors.red, fontSize: 15, fontFamily: 'SFText'),
+        filled: true,
+        
+        fillColor: const Color(0xffEFEFF4),
+        
+
+          prefixIcon: search?Icon(
+            Icons.search,
+            color: gray_1,
+          ):null,
+
+          border: OutlineInputBorder(
+            
+
+              borderRadius: BorderRadius.circular(10),
+
+              borderSide: BorderSide.none),
+
+
+          labelText: text,
+          labelStyle:blackText?
+
+          f17TextBlackRegular
+          :f17TextGrayRegular_1
+
       ),
-);
+
+    );
   

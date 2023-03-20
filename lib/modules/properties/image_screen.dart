@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+// ignore: must_be_immutable
 class ImageScreen extends StatelessWidget {
-  List<String>images;
+   List<String>images;
    ImageScreen({Key? key , required this.images}) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class ImageScreen extends StatelessWidget {
           ),
           
         ),
-        IgnorePointer(
+        const IgnorePointer(
           child: Image(image: AssetImage('images/black_logo.png', ), height: 200,))
       ],
     );

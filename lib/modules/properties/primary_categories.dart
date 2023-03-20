@@ -6,7 +6,6 @@ import 'package:newavenue/shared/components/custom_loading.dart';
 
 import '../../models/properties/properties_cubit.dart';
 import '../../models/properties/properties_states.dart';
-import '../../shared/components/all_categories_widget.dart';
 import '../../shared/styles/colors.dart';
 
 
@@ -22,10 +21,10 @@ class PrimaryCategories extends StatelessWidget {
       appBar: AppBar(
         leading:IconButton(onPressed: (){
           navigatorKey.currentState!.pop(context);
-        }, icon: const Icon(Icons.arrow_back_ios),) ,
+        }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color),) ,
         elevation: 0.0,
       ),
-      body: Container(
+      body:cubit.primaryCategoriesLoading?customLoading(): Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.only(left:16),
         child: ListView(
@@ -39,14 +38,14 @@ class PrimaryCategories extends StatelessWidget {
 
               
               
-              cubit.primaryCategoriesLoading?customLoading():
+              
               Column(
                 children: List.generate(cubit.locations.length ,(i) =>primaryCategories(
                   context: context,
                   name: cubit.locations[i].name, function: (){
                   cubit.getPrimaryByLocation(id: cubit.locations[i].id, context: context);
                   navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
-                    return PrimaryExploreScreen();
+                    return const PrimaryExploreScreen();
                   }));
               
               }) )
@@ -88,7 +87,7 @@ class PrimaryCategories extends StatelessWidget {
   
     height:60 ,
   
-    margin: const EdgeInsets.only(top:16),
+    padding: const EdgeInsets.only(top:8,bottom: 8),
   
     child: Text(name,style: Theme.of(context).textTheme.displaySmall,),
   

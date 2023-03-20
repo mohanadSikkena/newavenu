@@ -80,7 +80,10 @@ flutter:
     - images/onboarding/onboarding-3.jpg
     - images/logo.png
     - images/white_logo.png
+    - images/white_logo_crop.png
     - images/black_logo.png
+    - images/black_logo_crop.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

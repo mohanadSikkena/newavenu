@@ -7,7 +7,6 @@ import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/primary_widget.dart';
-import 'package:newavenue/shared/components/property_widget.dart';
 
 import '../../shared/styles/colors.dart';
 import '../../shared/styles/styles.dart';
@@ -27,7 +26,7 @@ class PrimaryExploreScreen extends StatelessWidget {
         
         leading:IconButton(onPressed: (){
           navigatorKey.currentState!.pop(context);
-        }, icon: const Icon(Icons.arrow_back_ios),color: black,) ,
+        }, icon:  Icon(Icons.arrow_back_ios ,color: Theme.of(context).iconTheme.color)) ,
         elevation: 0.0,
       ),
       body: cubit.primaryExploreLoading? Center(

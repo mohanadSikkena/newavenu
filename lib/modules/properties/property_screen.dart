@@ -58,7 +58,7 @@ class PropertyScreen extends StatelessWidget {
                           excludeFromSemantics: true,
                           fit: BoxFit.fill,
                           image: NetworkImage(cubit.currentProperty.images[i])),
-                      Image(
+                      const Image(
                         height: 200, 
                         width: 200,
                         image: AssetImage(

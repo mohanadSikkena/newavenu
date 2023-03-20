@@ -14,7 +14,7 @@ class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
   FocusNode node = FocusNode();
   TextEditingController searchController = TextEditingController();
-
+  GlobalKey<FormState> mainKey=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SearchCubit cubit=SearchCubit.get(context)..getSearch();
@@ -26,40 +26,50 @@ class SearchScreen extends StatelessWidget {
                 onPressed: () {
                   navigatorKey.currentState!.pop(context);
                 },
-                icon: const Icon(Icons.arrow_back_ios),
+                icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color,),
               ),
               elevation: 0.0,
             ),
-            body: Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(
-                  left: 16,
-                ),
-                child: ListView(scrollDirection: Axis.vertical, children: [
-                  Text('Search', style: Theme.of(context).textTheme.displayLarge),
-                  customTextField(
-                      controller: searchController,
-                      onTapFunction: () {},
-                      onSubmit: () {
-                        PropertiesCubit.get(context).navigeToSearchExplore(
-                            searchController.text, context);
-                            cubit.saveSearch(search: searchController.text);
-                      },
-                      node: node,
-                      text: 'Search'),
-                  const SizedBox(
-                    height: 20,
+            body: SafeArea(
+              child: Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(
+                    left: 16,
                   ),
-                  Text(
-                    "History",
-                    style: f15TextGraySemibold_1,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  for(int i =0;i<cubit.searchHistory.length;i++)
-                  searchHistory(text: cubit.searchHistory[i], context: context)
-                ])),
+                  child: ListView(scrollDirection: Axis.vertical, children: [
+                    Text('Search', style: Theme.of(context).textTheme.displayLarge),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Form(
+                        key: mainKey,
+                        child: customTextField(
+                      
+                            controller: searchController,
+                            onSubmit: () {
+                              if(searchController.text.isNotEmpty){
+                                 PropertiesCubit.get(context).navigeToSearchExplore(
+                                searchController.text, context);
+                                cubit.saveSearch(search: searchController.text);
+                              }
+                            },
+                            node: node,
+                            text: 'Search'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "History",
+                      style: f15TextGraySemibold_1,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    for(int i =0;i<cubit.searchHistory.length;i++)
+                    searchHistory(text: cubit.searchHistory[i], context: context)
+                  ])),
+            ),
           );
         },
         listener: (context, states) {});

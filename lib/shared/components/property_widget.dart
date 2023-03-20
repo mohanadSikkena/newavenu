@@ -44,7 +44,7 @@ Widget propertyWidget(
                                   fit: BoxFit.cover,
                                 )),
                           ),
-                          Image(
+                          const  Image(
                             image: AssetImage('images/black_logo.png' ) ,)
                         ],
                       );

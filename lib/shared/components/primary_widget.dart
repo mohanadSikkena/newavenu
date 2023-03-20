@@ -38,7 +38,7 @@ Widget primaryWidget(
 
            
                       return Container(
-                        child: Image(image: AssetImage('images/black_logo.png')),
+                        child:const Image(image: AssetImage('images/black_logo.png')),
                         width: double.infinity,
                         // height: 224,
                         decoration: BoxDecoration(

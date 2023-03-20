@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/main.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
+import 'package:newavenue/modules/properties/primary_categories.dart';
 import 'package:newavenue/shared/components/all_categories_widget.dart';
 import 'package:newavenue/shared/constant.dart';
 
@@ -23,7 +24,7 @@ class CategoriesScreen extends StatelessWidget {
       appBar: AppBar(
         leading:IconButton(onPressed: (){
           navigatorKey.currentState!.pop(context);
-        }, icon: const Icon(Icons.arrow_back_ios),) ,
+        }, icon: Icon(Icons.arrow_back_ios , color: Theme.of(context).iconTheme.color,),) ,
         elevation: 0.0,
       ),
       body: Container(
@@ -40,10 +41,10 @@ class CategoriesScreen extends StatelessWidget {
 
               
               for(int i=0;i<Constant.subCategories.length;i++)
-              allCategoriesWidget(
+              primaryCategories(
                 context: context,
                 name: Constant.subCategories[i]["name"],
-                img :Constant.subCategories[i]["img"],
+                // img :Constant.subCategories[i]["img"],
                 
                 function: (){
                 cubit.navigateToExploreFromCategory(context: context, i: Constant.subCategories[i]["id"]);

@@ -4,7 +4,6 @@ import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/models/properties/location_model.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
-import 'package:newavenue/modules/properties/categories.dart';
 import 'package:newavenue/modules/properties/primary_categories.dart';
 import 'package:newavenue/modules/properties/primary_screen.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
@@ -102,7 +101,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     primaryScreenLoading=true;
     emit(PropertyLoading());
     navigatorKey.currentState!.push( MaterialPageRoute(builder: (_){
-      return PrimaryScreen();
+      return const PrimaryScreen();
     }));
 
     await DioHelper.getData(url: '/primary/$id').then((value) {
@@ -284,6 +283,10 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     primaryCategoriesLoading=true;
     locations=[];
     emit(ChangePrimaryCategoriesLoading());
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
+        return const PrimaryCategories();
+      })
+      );
     await DioHelper.getData(url: '/locations').then((value) {
       value.data.forEach((map){ 
         Location location=Location.fromMap(map);
@@ -291,9 +294,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       });
       primaryCategoriesLoading=false;
       emit(ChangePrimaryCategoriesLoading());
-      navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
-        return PrimaryCategories();
-      }));
+      
 
 
     });
