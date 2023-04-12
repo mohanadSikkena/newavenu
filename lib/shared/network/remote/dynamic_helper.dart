@@ -3,20 +3,21 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:newavenue/models/primary/primary_cubit.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HelperClass{
-  HelperClass();
+  HelperClass();  
+  static bool loading= true;
   static initDynamicLinks({required BuildContext context})async{
-
-   var data=await FirebaseDynamicLinks.instance.getInitialLink();
+    var data=await FirebaseDynamicLinks.instance.getInitialLink();
    if(data==null){
    }else{
     data.link.queryParameters;
     if(data.link.queryParameters.length==2){
         if(data.link.queryParameters['category']=='primary'){
-          PropertiesCubit.get(context).getPrimaryProperty(id:int.parse(data.link.queryParameters['id']!) , context: context);
+          await PrimaryCubit.get(context).getPrimaryProperty(id:int.parse(data.link.queryParameters['id']!) , context: context);
 
         }else if(
           data.link.queryParameters['category']=='resail'
@@ -32,8 +33,11 @@ class HelperClass{
    
       if(queryParameters.length==2){
         if(queryParameters['category']=='primary'){
-          PropertiesCubit.get(context).getPrimaryProperty(id:int.parse(queryParameters['id']!) , context: context);
-
+          if(loading){
+            loading=false;
+            await PrimaryCubit.get(context).getPrimaryProperty(id:int.parse(queryParameters['id']!) , context: context);
+            loading=true;
+          }
         }else if(
           queryParameters['category']=='resail'
         ){
@@ -41,15 +45,16 @@ class HelperClass{
         }
       }
     });
+   
   }
 
   Future<String> createDynamicLink({required int id, required String category})async{
     DynamicLinkParameters parameters=DynamicLinkParameters(
 
-      link: Uri.parse("https://newavenuee.page.link.com?id=$id&category=$category"),
-       uriPrefix:'https://newavenuee.page.link', 
+      link: Uri.parse("https://newavenueinvestment.page.link?id=$id&category=$category"),
+       uriPrefix:'https://newavenueinvestment.page.link', 
        androidParameters: AndroidParameters(
-        fallbackUrl: Uri.parse('www.google.com'),
+        fallbackUrl: Uri.parse('https://www.newavenue-investment.com'),
 
         packageName: 'com.example.newavenue' , 
 
@@ -60,7 +65,8 @@ class HelperClass{
       var shortUrl=await FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
          return value.shortUrl;
       });
-      return shortUrl.toString();
+        print( shortUrl.toString());
+        return shortUrl.toString();
       
      
 

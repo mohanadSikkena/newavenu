@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/customer/customer_states.dart';
+import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 
-import '../../shared/styles/colors.dart';
 import '../../shared/styles/styles.dart';
 
 class CustomerCubit extends Cubit<CustomerStates> {
@@ -14,28 +14,7 @@ class CustomerCubit extends Cubit<CustomerStates> {
 
   sendCustomerProperty({required BuildContext context , required String name, required String phone}) async {
     CancelToken token = CancelToken();
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Row(
-              children: [
-                CircularProgressIndicator(
-                  backgroundColor: primaryColor,
-                  color: gray_1,
-                ),
-                Container(
-                    margin: const EdgeInsets.only(left: 7),
-                    child: Text(
-                      "Loading...",
-                      style: f15TextBlackRegular,
-                    )),
-              ],
-            ),
-          );
-        }).whenComplete(() {
-      print("object");
+    loadingDialog(context: context).whenComplete(() {
       token.cancel();
     });
     await DioHelper.setData(url: '/customer/add-customer-property', query: {
@@ -43,7 +22,6 @@ class CustomerCubit extends Cubit<CustomerStates> {
       'phone':phone
     }, cancelToken: token)
         .then((value) {
-          print(value.data);
       if(Navigator.canPop(context)){
         Navigator.pop(context);
       } 

@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/main.dart';
+import 'package:newavenue/models/categories/categories_cubit.dart';
+import 'package:newavenue/models/categories/categories_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/properties/primary_categories.dart';
-import 'package:newavenue/shared/components/all_categories_widget.dart';
-import 'package:newavenue/shared/constant.dart';
 
 
 
@@ -17,8 +17,8 @@ class CategoriesScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
-    PropertiesCubit cubit = PropertiesCubit.get(context);
-    return BlocConsumer<PropertiesCubit,PropertiesStates>
+    CategoriesCubit cubit = CategoriesCubit.get(context);
+    return BlocConsumer<CategoriesCubit,CategoriesStates>
     (builder: (context,states){
          return Scaffold(
       appBar: AppBar(
@@ -40,16 +40,19 @@ class CategoriesScreen extends StatelessWidget {
             const SizedBox(height: 15,),
 
               
-              for(int i=0;i<Constant.subCategories.length;i++)
+              Column(
+                children: List.generate(
+                cubit.categories.length, (i) => 
               primaryCategories(
+                count: cubit.categories[i].count,
                 context: context,
-                name: Constant.subCategories[i]["name"],
-                // img :Constant.subCategories[i]["img"],
+                name: cubit.categories[i].name,
                 
                 function: (){
-                cubit.navigateToExploreFromCategory(context: context, i: Constant.subCategories[i]["id"]);
+                PropertiesCubit.get(context).navigateToExploreFromCategory(context: context, i: cubit.categories[i].id);
                 
-              })
+              })),
+              )
               
 
           ],

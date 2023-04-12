@@ -37,7 +37,6 @@ class ChangeSubCategory extends PropertiesStates{}
 class ChangeCategory extends PropertiesStates{}
 class GetExploreProperties extends PropertiesStates{}
 class ExploreLoading extends PropertiesStates{}
-class AdsLoading extends PropertiesStates{}
 class GetAdsState extends PropertiesStates{}
 class MostViewsLoading extends PropertiesStates{}
 class GetMostViews extends PropertiesStates{}
@@ -56,3 +55,4 @@ class ChangePaginationLoading extends PropertiesStates{}
 class ChangePrimaryCategoriesLoading extends PropertiesStates{}
 
 class PrimaryPropertiesExploreLoading extends PropertiesStates{}
+

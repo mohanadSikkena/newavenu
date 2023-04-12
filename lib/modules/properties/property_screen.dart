@@ -7,6 +7,7 @@ import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/modules/agent/agent_details.dart';
 import 'package:newavenue/modules/properties/image_screen.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
+import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -114,8 +115,10 @@ class PropertyScreen extends StatelessWidget {
                               cubit.currentProperty.isFavourite? Icons.favorite:Icons.favorite_border,
                               color: cubit.currentProperty.isFavourite?favoriteColor: white,),),
                               IconButton(onPressed: (){
+                            loadingDialog(context: context);
                           HelperClass helperClass=HelperClass();
                           helperClass.createDynamicLink(id: cubit.currentProperty.id, category: 'resail').then((value){
+                            Navigator.pop(context);
                             helperClass.shareData(messege: value,);
                           });
                         }, icon: Icon(
@@ -228,6 +231,33 @@ class PropertyScreen extends StatelessWidget {
             Container(
             margin: const EdgeInsets.only(left: 16,top: 16),
             child: Text(cubit.currentProperty.description, style: f15TextWhiteRegular,)),
+            
+            Row(
+              children: [
+                Container(
+                margin: const EdgeInsets.only(left: 16,top: 16),
+                child: Text("License :", 
+                style: f15TextWhiteRegular,)),
+                Container(
+                margin: const EdgeInsets.only(left: 4,top: 16),
+                child: Text(cubit.currentProperty.licence, overflow: TextOverflow.ellipsis,
+                style: f15TextWhiteRegular,)),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                margin: const EdgeInsets.only(left: 16,top: 16),
+                child: Text("Finishing :", 
+                style: f15TextWhiteRegular,)),
+                Container(
+                margin: const EdgeInsets.only(left: 4,top: 16),
+                child: Text(cubit.currentProperty.finish, overflow: TextOverflow.ellipsis,
+                style: f15TextWhiteRegular,)),
+              ],
+            ),
+            
+            
             for(int i=0;i<cubit.currentProperty.details.length;i++)
             Row(
               children: [
@@ -297,9 +327,26 @@ class PropertyScreen extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: ()async{
+                            loadingDialog(context: context);
                             HelperClass helperClass=HelperClass();
-                            String messege =await helperClass.createDynamicLink(category: 'resail', id: cubit.currentProperty.id);
-                            await launchUrl(Uri.parse("whatsapp://send?phone=" + cubit.phone + "&text=$messege"));
+                            String messege =await helperClass.createDynamicLink(category: 'resail', id: cubit.currentProperty.id).
+                            then((value) {
+                              
+                            Navigator.pop(context);
+                            return value;
+                            });
+                            bool canLaunchWhatsapp=await canLaunchUrl(Uri.parse('whatsapp://send'));
+                            if(canLaunchWhatsapp){
+                              await launchUrl(Uri.parse(
+                              "whatsapp://send?phone=" + cubit.phone + "&text=$messege"));
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const  SnackBar(
+
+                                    content: Text('WhatsApp is not installed on your device.'),
+                                  ),
+                                );
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

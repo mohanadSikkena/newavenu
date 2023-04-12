@@ -20,6 +20,7 @@ Widget customTextField({
   
   required String text,})=>
 TextFormField(
+  
   key: key,
 
   validator: (value){
@@ -49,10 +50,11 @@ TextFormField(
       },
 
       // key: key,
-
+      style:f17TextBlackRegular ,
       decoration: InputDecoration(
+        
         contentPadding: EdgeInsets.zero,
-        errorStyle:const TextStyle(color: Colors.red, fontSize: 15, fontFamily: 'SFText'),
+        errorStyle:const TextStyle(color: Colors.red, fontSize: 15, fontFamily: ' '),
         filled: true,
         
         fillColor: const Color(0xffEFEFF4),
@@ -72,6 +74,7 @@ TextFormField(
 
 
           labelText: text,
+          
           labelStyle:blackText?
 
           f17TextBlackRegular

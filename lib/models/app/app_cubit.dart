@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/main.dart';
 import 'package:newavenue/models/app/app_states.dart';
+import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import '../../modules/home_page.dart';
@@ -46,15 +47,14 @@ class AppCubit extends Cubit<AppStates> {
       pageController.nextPage(
             duration: const Duration(milliseconds: 300), curve: Curves.ease);
     }else{
-
+      loadingDialog(context: context);
       await DioHelper.getData(url: '/customer/create-new-customer').then((value){
-        
-        CacheHelper.putInt(key: 'id', value: value.data["id"]);
+        CacheHelper.putInt(key: 'id', value: value.data['data']["id"]);
       }).onError((error, stackTrace){
         
       });
-
-      navigatorKey.currentState!.push( MaterialPageRoute(builder: (_) {
+      Navigator.pop(context);
+      navigatorKey.currentState!.pushReplacement( MaterialPageRoute(builder: (_) {
             return const BottomNavBar();
           }));
 

@@ -3,12 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/main.dart';
-import 'package:newavenue/models/properties/properties_cubit.dart';
-import 'package:newavenue/models/properties/properties_states.dart';
+import 'package:newavenue/models/primary/primary_cubit.dart';
+import 'package:newavenue/models/primary/primary_states.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/primary_widget.dart';
 
-import '../../shared/styles/colors.dart';
 import '../../shared/styles/styles.dart';
 
 class PrimaryExploreScreen extends StatelessWidget {
@@ -16,8 +15,8 @@ class PrimaryExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      PropertiesCubit cubit = PropertiesCubit.get(context);
-      return BlocConsumer<PropertiesCubit,PropertiesStates>(
+      PrimaryCubit cubit = PrimaryCubit.get(context);
+      return BlocConsumer<PrimaryCubit,PrimaryStates>(
         builder: (context,states){
            return Scaffold(
       appBar: AppBar(

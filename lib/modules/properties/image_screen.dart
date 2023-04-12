@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+import '../../main.dart';
+
 // ignore: must_be_immutable
 class ImageScreen extends StatelessWidget {
    List<String>images;
@@ -9,7 +11,17 @@ class ImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Scaffold(
+      appBar: AppBar(
+        leading:IconButton(onPressed: (){
+          navigatorKey.currentState!.pop(context);
+        }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color),)
+        
+        ,elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        
+      ),
+      body: Stack(
       alignment: Alignment.center,
       children: [
         PhotoViewGallery.builder( 
@@ -41,6 +53,6 @@ class ImageScreen extends StatelessWidget {
         const IgnorePointer(
           child: Image(image: AssetImage('images/black_logo.png', ), height: 200,))
       ],
-    );
-}
+    ),
+    );}
   }

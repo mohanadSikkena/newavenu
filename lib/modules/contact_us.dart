@@ -6,6 +6,7 @@ import 'package:newavenue/shared/styles/colors.dart';
 
 import '../main.dart';
 
+// ignore: must_be_immutable
 class ContactUsScreen extends StatelessWidget {
   ContactUsScreen({Key? key}) : super(key: key);
 
@@ -31,26 +32,26 @@ class ContactUsScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Expanded(
                   flex: 1,
-                  child: Theme.of(context).backgroundColor == black
+                  child: Theme.of(context).colorScheme.background == black
                       ? Image.asset('images/white_logo_crop.png')
                       : Image.asset('images/black_logo_crop.png')),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Flexible(
                   flex: 2,
                   child: Card(
                     elevation: 20,
-                    color: Theme.of(context).backgroundColor,
-                    shadowColor: Theme.of(context).backgroundColor == black
+                    color: Theme.of(context).colorScheme.background,
+                    shadowColor: Theme.of(context).colorScheme.background == black
                         ? white
                         : black,
-                    surfaceTintColor: Theme.of(context).backgroundColor,
+                    surfaceTintColor: Theme.of(context).colorScheme.background,
                     margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                     child: SingleChildScrollView(
                       child: Column(

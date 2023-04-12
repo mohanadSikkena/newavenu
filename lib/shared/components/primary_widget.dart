@@ -2,18 +2,18 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:newavenue/models/properties/property_model.dart';
+import 'package:newavenue/models/primary/primary_cubit.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../models/properties/properties_cubit.dart';
+import '../../models/primary/primary_model.dart';
 import '../styles/colors.dart';
 import '../styles/styles.dart';
 
 Widget primaryWidget(
     {
       required BuildContext context ,required ExplorePrimary property,}) {
-      PropertiesCubit cubit=PropertiesCubit.get(context);
+      PrimaryCubit cubit=PrimaryCubit.get(context);
   return InkWell(
     onTap: () {
       cubit.getPrimaryProperty(id: property.id, context: context);

@@ -7,9 +7,9 @@
         <data android:scheme="sms" />
     </intent>
     <intent>
-        <action android:name="android.intent.action.VIEW" />
-        <data android:scheme="tel" />
-    </intent>
+            <action android:name="android.intent.action.SEND" />
+         <data android:mimeType="*/*" />
+     </intent>
     </queries>
    <application
         android:label="newavenue"
@@ -37,12 +37,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
-<intent-filter android:autoVerify="true">
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <data android:scheme="http"  android:host="newavenuee.page.link" />
-    <data android:scheme="https" android:host="newavenuee.page.link"/>
-</intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http"  android:host="newavenuee.page.link" />
+             <data android:scheme="https" android:host="newavenuee.page.link"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

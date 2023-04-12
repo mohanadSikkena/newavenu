@@ -2,12 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
+import 'package:newavenue/models/ads/ads_cubit.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
 import 'package:newavenue/models/app/app_states.dart';
+import 'package:newavenue/models/categories/categories_cubit.dart';
+import 'package:newavenue/models/locations/locations_cubit.dart';
+import 'package:newavenue/models/primary/primary_cubit.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/search/search_cubit.dart';
-import 'package:newavenue/modules/contact_us.dart';
-import 'package:newavenue/modules/home_page.dart';
 import 'package:newavenue/modules/onboarding/onboarding.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
@@ -40,7 +42,6 @@ void main() async{
   );
   DioHelper.init();
   await CacheHelper.init();
-  await CacheHelper.sharedPreferences.clear();
   bool firstTime=await CacheHelper.getData(key: "id")==null;
   runApp( MyApp(firstTime:firstTime) ,);
 }
@@ -57,8 +58,12 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => AppCubit()),
           BlocProvider(create: (context)=>CustomerCubit()),
-          BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()..getAds()), 
+          BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()), 
           BlocProvider(create: (context) => SearchCubit()), 
+          BlocProvider(create: (context) => CategoriesCubit()), 
+          BlocProvider(create: (context) => LocationCubit()), 
+          BlocProvider(create: (context) => PrimaryCubit()), 
+          BlocProvider(create: (context) => AdsCubit()..getAds()), 
           ],
         child: BlocConsumer<AppCubit, AppStates>(
             builder: (context, states){
@@ -67,10 +72,14 @@ class MyApp extends StatelessWidget {
               return MaterialApp(
                 
                 theme: ThemeData(
+                  
                   useMaterial3: true,
                   iconTheme: IconThemeData(color: black),
                   scaffoldBackgroundColor: white, 
-                  backgroundColor: white, 
+                  colorScheme: ColorScheme.light(
+                    background: white, 
+
+                  ),
                   appBarTheme: AppBarTheme(color: white),
                   bottomNavigationBarTheme: BottomNavigationBarThemeData(
                     backgroundColor: white
@@ -95,12 +104,16 @@ class MyApp extends StatelessWidget {
                 
               
                 darkTheme:ThemeData(
+                
                   useMaterial3: true,
                   
                   appBarTheme: AppBarTheme(color: black),
 
                   scaffoldBackgroundColor: black,
-                  backgroundColor: black,
+                  colorScheme: ColorScheme.dark(
+                    
+                    background: black
+                  ),
                   iconTheme: IconThemeData(color: white),
                   bottomNavigationBarTheme: BottomNavigationBarThemeData(
                     backgroundColor: black
@@ -127,7 +140,7 @@ class MyApp extends StatelessWidget {
                   )
                 ),
                 
-                themeMode: ThemeMode.light,
+                themeMode: ThemeMode.dark,
                 
                 navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
@@ -136,7 +149,7 @@ class MyApp extends StatelessWidget {
                 home: 
                 
                 firstTime? 
-                 OnBoardingScreen()
+                 const OnBoardingScreen()
                 :const BottomNavBar(),
               );
             },

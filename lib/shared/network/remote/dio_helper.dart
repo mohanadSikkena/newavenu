@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 class DioHelper{
   static late Dio dio;
-  static const String _url='http://192.168.1.7:81/';
+  static const String _url='https://www.newavenue-investment.com/';
   static  String get url=>_url;
 
   static init(){
