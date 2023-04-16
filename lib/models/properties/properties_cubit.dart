@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/agent/agent_model.dart';
+import 'package:newavenue/models/categories/categories_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
@@ -39,7 +40,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   int currentPage = 1;
   late int lastPage;
 
-  String homePageSelected = 'buy';
+
   // String categoriesSelected = 'buy';
   bool exploreLoading = true;
   bool favouritesLoading = true;
@@ -49,11 +50,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   //******************Filter */
 
   //**************************** */
-  changeSelectedHomePage(String selected) async {
-    homePageSelected = selected;
-    emit(ChangeHomePageSelected());
-    await getHomeProperties();
-  }
+
 
   // changeCategoriesSelected(String selected) {
   //   categoriesSelected = selected;
@@ -146,7 +143,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       customLoading = true;
       allPropertiesLoading = true;
       emit(AllPropertiesLoading());
-      await DioHelper.getData(url: '/properties?sell_type=$homePageSelected')
+      await DioHelper.getData(url: '/v2/properties')
           .then((response) {
         currentPage = response.data['properties']['current_page'];
         lastPage = response.data['properties']['last_page'];
@@ -171,7 +168,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       loadingPage = true;
       emit(ChangePaginationLoading());
       await DioHelper.getData(
-              url: '/properties?sell_type=$homePageSelected&page=$currentPage')
+              url: '/v2/properties?page=$currentPage')
           .then((response) {
         currentPage = response.data["properties"]['current_page'];
         response.data["properties"]['data'].forEach((element) {
@@ -204,8 +201,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     emit(GetAgentProperties());
   }
 
-  navigateToExploreFromCategory(
-      {required int i, required BuildContext context}) async {
+  navigateToExploreFromCategory({required int i, required BuildContext context}) async {
     selectedSubCategory = i;
     exploreLoading = true;
     exploreProperties = [];
@@ -215,7 +211,9 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     }));
     await DioHelper.getData(
             url:
-                '/properties/get-by-category/$selectedSubCategory')
+                '/v2/properties/get-by-category/$selectedSubCategory?sale_type_id=${
+                CategoriesCubit.get(context).selectedSaleType
+                }')
         .then((value) {
       value.data['properties'].forEach((map) {
         map["agent"] = Agent.fromMap(map["agent"]);

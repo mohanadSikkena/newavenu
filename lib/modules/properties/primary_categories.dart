@@ -4,10 +4,8 @@ import 'package:newavenue/main.dart';
 import 'package:newavenue/models/locations/locations_cubit.dart';
 import 'package:newavenue/models/locations/locations_states.dart';
 import 'package:newavenue/models/primary/primary_cubit.dart';
-import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/modules/properties/primary_explore.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
-import 'package:newavenue/shared/styles/styles.dart';
 
 class PrimaryCategories extends StatelessWidget {
   const PrimaryCategories({Key? key}) : super(key: key);
