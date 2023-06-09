@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newavenue/firebase_options.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/models/ads/ads_cubit.dart';
 import 'package:newavenue/models/app/app_cubit.dart';
@@ -14,147 +19,140 @@ import 'package:newavenue/modules/onboarding/onboarding.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
+import 'package:newavenue/shared/network/remote/notifications_helper.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
 import 'models/customer/customer_cubit.dart';
-   
-   
-   
-    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: unused_import
-class Test{
-  String name;
-  Test({
-    required this.name
-  });
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  if (message.notification != null) {
+    log("Handling a background message: ${message.notification!.title}");
+    log("Handling a background message: ${message.notification!.body}");
+  }
 }
 
-
-void main() async{
-
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
-    
+    options: DefaultFirebaseOptions.currentPlatform
   );
-  DioHelper.init();
   await CacheHelper.init();
-  bool firstTime=await CacheHelper.getData(key: "id")==null;
-  runApp( MyApp(firstTime:firstTime) ,);
+  await FirebaseNotifications.getFCM();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  FirebaseMessaging.instance.setAutoInitEnabled(true);
+  FirebaseMessaging.instance.subscribeToTopic("all");
+  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, badge: true, sound: true);
+  FirebaseMessaging.onMessage.listen((message) {
+    if (message.notification != null) {
+      FirebaseNotifications firebaseNotifications=FirebaseNotifications();
+      firebaseNotifications.showMyNotification(message);
+    }
+
+  });
+  DioHelper.init();
+  bool firstTime = await CacheHelper.getData(key: "id") == null;
+  runApp(
+    MyApp(firstTime: firstTime),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final  bool firstTime;
-  const MyApp({Key? key , required this.firstTime}) : super(key: key);
+  final bool firstTime;
+  const MyApp({Key? key, required this.firstTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
+    return ScreenUtilInit(
+      designSize:const Size(375,812),
+        splitScreenMode: true,
+        builder: (BuildContext context, Widget? child) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => AppCubit()),
+                  BlocProvider(create: (context) => CustomerCubit()),
+                  BlocProvider(
+                      create: (context) => PropertiesCubit()
+                        ..index()
+                        ..mostViews()),
+                  BlocProvider(create: (context) => SearchCubit()),
+                  BlocProvider(create: (context) => CategoriesCubit()),
+                  BlocProvider(create: (context) => LocationCubit()),
+                  BlocProvider(create: (context) => PrimaryCubit()),
+                  BlocProvider(create: (context) => AdsCubit()..getAds()),
+                ],
+                child: BlocConsumer<AppCubit, AppStates>(
+                    builder: (context, states) {
+                      HelperClass.initDynamicLinks(context: context);
 
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => AppCubit()),
-          BlocProvider(create: (context)=>CustomerCubit()),
-          BlocProvider(create: (context)=>PropertiesCubit()..index()..mostViews()), 
-          BlocProvider(create: (context) => SearchCubit()), 
-          BlocProvider(create: (context) => CategoriesCubit()), 
-          BlocProvider(create: (context) => LocationCubit()), 
-          BlocProvider(create: (context) => PrimaryCubit()), 
-          BlocProvider(create: (context) => AdsCubit()..getAds()), 
-          ],
-        child: BlocConsumer<AppCubit, AppStates>(
-            builder: (context, states){
-              HelperClass.initDynamicLinks(context: context);
+                      return MaterialApp(
+                        useInheritedMediaQuery: true,
+                        theme: ThemeData(
 
-              return MaterialApp(
-                
-                theme: ThemeData(
-                  
-                  useMaterial3: true,
-                  iconTheme: IconThemeData(color: black),
-                  scaffoldBackgroundColor: white, 
-                  colorScheme: ColorScheme.light(
-                    background: white, 
-
-                  ),
-                  appBarTheme: AppBarTheme(color: white),
-                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                    backgroundColor: white
-                  ),
-                  textTheme: TextTheme(
-                      
-                    
-                    labelMedium: f15TextBlackRegular,
-                    labelLarge: f15TextBlackSemibold,
-
-
-                    headlineLarge: f17TextBlackSemibold, 
-                    
-                    displaySmall: f20TextBlackSemibold, 
-                    displayMedium: f24DisplayBlackBold, 
-
-                    displayLarge:f34DisplayBlackBold ,
-                    
-                  
-                  )
-                ),
-                
-              
-                darkTheme:ThemeData(
-                
-                  useMaterial3: true,
-                  
-                  appBarTheme: AppBarTheme(color: black),
-
-                  scaffoldBackgroundColor: black,
-                  colorScheme: ColorScheme.dark(
-                    
-                    background: black
-                  ),
-                  iconTheme: IconThemeData(color: white),
-                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                    backgroundColor: black
-                  ),
-
-                  textTheme: TextTheme(
-
-                    
-                    
-                    labelMedium: f15TextWhiteRegular,
-                    labelLarge: f15TextWhiteSemibold,
+                            useMaterial3: true,
+                            cardTheme: CardTheme(
+                              color: ThemeData.dark(
+                                useMaterial3: true,
+                              ).cardColor,
+                              elevation: 0.0,
+                            ),
+                            iconTheme: IconThemeData(color: black),
+                            scaffoldBackgroundColor: white,
+                            // cardTheme: ThemeData.dark().cardTheme,
+                            colorScheme: ColorScheme.light(
+                              background: white,
+                            ),
+                            appBarTheme: AppBarTheme(color: white),
+                            bottomNavigationBarTheme:
+                                BottomNavigationBarThemeData(
+                                    backgroundColor: white),
+                            textTheme: TextTheme(
 
 
-                    headlineLarge: f17TextWhiteSemibold, 
-                    
-                    displaySmall: f20TextWhiteSemibold, 
-                    displayMedium: f24DisplayWhiteBold, 
-                    
-                    displayLarge:f34DisplayWhiteBold ,
-                    
-                    
-                    
-                  
-                  )
-                ),
-                
-                themeMode: ThemeMode.system,
-                
-                navigatorKey: navigatorKey,
-                debugShowCheckedModeBanner: false,
-                title: "Newavenue",
-               
-                home: 
-                
-                firstTime? 
-                 const OnBoardingScreen()
-                :const BottomNavBar(),
-              );
-            },
-            listener: (context, states) {
-              
-            }));
+                              labelMedium: f15TextBlackRegular,
+                              labelLarge: f15TextBlackSemibold,
+                              headlineLarge: f17TextBlackSemibold,
+                              displaySmall: f20TextBlackSemibold,
+                              displayMedium: f24DisplayBlackBold,
+                              displayLarge: f34DisplayBlackBold,
+                            )),
+                        darkTheme: ThemeData(
+                            useMaterial3: true,
+                            appBarTheme: AppBarTheme(color: black),
+                            scaffoldBackgroundColor: black,
+                            colorScheme: ColorScheme.dark(background: black),
+                            iconTheme: IconThemeData(color: white),
+                            bottomNavigationBarTheme:
+                                BottomNavigationBarThemeData(
+                                    backgroundColor: black),
+                            textTheme: TextTheme(
+                              labelMedium: f15TextWhiteRegular,
+                              labelLarge: f15TextWhiteSemibold,
+                              headlineLarge: f17TextWhiteSemibold,
+                              displaySmall: f20TextWhiteSemibold,
+                              displayMedium: f24DisplayWhiteBold,
+                              displayLarge: f34DisplayWhiteBold,
+                            )),
+                        themeMode: ThemeMode.system,
+                        navigatorKey: navigatorKey,
+                        debugShowCheckedModeBanner: false,
+                        title: "Newavenue",
+                        builder: (BuildContext context, Widget? child) {
+                          final MediaQueryData data = MediaQuery.of(context);
+                          return MediaQuery(
+                              data: data.copyWith(textScaleFactor: 1),
+                              child: child ?? const OnBoardingScreen());
+                        },
+                        home: firstTime
+                            ? const OnBoardingScreen()
+                            : const BottomNavBar(),
+                      );
+                    },
+                    listener: (context, states) {})));
   }
 }

@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../styles/styles.dart';
 
@@ -19,41 +20,34 @@ Widget  categoryWidget(
   },
   child:   Container(
   
-    height: 188,
+    height: 188.h,
   
-    width: 138,
+    width: 138.w,
   
-    margin: const EdgeInsets.only(right:16),
+    margin: EdgeInsets.only(right:16.w),
   
     decoration: BoxDecoration(
   
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(10.r),
   
       image: DecorationImage(image: NetworkImage(image,),fit: BoxFit.fill)
   
     ),
   
     child: Padding(
-  
-      padding: const EdgeInsets.only(left:16,bottom: 16),
-  
-  
-  
-      child: Column(
-  
-        mainAxisAlignment: MainAxisAlignment.end,
-  
-        crossAxisAlignment: CrossAxisAlignment.start,
-  
-        children: [
-  
 
-  
+      padding: EdgeInsets.only(left:16.w,bottom: 16.h),
+
+
+
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(name,style:f17TextWhiteSemibold,),
-  
-  
         ],
-  
+
       ),
   
     ),

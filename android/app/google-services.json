@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "443979310639-mej1bqdom6kcqjuf86ttc8totbpk3dij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newavenue",
+            "certificate_hash": "5d3990823ea41318b9ebe6848a712755d2df9707"
+          }
+        },
+        {
           "client_id": "443979310639-5bqb4a29koteiv2o37jn2lb313g75k92.apps.googleusercontent.com",
           "client_type": 3
         }

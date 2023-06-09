@@ -14,13 +14,10 @@ Widget adWidget({
 
 })=> 
   GestureDetector(
-
-  
     onTap:(){
       PrimaryCubit.get(context).getPrimaryProperty(id: ad.id, context: context);
     } ,
     child: Image(
-
       loadingBuilder: ((context, child, loadingProgress) {
           return loadingProgress ==null?child:customLoading();
       }),

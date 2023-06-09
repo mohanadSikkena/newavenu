@@ -21,38 +21,31 @@ class ImageScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         
       ),
-      body: Stack(
-      alignment: Alignment.center,
-      children: [
-        PhotoViewGallery.builder( 
+      body: PhotoViewGallery.builder(
 
-          scrollPhysics: const BouncingScrollPhysics(),
-          builder: (BuildContext context, int index) {
+        scrollPhysics: const BouncingScrollPhysics(),
+        builder: (BuildContext context, int index) {
 
-            return PhotoViewGalleryPageOptions(  
-              
-              imageProvider:
-               NetworkImage(images[index]),
-              initialScale: PhotoViewComputedScale.contained * 1,
-            );
-          },
-          itemCount: images.length,
-          loadingBuilder: (context, event) => Center(
-            child: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: CircularProgressIndicator(
-                value: event == null
-                    ? 0
-                    : event.cumulativeBytesLoaded / event.expectedTotalBytes!.toInt(),
-              ),
+          return PhotoViewGalleryPageOptions(
+
+            imageProvider:
+             NetworkImage(images[index]),
+            initialScale: PhotoViewComputedScale.contained * 1,
+          );
+        },
+        itemCount: images.length,
+        loadingBuilder: (context, event) => Center(
+          child: SizedBox(
+            width: 20.0,
+            height: 20.0,
+            child: CircularProgressIndicator(
+              value: event == null
+                  ? 0
+                  : event.cumulativeBytesLoaded / event.expectedTotalBytes!.toInt(),
             ),
           ),
-          
         ),
-        const IgnorePointer(
-          child: Image(image: AssetImage('images/black_logo.png', ), height: 200,))
-      ],
-    ),
+
+      ),
     );}
   }

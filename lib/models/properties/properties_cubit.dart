@@ -38,7 +38,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   late String searchWord;
   late int count;
   int currentPage = 1;
-  late int lastPage;
+  int lastPage=2;
 
 
   // String categoriesSelected = 'buy';
@@ -128,63 +128,42 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   }
 
   index() async {
+    currentPage=1;
+    lastPage=2;
     homeProperties = [];
-
     await getFavourites();
-
     getHomeProperties();
+
   }
 
-  bool customLoading = false;
+  // bool customLoading = false;
   getHomeProperties() async {
-    homeProperties = [];
-
-    if (!customLoading) {
-      customLoading = true;
       allPropertiesLoading = true;
       emit(AllPropertiesLoading());
-      await DioHelper.getData(url: '/v2/properties')
-          .then((response) {
-        currentPage = response.data['properties']['current_page'];
-        lastPage = response.data['properties']['last_page'];
-        response.data["properties"]['data'].forEach((element) {
-          element["agent"] = Agent.fromMap(element["agent"]);
-          Property property = Property.fromMap(element);
-          favourites.contains(property.id)
-              ? property.isFavourite = true
-              : property.isFavourite = false;
-          homeProperties.add(property);
+      if(currentPage<lastPage){
+        loadingPage = true;
+        emit(ChangePaginationLoading());
+        await DioHelper.getData(url: '/v2/properties?page=$currentPage')
+            .then((response) {
+          currentPage = response.data['properties']['current_page'];
+          lastPage = response.data['properties']['last_page'];
+          response.data["properties"]['data'].forEach((element) {
+            element["agent"] = Agent.fromMap(element["agent"]);
+            Property property = Property.fromMap(element);
+            favourites.contains(property.id)
+                ? property.isFavourite = true
+                : property.isFavourite = false;
+            homeProperties.add(property);
+          });
+          count = response.data['count'];
+          allPropertiesLoading = false;
+          loadingPage = false;
+          emit(GetAllProperties());
         });
-        count = response.data['count'];
-        allPropertiesLoading = false;
-        customLoading = false;
-      });
-    }
+      }
+
     emit(GetAllProperties());
   }
-
-  getHomePagePaginate() async {
-    if (currentPage < lastPage) {
-      loadingPage = true;
-      emit(ChangePaginationLoading());
-      await DioHelper.getData(
-              url: '/v2/properties?page=$currentPage')
-          .then((response) {
-        currentPage = response.data["properties"]['current_page'];
-        response.data["properties"]['data'].forEach((element) {
-          element["agent"] = Agent.fromMap(element["agent"]);
-          Property property = Property.fromMap(element);
-          favourites.contains(property.id)
-              ? property.isFavourite = true
-              : property.isFavourite = false;
-          homeProperties.add(property);
-        });
-        loadingPage = false;
-        emit(GetAllProperties());
-      });
-    }
-  }
-
   getAgentProperties(int id) async {
     agentRent = [];
     agentSale = [];
@@ -200,7 +179,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     agentPropertiesLoading = false;
     emit(GetAgentProperties());
   }
-
   navigateToExploreFromCategory({required int i, required BuildContext context}) async {
     selectedSubCategory = i;
     exploreLoading = true;
@@ -227,7 +205,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       emit(GetExploreProperties());
     });
   }
-
   navigeToSearchExplore(String search, context) async {
     exploreLoading = true;
 
@@ -250,7 +227,6 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     exploreLoading = false;
     emit(RouteToExploreScreen());
   }
-
   changeSavedFavourite(FavouriteProperty property) async {
     favourites.contains(property.id)
         ? favourites.remove(property.id)

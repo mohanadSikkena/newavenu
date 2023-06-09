@@ -9,7 +9,11 @@ class CacheHelper{
     sharedPreferences=await SharedPreferences.getInstance();
   }
 
-
+  static const String _fcmToken="fcmToken";
+  static Future<bool> setFcmToken(String? value) async {
+    bool isSet = await sharedPreferences.setString(_fcmToken, value!);
+    return isSet;
+  }
   static Future putInt({
     required String key, 
     required int value

@@ -44,6 +44,7 @@ class ContactUsScreen extends StatelessWidget {
                 height: 20,
               ),
               Flexible(
+
                   flex: 2,
                   child: Card(
                     elevation: 20,
