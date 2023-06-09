@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>443979310639-rtr2roeag54vf5pb2eia7uutsjm0vf8n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.443979310639-rtr2roeag54vf5pb2eia7uutsjm0vf8n</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>443979310639-mej1bqdom6kcqjuf86ttc8totbpk3dij.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBUZbGD3bumfxe0LCc2gXhAf411PA3XbYM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>443979310639</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.newavenue</string>
+	<key>PROJECT_ID</key>
+	<string>newavenue-7bd1d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>newavenue-7bd1d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:443979310639:ios:473a5b009aa269a11f88da</string>
+</dict>
+</plist>
