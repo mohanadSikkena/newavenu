@@ -34,6 +34,8 @@ class CacheHelper{
     return await sharedPreferences.setStringList(key, value);
   }
 
+
+
   static getList({required String key}){
     return sharedPreferences.getStringList(key);
   } 

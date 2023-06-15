@@ -9,7 +9,7 @@ import 'package:newavenue/modules/agent/agent_details.dart';
 import 'package:newavenue/modules/properties/image_screen.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/loading_dialog.dart';
-import 'package:newavenue/shared/network/remote/launcherHelper.dart';
+import 'package:newavenue/shared/network/remote/launcher_helper.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,10 +29,71 @@ class PropertyScreen extends StatelessWidget {
     return BlocConsumer<PropertiesCubit, PropertiesStates>(
         builder: (context, states) {
           return Scaffold(
-              backgroundColor: black,
+            extendBodyBehindAppBar: true,
+            appBar:cubit.propertyLoading? null:AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.transparent,
+              // backgroundColor: Theme.of(context).colorScheme.background,
+              leading: IconButton(
+                  onPressed: () {
+                    navigatorKey.currentState!
+                        .pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: white,
+                  )),
+              // shadowColor: Colors.transparent,
+              // surfaceTintColor: Colors.transparent,
+              actions: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        cubit.changePropertyFavourite(
+                            cubit.currentProperty);
+                      },
+                      icon: Icon(
+                        cubit.currentProperty.isFavourite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: cubit.currentProperty
+                            .isFavourite
+                            ? favoriteColor
+                            : white,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          loadingDialog(context: context);
+                          HelperClass helperClass =
+                          HelperClass();
+                          helperClass
+                              .createDynamicLink(
+                              id: cubit
+                                  .currentProperty.id,
+                              category: 'resail')
+                              .then((value) {
+                            Navigator.pop(context);
+                            helperClass.shareData(
+                              messege: value,
+                            );
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.share,
+                          color: white,
+                        ))
+                  ],
+                )
+              ],
+
+            ),
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: cubit.propertyLoading
                   ? customLoading()
                   : ListView(
+                      padding:const EdgeInsets.only(top: 0.0),
                       scrollDirection: Axis.vertical,
                       children: [
                         InkWell(
@@ -47,99 +108,67 @@ class PropertyScreen extends StatelessWidget {
                           },
                           child: Stack(
                             children: [
-                              CarouselSlider.builder(
-                                  itemCount: cubit.currentProperty.images.length,
-                                  itemBuilder: (context, i, j) {
-                                    return Container(
-                                      child: Image(
-                                          loadingBuilder: (context, child,
-                                              loadingProgress) {
-                                            return loadingProgress == null
-                                                ? child
-                                                : customLoading();
-                                          },
-                                          filterQuality: FilterQuality.high,
-                                          excludeFromSemantics: true,
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              cubit.currentProperty.images[i])),
-                                      // ignore: prefer_const_constructors
-                                      decoration: BoxDecoration(
-                                        border: BorderDirectional(
-                                            bottom: BorderSide(
-                                                width: 1, color: gray_3)),
-                                      ),
-                                    );
-                                  },
-                                  options: CarouselOptions(
+                              SizedBox(
+                                height: 404.h,
+                                child: Stack(
+
+                                  children: [
+                                    CarouselSlider.builder(
+                                        itemCount: cubit.currentProperty.images.length,
+                                        itemBuilder: (context, i, j) {
+                                          return Container(
+                                            child: Image(
+                                                loadingBuilder: (context, child,
+                                                    loadingProgress) {
+                                                  return loadingProgress == null
+                                                      ? child
+                                                      : customLoading();
+                                                },
+                                                filterQuality: FilterQuality.high,
+                                                excludeFromSemantics: true,
+                                                fit: BoxFit.fill,
+                                                image: NetworkImage(
+                                                    cubit.currentProperty.images[i])),
+                                            // ignore: prefer_const_constructors
+                                            decoration: BoxDecoration(
+                                              border: const BorderDirectional(
+                                                  bottom: BorderSide(
+                                                      width: 1, color: gray_3)),
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                            height: 404.h,
+                                            autoPlay: true,
+                                            viewportFraction: 1,
+                                            onPageChanged: (i, k) {
+                                              cubit.changeHomePagePropertiesImage(
+                                                  i, cubit.currentProperty);
+                                            })),
+                                  IgnorePointer(
+
+                                    child: Container(
                                       height: 404.h,
-                                      autoPlay: true,
-                                      viewportFraction: 1,
-                                      onPageChanged: (i, k) {
-                                        cubit.changeHomePagePropertiesImage(
-                                            i, cubit.currentProperty);
-                                      })),
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                              begin: Alignment.topCenter, end: Alignment.bottomCenter,
+                                              colors: [Colors.transparent, Theme.of(context).colorScheme.background.withOpacity(0.85)],
+                                              stops:const [0.58, 1]
+                                          )
+                                      ),
+                                    ),
+                                  )
+                                  ],
+                                  // fit: StackFit.expand,
+                                ),
+                              ),
                               SizedBox(
                                 height: 380,
                                 child: Column(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.end,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              navigatorKey.currentState!
-                                                  .pop(context);
-                                            },
-                                            icon: Icon(
-                                              Icons.arrow_back_ios,
-                                              color: white,
-                                            )),
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                cubit.changePropertyFavourite(
-                                                    cubit.currentProperty);
-                                              },
-                                              icon: Icon(
-                                                cubit.currentProperty.isFavourite
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_border,
-                                                color: cubit.currentProperty
-                                                        .isFavourite
-                                                    ? favoriteColor
-                                                    : white,
-                                              ),
-                                            ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  loadingDialog(context: context);
-                                                  HelperClass helperClass =
-                                                      HelperClass();
-                                                  helperClass
-                                                      .createDynamicLink(
-                                                          id: cubit
-                                                              .currentProperty.id,
-                                                          category: 'resail')
-                                                      .then((value) {
-                                                    Navigator.pop(context);
-                                                    helperClass.shareData(
-                                                      messege: value,
-                                                    );
-                                                  });
-                                                },
-                                                icon: Icon(
-                                                  Icons.share,
-                                                  color: white,
-                                                ))
-                                          ],
-                                        )
-                                      ],
-                                    ),
+
                                     Container(
                                       margin: const EdgeInsets.only(left: 16),
                                       child: Column(
@@ -161,13 +190,13 @@ class PropertyScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             '${cubit.currentProperty.area} Sqm',
-                                            style: f17TextWhiteMedium,
+                                            style: Theme.of(context).textTheme.bodyLarge,
                                           ),
                                           Row(
                                             children: [
                                               Text(
                                                 cubit.currentProperty.price,
-                                                style: f20TextWhiteSemibold,
+                                                style: Theme.of(context).textTheme.displaySmall,
                                               ),
                                               Container(
                                                 alignment: Alignment.center,
@@ -191,7 +220,7 @@ class PropertyScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             cubit.currentProperty.subCategory,
-                                            style: f15TextWhiteSemibold,
+                                            style: Theme.of(context).textTheme.labelLarge,
                                           ),
                                         ],
                                       ),
@@ -245,11 +274,11 @@ class PropertyScreen extends StatelessWidget {
                           ),
                           title: Text(
                             cubit.currentProperty.agent.name,
-                            style: f15TextWhiteSemibold,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                           subtitle: Text(
                             cubit.currentProperty.agent.about,
-                            style: f12TextWhiteRegular,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
                         Container(
@@ -262,7 +291,7 @@ class PropertyScreen extends StatelessWidget {
                             margin: const EdgeInsets.only(left: 16, top: 16),
                             child: Text(
                               cubit.currentProperty.description,
-                              style: f15TextWhiteRegular,
+                              style: Theme.of(context).textTheme.labelMedium,
                             )),
 
                         Row(
@@ -272,14 +301,14 @@ class PropertyScreen extends StatelessWidget {
                                     const EdgeInsets.only(left: 16, top: 16),
                                 child: Text(
                                   "License :",
-                                  style: f15TextWhiteRegular,
+                                  style: Theme.of(context).textTheme.labelMedium,
                                 )),
                             Container(
                                 margin: const EdgeInsets.only(left: 4, top: 16),
                                 child: Text(
                                   cubit.currentProperty.licence,
                                   overflow: TextOverflow.ellipsis,
-                                  style: f15TextWhiteRegular,
+                                  style: Theme.of(context).textTheme.labelMedium,
                                 )),
                           ],
                         ),
@@ -290,14 +319,14 @@ class PropertyScreen extends StatelessWidget {
                                     const EdgeInsets.only(left: 16, top: 16),
                                 child: Text(
                                   "Finishing :",
-                                  style: f15TextWhiteRegular,
+                                  style: Theme.of(context).textTheme.labelMedium,
                                 )),
                             Container(
                                 margin: const EdgeInsets.only(left: 4, top: 16),
                                 child: Text(
                                   cubit.currentProperty.finish,
                                   overflow: TextOverflow.ellipsis,
-                                  style: f15TextWhiteRegular,
+                                  style: Theme.of(context).textTheme.labelMedium,
                                 )),
                           ],
                         ),
@@ -313,18 +342,19 @@ class PropertyScreen extends StatelessWidget {
                                   child: Text(
                                     cubit.currentProperty.details[i]["name"] +
                                         " :",
-                                    style: f15TextWhiteRegular,
+                                    style: Theme.of(context).textTheme.labelMedium,
                                   )),
                               Container(
                                   margin:
                                       const EdgeInsets.only(left: 4, top: 16),
                                   child: Text(
                                     cubit.currentProperty.details[i]["details"],
-                                    style: f15TextWhiteRegular,
+                                    style: Theme.of(context).textTheme.labelMedium,
                                   )),
                             ],
                           ),
 
+                        if (cubit.currentProperty.features.isNotEmpty)...[
                         Container(
                             margin: const EdgeInsets.only(left: 16, top: 16),
                             child: Text(
@@ -342,12 +372,13 @@ class PropertyScreen extends StatelessWidget {
                                   children: [
                                     featuresWidget(
                                         feature:
-                                            cubit.currentProperty.features[i]),
+                                        cubit.currentProperty.features[i]),
                                   ],
                                 );
                                 // return Container();
                               }),
                         ),
+                        ],
                         Container(
                             margin: const EdgeInsets.only(left: 16, top: 16),
                             child: Text(
@@ -358,37 +389,48 @@ class PropertyScreen extends StatelessWidget {
                             margin: const EdgeInsets.only(left: 16, top: 16),
                             child: Text(
                               cubit.currentProperty.location,
-                              style: f15TextWhiteRegular,
+                              style: Theme.of(context).textTheme.labelMedium,
                             )),
+
+
 
                         const SizedBox(
                           height: 16,
                         ),
 
                         Container(
-                          margin: const EdgeInsets.only(left: 16, right: 16),
-                          height: 50,
+                          margin: EdgeInsets.only(left: 16.w, right: 16.w),
+                          height: 50.h,
                           child: Row(
                             children: [
                               Expanded(
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       color: primaryColor,
-                                      borderRadius: const BorderRadius.only(
+                                      borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           bottomLeft: Radius.circular(10))),
-                                  height: 50,
+                                  height: 50.h,
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         border: BorderDirectional(
                                             end: BorderSide(
                                                 color: gray_2, width: 1))),
                                     child: InkWell(
                                       onTap: () async {
+                                        loadingDialog(context: context);
+                                        HelperClass helperClass = HelperClass();
+                                        String message = await helperClass
+                                            .createDynamicLink(
+                                            category: "resail",
+                                            id: cubit.currentProperty.id)
+                                            .then((value) {
+                                          Navigator.pop(context);
+                                          return value;
+                                        });
                                         await LauncherHelper.launchWhatsapp(
-                                            context: context,
-                                            category: 'resail',id:
-                                        cubit.currentProperty.id);
+                                          context: context, msg: message,);
+
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -396,7 +438,7 @@ class PropertyScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.chat_bubble_rounded,
+                                          const Icon(Icons.chat_bubble_rounded,
                                               color: white),
                                           const SizedBox(
                                             width: 10,
@@ -413,12 +455,12 @@ class PropertyScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       color: primaryColor,
-                                      borderRadius: const BorderRadius.only(
+                                      borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(10),
                                           bottomRight: Radius.circular(10))),
-                                  height: 50,
+                                  height: 50.h,
                                   child: InkWell(
                                     onTap: () async {
                                       await launchUrl(Uri(
@@ -430,7 +472,7 @@ class PropertyScreen extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.call, color: white),
+                                        const Icon(Icons.call, color: white),
                                         const SizedBox(
                                           width: 10,
                                         ),

@@ -19,9 +19,7 @@ class ExploreScreen extends StatelessWidget {
         builder: (context,states){
     return Scaffold(
       appBar: AppBar(
-        
-        
-        
+        // backgroundColor: Theme.of(context).colorScheme.background,
         leading:IconButton(onPressed: (){
           cubit.exploreBackFunction(context);
         }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color)) ,

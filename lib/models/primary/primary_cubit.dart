@@ -5,13 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/primary/primary_states.dart';
 
 import '../../main.dart';
-import '../../modules/properties/primary_screen.dart';
+import '../../modules/primary/primary_screen.dart';
 import '../../shared/network/remote/dio_helper.dart';
 import 'primary_model.dart';
 
 class PrimaryCubit extends Cubit<PrimaryStates>{
   PrimaryCubit():super(PrimaryInitialState());
   static PrimaryCubit get(context)=>BlocProvider.of(context);
+
+  // ExpansionControl selectedExpansion=ExpansionControl.none;
+
+  // changeSelectedExpansion({required ExpansionControl value}){
+  //   selectedExpansion=value;
+  //   emit(ChangeSelectedExpaninsionValue());
+  // }
 
     changeHomePagePrimaryImage(int currentIndex, ExplorePrimary property) {
     property.currentImage = currentIndex;

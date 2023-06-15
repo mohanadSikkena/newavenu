@@ -9,6 +9,7 @@ import '../../models/properties/properties_cubit.dart';
 
 
 
+
 Widget profilePropertyWidget({
   double width=375,
   double height = 812,

@@ -27,10 +27,9 @@ Widget propertyWidget(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             height: 224.h,
-            margin: EdgeInsets.only(bottom: 8.h),
-            child: Stack(
+             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 CarouselSlider.builder(
@@ -70,18 +69,9 @@ Widget propertyWidget(
             ),
           ),
           // const SizedBox(height: 10,),
-          Row(
-            children: [
-              Text(
+          Text(
             '${property.area} Sqm ',
             style: f13TextGrayRegular_1,
-          ),
-
-          Text(
-            property.subCategory,
-            style: f13TextGrayRegular_1,
-          ),
-          ],
           ),
           Text(
             property.location,
@@ -90,6 +80,10 @@ Widget propertyWidget(
           Text(
             property.price,
             style: f15TextgrayRegular_3,
+          ),
+          Text(
+            property.subCategory,
+            style: f13TextGrayRegular_1,
           ),
         ],
       ),

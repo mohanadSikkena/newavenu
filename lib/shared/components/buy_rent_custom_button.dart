@@ -10,7 +10,7 @@ Widget buyRentButton({
   })=> 
   Container(
     height: 32,
-  decoration:selected? BoxDecoration(
+  decoration:selected? const BoxDecoration(
     border: BorderDirectional(
       bottom: BorderSide(
         color: primaryColor,

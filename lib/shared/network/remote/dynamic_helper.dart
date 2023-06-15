@@ -65,7 +65,6 @@ class HelperClass{
       var shortUrl=await FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
          return value.shortUrl;
       });
-        print( shortUrl.toString());
         return shortUrl.toString();
       
      

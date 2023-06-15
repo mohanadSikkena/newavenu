@@ -10,7 +10,7 @@ import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import '../../main.dart';
 import '../../modules/properties/explore_screen.dart';
 import '../../modules/properties/property_screen.dart';
-import '../../modules/search_screen.dart';
+import '../../modules/search/search_screen.dart';
 
 class PropertiesCubit extends Cubit<PropertiesStates> {
   PropertiesCubit() : super(PropertiesInitialState());
@@ -240,7 +240,8 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     await DioHelper.setData(
             query: {"property_id": property.id, "customer_id": id},
             url: "/customer/add-to-favourite")
-        .then((value) {});
+        .then((value) {
+    });
 
     emit(ChangePropertyFavourite());
   }

@@ -4,7 +4,7 @@ import 'package:newavenue/main.dart';
 import 'package:newavenue/models/categories/categories_cubit.dart';
 import 'package:newavenue/models/categories/categories_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
-import 'package:newavenue/modules/properties/primary_categories.dart';
+import 'package:newavenue/modules/primary/primary_categories.dart';
 
 import '../../shared/components/buy_rent_custom_button.dart';
 import '../../shared/styles/colors.dart';
@@ -19,7 +19,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (context, states) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: white,
+              // backgroundColor: Theme.of(context),
               scrolledUnderElevation: 0.0,
               leading: IconButton(
                 onPressed: () {
@@ -45,7 +45,7 @@ class CategoriesScreen extends StatelessWidget {
                     ),
                     Container(
 
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border: BorderDirectional(
                             bottom: BorderSide(color: gray_2,width: 1),)
                       ),

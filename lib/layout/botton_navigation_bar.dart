@@ -15,8 +15,9 @@ class BottomNavBar extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
         builder: (context, states) {
           return Scaffold(
+            backgroundColor: Colors.black54,
             bottomNavigationBar: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     border: BorderDirectional(
                         top: BorderSide(color: gray_2, width: 1))),
                 child: BottomNavigationBar(

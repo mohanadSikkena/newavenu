@@ -12,7 +12,7 @@ Future<dynamic> loadingDialog({required BuildContext context})=>showDialog(
           return AlertDialog(
             content: Row(
               children: [
-                CircularProgressIndicator(
+                const CircularProgressIndicator(
                   backgroundColor: primaryColor,
                   color: gray_1,
                 ),

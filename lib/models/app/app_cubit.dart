@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/layout/botton_navigation_bar.dart';
 import 'package:newavenue/main.dart';
 import 'package:newavenue/models/app/app_states.dart';
+import 'package:newavenue/layout/custom_drawer.dart';
 import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
-import '../../modules/home_page.dart';
 import '../../modules/properties/saved_screen.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -14,9 +14,15 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   
+  ThemeMode currentMode=CacheHelper.getData(key: 'mode')==ThemeMode.dark.toString()?ThemeMode.dark:CacheHelper.getData(key: 'mode')==ThemeMode.light?ThemeMode.light:ThemeMode.system;
 
+  changeDarkMode({required ThemeMode value}){
+    currentMode=value;
+    CacheHelper.putData(key: "mode", value: value.toString());
+    emit(ChangeDarkModeState());
+  }
   List<Widget> screens =  [
-    const HomePage(),
+     const CustomDrawer(),
     const SavedScreen(),
   ];
   int currentOnboardingScreen = 0;

@@ -12,10 +12,12 @@ class ImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+
         leading:IconButton(onPressed: (){
           navigatorKey.currentState!.pop(context);
-        }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color),)
+        }, icon:const  Icon(Icons.arrow_back_ios,color: Colors.white),)
         
         ,elevation: 0.0,
         backgroundColor: Colors.transparent,

@@ -17,7 +17,7 @@ Widget SavedWidget(
 )=>Container(
   height: 94,
   margin: const EdgeInsets.only(bottom: 14),
-  decoration: BoxDecoration(
+  decoration: const BoxDecoration(
     border: BorderDirectional(bottom: BorderSide(color: gray_2,width: 0.5))
   ),
   child: InkWell(
@@ -52,7 +52,7 @@ Widget SavedWidget(
                 onPressed: (){
                   function();
                 }, 
-                icon: Icon(
+                icon: const Icon(
                  Icons.favorite ,
                   size: 22,
                   color: favoriteColor, )),

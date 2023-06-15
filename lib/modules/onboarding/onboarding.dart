@@ -43,7 +43,7 @@ class OnBoardingScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AnimatedSmoothIndicator(
-                          effect: ScrollingDotsEffect(
+                          effect: const ScrollingDotsEffect(
                               offset: 1,
                               dotHeight: 7,
                               dotWidth: 7,

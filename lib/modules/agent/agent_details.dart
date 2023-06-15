@@ -31,7 +31,7 @@ class AgentDetails extends StatelessWidget {
       body: ListView(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: BorderDirectional(
                     bottom: BorderSide(color: gray_2, width: 1))),
             child: Column(

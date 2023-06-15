@@ -4,7 +4,7 @@ import 'package:newavenue/main.dart';
 import 'package:newavenue/models/locations/locations_cubit.dart';
 import 'package:newavenue/models/locations/locations_states.dart';
 import 'package:newavenue/models/primary/primary_cubit.dart';
-import 'package:newavenue/modules/properties/primary_explore.dart';
+import 'package:newavenue/modules/primary/primary_explore.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 
 class PrimaryCategories extends StatelessWidget {

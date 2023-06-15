@@ -47,6 +47,8 @@ dependencies:
   firebase_messaging: ^14.6.0
   flutter_local_notifications: ^14.1.1
   cached_network_image: ^3.2.3
+  flutter_zoom_drawer: ^3.0.4+1
+  font_awesome_flutter: ^10.4.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -88,7 +90,8 @@ flutter:
     - images/black_logo.png
     - images/black_logo_crop.png
     - images/
-    - images/onboarding/    - fonts/
+    - images/onboarding/
+    - fonts/
 
 
 

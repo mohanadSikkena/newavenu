@@ -6,7 +6,7 @@ import 'package:newavenue/models/locations/location_model.dart';
 import 'package:newavenue/models/locations/locations_states.dart';
 
 import '../../main.dart';
-import '../../modules/properties/primary_categories.dart';
+import '../../modules/primary/primary_categories.dart';
 import '../../shared/network/remote/dio_helper.dart';
 
 class LocationCubit extends Cubit<LocationStates>{

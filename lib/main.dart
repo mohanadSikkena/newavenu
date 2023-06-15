@@ -20,8 +20,8 @@ import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
 import 'package:newavenue/shared/network/remote/notifications_helper.dart';
-import 'package:newavenue/shared/styles/colors.dart';
-import 'package:newavenue/shared/styles/styles.dart';
+import 'package:newavenue/shared/theme/dark.dart';
+import 'package:newavenue/shared/theme/light.dart';
 
 import 'models/customer/customer_cubit.dart';
 
@@ -37,6 +37,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+
+
+
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
@@ -46,9 +50,10 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   FirebaseMessaging.instance.setAutoInitEnabled(true);
-  FirebaseMessaging.instance.subscribeToTopic("all");
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
+
+
   FirebaseMessaging.onMessage.listen((message) {
     if (message.notification != null) {
       FirebaseNotifications firebaseNotifications=FirebaseNotifications();
@@ -58,7 +63,10 @@ void main() async {
   });
   DioHelper.init();
   bool firstTime = await CacheHelper.getData(key: "id") == null;
-  runApp(
+  if(firstTime){
+    CacheHelper.putData(key: 'mode', value: ThemeMode.system.toString());
+    FirebaseMessaging.instance.subscribeToTopic("all");
+  }runApp(
     MyApp(firstTime: firstTime),
   );
 }
@@ -70,7 +78,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize:const Size(375,812),
+      designSize:const Size(375,768),
         splitScreenMode: true,
         builder: (BuildContext context, Widget? child) => MultiBlocProvider(
                 providers: [
@@ -92,53 +100,9 @@ class MyApp extends StatelessWidget {
 
                       return MaterialApp(
                         useInheritedMediaQuery: true,
-                        theme: ThemeData(
-
-                            useMaterial3: true,
-                            cardTheme: CardTheme(
-                              color: ThemeData.dark(
-                                useMaterial3: true,
-                              ).cardColor,
-                              elevation: 0.0,
-                            ),
-                            iconTheme: IconThemeData(color: black),
-                            scaffoldBackgroundColor: white,
-                            // cardTheme: ThemeData.dark().cardTheme,
-                            colorScheme: ColorScheme.light(
-                              background: white,
-                            ),
-                            appBarTheme: AppBarTheme(color: white),
-                            bottomNavigationBarTheme:
-                                BottomNavigationBarThemeData(
-                                    backgroundColor: white),
-                            textTheme: TextTheme(
-
-
-                              labelMedium: f15TextBlackRegular,
-                              labelLarge: f15TextBlackSemibold,
-                              headlineLarge: f17TextBlackSemibold,
-                              displaySmall: f20TextBlackSemibold,
-                              displayMedium: f24DisplayBlackBold,
-                              displayLarge: f34DisplayBlackBold,
-                            )),
-                        darkTheme: ThemeData(
-                            useMaterial3: true,
-                            appBarTheme: AppBarTheme(color: black),
-                            scaffoldBackgroundColor: black,
-                            colorScheme: ColorScheme.dark(background: black),
-                            iconTheme: IconThemeData(color: white),
-                            bottomNavigationBarTheme:
-                                BottomNavigationBarThemeData(
-                                    backgroundColor: black),
-                            textTheme: TextTheme(
-                              labelMedium: f15TextWhiteRegular,
-                              labelLarge: f15TextWhiteSemibold,
-                              headlineLarge: f17TextWhiteSemibold,
-                              displaySmall: f20TextWhiteSemibold,
-                              displayMedium: f24DisplayWhiteBold,
-                              displayLarge: f34DisplayWhiteBold,
-                            )),
-                        themeMode: ThemeMode.system,
+                        theme: lightTheme,
+                        darkTheme: darkTheme,
+                        themeMode: AppCubit.get(context).currentMode,
                         navigatorKey: navigatorKey,
                         debugShowCheckedModeBanner: false,
                         title: "Newavenue",

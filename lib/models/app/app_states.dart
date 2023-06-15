@@ -9,3 +9,4 @@ class ChangeIndexState extends AppStates{}
 class ChangeOnBoardingScreen extends AppStates{}
 
 class NextOnBoardingScreen extends AppStates{}
+class ChangeDarkModeState extends AppStates{}
