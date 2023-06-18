@@ -8,6 +8,30 @@ import 'package:newavenue/models/agent/agent_model.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 
 
+class SimilarProperty{
+  String location;
+  String price;
+  int id;
+  String img;
+
+  SimilarProperty({
+    required this.location,
+    required this.price,
+    required this.id,
+    required this.img,
+  });
+
+  factory SimilarProperty.fromMap(Map<String, dynamic> map) {
+    return SimilarProperty(
+      location: map['location'] as String,
+      price: map['price'] as String,
+      id: map['id'] as int,
+      img: DioHelper.url+map['images'][0]['image'],
+    );
+  }
+
+//</editor-fold>
+}
 
 class FavouriteProperty {
   int id;
@@ -75,9 +99,11 @@ class Property {
   bool isFavourite =false;
   List<String> images;
   List details;
+  List<SimilarProperty>similarProperties=[];
 
   List<String> features;
   Property({
+    required this.similarProperties,
     required this.licence, 
     required this.finish,
     required this.subCategory,
@@ -103,7 +129,14 @@ class Property {
     map['features'].forEach((feature){
       newFeatures.add(feature['name']) ;
     });
+    List<SimilarProperty>properties=[];
+    if(map['similarProperties']!=null){
+      map['similarProperties'].forEach((map){
+        properties.add(SimilarProperty.fromMap(map));
+      });
+    }
     return Property(
+      similarProperties: properties,
       licence: map['licence']['name'],
       finish: map['finish']['name'],
       subCategory:map["sub_category"]['name'] ,

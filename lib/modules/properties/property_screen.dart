@@ -14,15 +14,16 @@ import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../models/properties/property_model.dart';
+import '../../shared/components/properties_similar_units.dart';
 import '../../shared/network/remote/dynamic_helper.dart';
 import '../../shared/styles/colors.dart';
 
 class PropertyScreen extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
-  const PropertyScreen({
-    Key? key,
-  });
 
+   const PropertyScreen({Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     PropertiesCubit cubit = PropertiesCubit.get(context);
@@ -393,13 +394,28 @@ class PropertyScreen extends StatelessWidget {
                             )),
 
 
-
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        Container(
+                            margin: const EdgeInsets.only(left: 16, top: 16),
+                            child: Text(
+                              'Similar Units',
+                              style: Theme.of(context).textTheme.displaySmall,
+                            )),
+                       Container(
+                         height: 230.h,
+                           decoration: BoxDecoration(
+                               // color: Colors.grey,
+                               borderRadius: BorderRadius.circular(10.r)
+                           ),
+                         margin: EdgeInsets.only(left: 16.w, right: 16.w,top: 16.h),
+                         // color: Colors.grey,
+                         child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                             itemCount: cubit.currentProperty.similarProperties.length,
+                             itemBuilder: (context,i)=>SimilarUnit(property: cubit.currentProperty.similarProperties[i]))
+                       ),
 
                         Container(
-                          margin: EdgeInsets.only(left: 16.w, right: 16.w),
+                          margin: EdgeInsets.only(left: 16.w, right: 16.w,top: 16.h),
                           height: 50.h,
                           child: Row(
                             children: [
@@ -498,6 +514,7 @@ class PropertyScreen extends StatelessWidget {
         listener: (context, states) {});
   }
 }
+
 
 Widget featuresWidget({required String feature}) => Flexible(
       child: Container(

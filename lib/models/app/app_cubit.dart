@@ -14,7 +14,11 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   
-  ThemeMode currentMode=CacheHelper.getData(key: 'mode')==ThemeMode.dark.toString()?ThemeMode.dark:CacheHelper.getData(key: 'mode')==ThemeMode.light?ThemeMode.light:ThemeMode.system;
+  ThemeMode currentMode=
+  CacheHelper.getData(key: 'mode')==
+      ThemeMode.dark.toString()?
+  ThemeMode.dark:CacheHelper.getData(key: 'mode')==
+      ThemeMode.light.toString()?ThemeMode.light:ThemeMode.system;
 
   changeDarkMode({required ThemeMode value}){
     currentMode=value;
