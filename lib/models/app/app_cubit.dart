@@ -7,6 +7,7 @@ import 'package:newavenue/layout/custom_drawer.dart';
 import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
+import 'package:newavenue/shared/router.dart';
 import '../../modules/properties/saved_screen.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -63,11 +64,9 @@ class AppCubit extends Cubit<AppStates> {
       }).onError((error, stackTrace){
         
       });
-      Navigator.pop(context);
-      navigatorKey.currentState!.pushReplacement( MaterialPageRoute(builder: (_) {
-            return const BottomNavBar();
-          }));
+      CustomRouter.pop();
 
+      CustomRouter.normalPush(screen: const BottomNavBar());
     
     }
     emit(NextOnBoardingScreen());

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newavenue/models/primary/primary_cubit.dart';
+import 'package:newavenue/models/primary/primary_model.dart';
 import 'package:newavenue/models/primary/primary_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/loading_dialog.dart';
+import 'package:newavenue/shared/components/similar_projects.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
 import 'package:newavenue/shared/network/remote/launcher_helper.dart';
 import 'package:newavenue/shared/styles/colors.dart';
@@ -34,7 +36,7 @@ class PrimaryScreen extends StatelessWidget {
               // backgroundColor: Theme.of(context).colorScheme.background,
               leading: IconButton(
                   onPressed: () {
-                    navigatorKey.currentState!.pop(context);
+                    cubit.propertyPop();
                   },
                   icon: const Icon(
                     Icons.arrow_back_ios,
@@ -322,7 +324,27 @@ class PrimaryScreen extends StatelessWidget {
                         ),
                       ),
 
+                      Container(
+                          margin: const EdgeInsets.only(left: 16, top: 16),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Similar Projects',
+                            style: Theme.of(context).textTheme.displaySmall,
+                          )),
 
+                      Container(
+                          height: 230.h,
+                          decoration: BoxDecoration(
+                            // color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10.r)
+                          ),
+                          margin: EdgeInsets.only(left: 16.w, right: 16.w,top: 16.h),
+                          // color: Colors.grey,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: cubit.currentPrimary.similar.length,
+                              itemBuilder: (context,i)=>SimilarProject(property: cubit.currentPrimary.similar[i]))
+                      ),
 
 
                       Container(

@@ -5,6 +5,7 @@ import 'package:newavenue/models/primary/primary_cubit.dart';
 import 'package:newavenue/models/primary/primary_states.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/primary_widget.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../shared/styles/styles.dart';
 
@@ -20,7 +21,7 @@ class PrimaryExploreScreen extends StatelessWidget {
             appBar: AppBar(
               leading: IconButton(
                   onPressed: () {
-                    navigatorKey.currentState!.pop(context);
+CustomRouter.pop();
                   },
                   icon: Icon(Icons.arrow_back_ios,
                       color: Theme.of(context).iconTheme.color)),

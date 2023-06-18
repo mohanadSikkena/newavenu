@@ -6,6 +6,7 @@ import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/models/properties/property_model.dart';
 import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../main.dart';
 import '../../modules/properties/explore_screen.dart';
@@ -60,9 +61,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   homePageSearchFunction(BuildContext context) {
     homePageSearchNode.unfocus();
     emit(HomePageSearchUnfocus());
-    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
-      return SearchScreen();
-    }));
+    CustomRouter.normalPush(screen: SearchScreen());
   }
 
   changeHomePagePropertiesImage(int currentIndex, Property property) {
@@ -73,7 +72,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   List<Property>propertyHistory=[];
 
   propertyPop(){
-    navigatorKey.currentState!.pop();
+    CustomRouter.pop();
     propertyHistory.removeLast();
     propertyHistory.isNotEmpty?{currentProperty=propertyHistory.last}:null;
     emit(PropertyPopState());
@@ -84,27 +83,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     emit(PropertyLoading());
     // navigatorKey.currentState!.push(
     //   MaterialPageRoute(builder: (_)=>PropertyScreen(),),);
-    navigatorKey.currentState!.push(PageRouteBuilder(
-        pageBuilder: (context,animation,secondaryAnimation)=>PropertyScreen(),
-        transitionsBuilder:(context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0,0.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-          }
-   ),
-
-    );
+    CustomRouter.animatedNavigateTo(screen: PropertyScreen());
     await DioHelper.getData(url: "/properties/$id").then((value) {
       value.data["agent"] = Agent.fromMap(value.data["agent"]);
 
@@ -214,9 +193,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     exploreLoading = true;
     exploreProperties = [];
     emit(ChangeSubCategory());
-    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
-      return const ExploreScreen();
-    }));
+    CustomRouter.normalPush(screen:const ExploreScreen());
     await DioHelper.getData(
             url:
                 '/v2/properties/get-by-category/$selectedSubCategory?sale_type_id=${
@@ -241,9 +218,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     exploreProperties = [];
     emit(ExploreLoading());
     searchWord = search;
-    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
-      return const ExploreScreen();
-    }));
+    CustomRouter.normalPush(screen:const ExploreScreen());
     await DioHelper.getData(url: '/properties/search?word=$search')
         .then((value) {
       value.data.forEach((map) {
@@ -300,7 +275,7 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
   exploreBackFunction(BuildContext context) {
     exploreProperties = [];
     searchValue = '';
-    navigatorKey.currentState!.pop(context);
+    CustomRouter.pop();
 
     emit(ExploreBackState());
   }

@@ -6,6 +6,7 @@ import 'package:newavenue/models/locations/locations_states.dart';
 import 'package:newavenue/models/primary/primary_cubit.dart';
 import 'package:newavenue/modules/primary/primary_explore.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
+import 'package:newavenue/shared/router.dart';
 
 class PrimaryCategories extends StatelessWidget {
   const PrimaryCategories({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class PrimaryCategories extends StatelessWidget {
          return Scaffold(
       appBar: AppBar(
         leading:IconButton(onPressed: (){
-          navigatorKey.currentState!.pop(context);
+          CustomRouter.pop();
         }, icon:  Icon(Icons.arrow_back_ios,color: Theme.of(context).iconTheme.color),) ,
         elevation: 0.0,
       ),
@@ -43,9 +44,7 @@ class PrimaryCategories extends StatelessWidget {
                   count: cubit.locations[i].count,
                   name: cubit.locations[i].name, function: (){
                   PrimaryCubit.get(context).getPrimaryByLocation(id: cubit.locations[i].id, context: context);
-                  navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
-                    return const PrimaryExploreScreen();
-                  }));
+                  CustomRouter.normalPush(screen: const PrimaryExploreScreen());
               
               }) )
               )

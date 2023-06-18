@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/categories/categories_states.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../main.dart';
 import '../../modules/properties/categories.dart';
@@ -40,9 +41,7 @@ class CategoriesCubit extends Cubit<CategoriesStates>{
   navigateToCategories({required BuildContext context})async{
     categories=[];
     emit(CategoriesLoading());
-    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_){
-      return const  CategoriesScreen();
-    }));
+    CustomRouter.normalPush(screen:const CategoriesScreen());
     await getCategories();
 
 

@@ -6,6 +6,7 @@ import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/search/search_cubit.dart';
 import 'package:newavenue/models/search/search_states.dart';
 import 'package:newavenue/shared/components/custom_text_field.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../shared/styles/colors.dart';
 import '../../shared/styles/styles.dart';
@@ -26,7 +27,7 @@ class SearchScreen extends StatelessWidget {
               surfaceTintColor: Colors.transparent,
               leading: IconButton(
                 onPressed: () {
-                  navigatorKey.currentState!.pop(context);
+                 CustomRouter.pop();
                 },
                 icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color,),
               ),

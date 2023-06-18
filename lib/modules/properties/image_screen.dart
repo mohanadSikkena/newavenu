@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newavenue/shared/router.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -16,7 +17,7 @@ class ImageScreen extends StatelessWidget {
       appBar: AppBar(
 
         leading:IconButton(onPressed: (){
-          navigatorKey.currentState!.pop(context);
+          CustomRouter.pop();
         }, icon:const  Icon(Icons.arrow_back_ios,color: Colors.white),)
         
         ,elevation: 0.0,

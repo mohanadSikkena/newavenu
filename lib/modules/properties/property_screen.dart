@@ -12,6 +12,7 @@ import 'package:newavenue/modules/properties/image_screen.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
 import 'package:newavenue/shared/components/loading_dialog.dart';
 import 'package:newavenue/shared/network/remote/launcher_helper.dart';
+import 'package:newavenue/shared/router.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,7 +32,7 @@ class PropertyScreen extends StatelessWidget {
         builder: (context, states) {
           return Scaffold(
             extendBodyBehindAppBar: true,
-            appBar:cubit.propertyLoading? null:AppBar(
+            appBar:AppBar(
               elevation: 0.0,
               backgroundColor: Colors.transparent,
               leading: IconButton(
@@ -44,7 +45,7 @@ class PropertyScreen extends StatelessWidget {
                   )),
               // shadowColor: Colors.transparent,
               // surfaceTintColor: Colors.transparent,
-              actions: [
+              actions:cubit.propertyLoading? null: [
                 Row(
                   children: [
                     IconButton(
@@ -97,13 +98,10 @@ class PropertyScreen extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: (){
-                            navigatorKey.currentState!.push(
-                                MaterialPageRoute(builder: (_) {
-                                  return ImageScreen(
-                                    images:
-                                    cubit.currentProperty.images,
-                                  );
-                                }));
+                            CustomRouter.normalPush(screen: ImageScreen(
+                              images:
+                              cubit.currentProperty.images,
+                            ));
                           },
                           child: Stack(
                             children: [
@@ -252,12 +250,9 @@ class PropertyScreen extends StatelessWidget {
                           onTap: () {
                             cubit.getAgentProperties(
                                 cubit.currentProperty.agent.id);
-                            navigatorKey.currentState!
-                                .push(MaterialPageRoute(builder: (_) {
-                              return AgentDetails(
-                                agent: cubit.currentProperty.agent,
-                              );
-                            }));
+                            CustomRouter.normalPush(screen: AgentDetails(
+                              agent: cubit.currentProperty.agent,
+                            ));
                           },
 
                           contentPadding:

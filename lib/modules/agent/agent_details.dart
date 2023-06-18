@@ -6,6 +6,7 @@ import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/models/properties/properties_states.dart';
 import 'package:newavenue/shared/components/agent_profile_property_widget.dart';
 import 'package:newavenue/shared/components/custom_loading.dart';
+import 'package:newavenue/shared/router.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 import '../../shared/styles/colors.dart';
 
@@ -24,7 +25,7 @@ class AgentDetails extends StatelessWidget {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              navigatorKey.currentState!.pop(context);
+              CustomRouter.pop();
             },
             icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).iconTheme.color),
           )),

@@ -5,6 +5,7 @@ import 'package:newavenue/models/categories/categories_cubit.dart';
 import 'package:newavenue/models/categories/categories_states.dart';
 import 'package:newavenue/models/properties/properties_cubit.dart';
 import 'package:newavenue/modules/primary/primary_categories.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../shared/components/buy_rent_custom_button.dart';
 import '../../shared/styles/colors.dart';
@@ -23,7 +24,7 @@ class CategoriesScreen extends StatelessWidget {
               scrolledUnderElevation: 0.0,
               leading: IconButton(
                 onPressed: () {
-                  navigatorKey.currentState!.pop(context);
+                 CustomRouter.pop();
                 },
                 icon: Icon(
                   Icons.arrow_back_ios,

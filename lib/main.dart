@@ -20,12 +20,12 @@ import 'package:newavenue/shared/network/local/cache_helper.dart';
 import 'package:newavenue/shared/network/remote/dio_helper.dart';
 import 'package:newavenue/shared/network/remote/dynamic_helper.dart';
 import 'package:newavenue/shared/network/remote/notifications_helper.dart';
+import 'package:newavenue/shared/router.dart';
 import 'package:newavenue/shared/theme/dark.dart';
 import 'package:newavenue/shared/theme/light.dart';
 
 import 'models/customer/customer_cubit.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: unused_import
 
@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
                         theme: lightTheme,
                         darkTheme: darkTheme,
                         themeMode: AppCubit.get(context).currentMode,
-                        navigatorKey: navigatorKey,
+                        navigatorKey: CustomRouter.navigatorKey,
                         debugShowCheckedModeBanner: false,
                         title: "Newavenue",
                         builder: (BuildContext context, Widget? child) {

@@ -5,6 +5,39 @@ import 'package:currency_formatter/currency_formatter.dart';
 
 import '../../shared/network/remote/dio_helper.dart';
 
+class SimilarPrimary{
+  int id;
+  String image;
+  String minSpace;
+  String maxSpace;
+  String name;
+  String price;
+
+  SimilarPrimary({
+    required this.id,
+    required this.price,
+    required this.minSpace,
+    required this.name,
+    required this.image,
+    required this.maxSpace
+});
+
+  factory SimilarPrimary.fromMap(Map<String,dynamic>map){
+    return SimilarPrimary(
+      image:DioHelper.url+map['images'][0]["image"] ,
+      id:map['id'] ,
+      maxSpace:map['min_space'] ,
+      minSpace: map['max_space'],
+      name:map['name'] ,
+      price:CurrencyFormatter.
+      format(map['min_total_price'],
+          CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP",
+              symbolSide: SymbolSide.right)).toString()  ,
+    );
+  }
+
+}
+
 class ExplorePrimary {
   int id;
   List<String> images;
@@ -41,10 +74,7 @@ class ExplorePrimary {
       minSpace: map['min_space'] as String,
       maxSpace: map['max_space'] as String,
       name: map['name'] as String,
-      price:  CurrencyFormatter.
-      format(map['min_total_price'], 
-      CurrencyFormatterSettings(thousandSeparator: ",", symbol: "EGP", 
-      symbolSide: SymbolSide.right)).toString() 
+      price:  formatCurrency(c:map['min_total_price'] )
     );
   }
 }
@@ -66,6 +96,7 @@ class Primary {
   int currentImage;
   String primaryType;
   String location;
+  List<SimilarPrimary> similar=[];
   Primary({
     required this.primaryType,
     required this.downPayment,
@@ -82,6 +113,7 @@ class Primary {
     required this.maxSpace,
     required this.currentImage,
     required this.deliveryDate,
+    required this.similar
   });
 
 
@@ -89,7 +121,16 @@ class Primary {
     List<String>newImages=[];
     map['images'].forEach((image){
       newImages.add(DioHelper.url+image['image']) ;
+
+
     });
+
+    List<SimilarPrimary>properties=[];
+    if(map['similarProperties']!=null){
+      map['similarProperties'].forEach((map){
+        properties.add(SimilarPrimary.fromMap(map));
+      });
+    }
     return Primary(
       primaryType:map['primary_type']['name'] as String ,
       downPayment:map['down_payment'] as String , 
@@ -106,6 +147,7 @@ class Primary {
       maxSpace: map['max_space'] as String,
       currentImage:0,
       deliveryDate: map['delivery_date'] as String,
+      similar: properties
     );
   }
 

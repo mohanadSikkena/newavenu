@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newavenue/models/primary/primary_states.dart';
+import 'package:newavenue/shared/router.dart';
 
 import '../../main.dart';
 import '../../modules/primary/primary_screen.dart';
@@ -34,15 +35,22 @@ class PrimaryCubit extends Cubit<PrimaryStates>{
   late Primary currentPrimary;
   bool primaryScreenLoading=true;
 
+  List<Primary>primaryHistory=[];
+  propertyPop(){
+    CustomRouter.pop();
+    primaryHistory.removeLast();
+    primaryHistory.isNotEmpty?{currentPrimary=primaryHistory.last}:null;
+    emit(PrimaryPopState());
+  }
+
   getPrimaryProperty({required int id,required BuildContext context})async{
     primaryScreenLoading=true;
     emit(PrimaryPropertyLoading());
-    navigatorKey.currentState!.push( MaterialPageRoute(builder: (_){
-      return const PrimaryScreen();
-    }));
+    CustomRouter.animatedNavigateTo(screen: const PrimaryScreen());
 
     await DioHelper.getData(url: '/primary/$id').then((value) {
       currentPrimary=Primary.fromMap(value.data);
+      primaryHistory.add(currentPrimary);
       primaryScreenLoading=false;
     emit(PrimaryPropertyLoading());
     });
