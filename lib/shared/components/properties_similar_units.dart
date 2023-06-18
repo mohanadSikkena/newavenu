@@ -22,12 +22,7 @@ class SimilarUnit extends StatelessWidget {
       margin: EdgeInsets.only(right: 16.w),
       child: InkWell(
         onTap: (){
-          navigatorKey.currentState!.push(
-              MaterialPageRoute(builder: (_) =>  PropertyScreen(),
-                  settings: RouteSettings(
-                      arguments: property.id
-                  )
-              ));
+          PropertiesCubit.get(context).getProperty(property.id, context);
           // PropertiesCubit.get(context).getProperty(property.id, context);
         },
         child: Column(

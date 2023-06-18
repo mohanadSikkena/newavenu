@@ -33,6 +33,8 @@ class ChangeCategoriesSelected extends PropertiesStates{}
 class ChangePropertyFavourite extends PropertiesStates{}
 
 class GetProperty extends PropertiesStates{}
+
+class PropertyPopState extends PropertiesStates{}
 class ChangeSubCategory extends PropertiesStates{}
 class ChangeCategory extends PropertiesStates{}
 class GetExploreProperties extends PropertiesStates{}

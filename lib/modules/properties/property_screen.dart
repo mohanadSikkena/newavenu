@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,9 +22,7 @@ import '../../shared/network/remote/dynamic_helper.dart';
 import '../../shared/styles/colors.dart';
 
 class PropertyScreen extends StatelessWidget {
-  // ignore: use_key_in_widget_constructors
-
-   const PropertyScreen({Key? key,
+   PropertyScreen({Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,9 @@ class PropertyScreen extends StatelessWidget {
             appBar:cubit.propertyLoading? null:AppBar(
               elevation: 0.0,
               backgroundColor: Colors.transparent,
-              // backgroundColor: Theme.of(context).colorScheme.background,
               leading: IconButton(
                   onPressed: () {
-                    navigatorKey.currentState!
-                        .pop(context);
+                    cubit.propertyPop();
                   },
                   icon: const Icon(
                     Icons.arrow_back_ios,

@@ -70,12 +70,41 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
     emit(ChangePropertyWidgetImage());
   }
 
+  List<Property>propertyHistory=[];
+
+  propertyPop(){
+    navigatorKey.currentState!.pop();
+    propertyHistory.removeLast();
+    propertyHistory.isNotEmpty?{currentProperty=propertyHistory.last}:null;
+    emit(PropertyPopState());
+  }
+
   getProperty(int id, BuildContext context) async {
     propertyLoading = true;
     emit(PropertyLoading());
-    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) {
-      return const PropertyScreen();
-    }));
+    // navigatorKey.currentState!.push(
+    //   MaterialPageRoute(builder: (_)=>PropertyScreen(),),);
+    navigatorKey.currentState!.push(PageRouteBuilder(
+        pageBuilder: (context,animation,secondaryAnimation)=>PropertyScreen(),
+        transitionsBuilder:(context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0,0.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          final tween = Tween(begin: begin, end: end);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
+
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+          }
+   ),
+
+    );
     await DioHelper.getData(url: "/properties/$id").then((value) {
       value.data["agent"] = Agent.fromMap(value.data["agent"]);
 
@@ -83,14 +112,15 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
       favourites.contains(currentProperty.id)
           ? currentProperty.isFavourite = true
           : null;
+      propertyHistory.add(currentProperty);
+      propertyLoading = false;
+      emit(GetProperty());
     });
 
-    // currentProperty=allProperties.firstWhere((element){
-    //   return element.id==id;
-    // });
-    propertyLoading = false;
-    emit(GetProperty());
   }
+
+
+
 
   mostViews() async {
     mostViewd = [];
@@ -252,21 +282,12 @@ class PropertiesCubit extends Cubit<PropertiesStates> {
         ? favourites.remove(property.id)
         : favourites.add(property.id);
 
-    // property.isFavourite?favouriteProperties.add(property):favouriteProperties.remove(property);
-
-    // ***************************************************************
-
     favouriteProperties.removeWhere(
       (element) {
         return element.id == property.id;
       },
     );
-
     emit(ChangePropertyFavourite());
-    // property.isFavourite?favouriteProperties.contains(property)?
-    // null:favouriteProperties.add(property)
-    // :
-    // favouriteProperties.contains(property)?favouriteProperties.remove(property):null;
     int id = CacheHelper.getData(key: 'id');
     await DioHelper.setData(
             query: {"property_id": property.id, "customer_id": id},

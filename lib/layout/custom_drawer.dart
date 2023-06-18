@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:newavenue/models/drawer/menu_item.dart';
-import 'package:newavenue/models/properties/drawer/contact_us.dart';
+import 'package:newavenue/models/drawer/contact_us.dart';
 import 'package:newavenue/modules/home/home_page.dart';
 
-import '../models/properties/drawer/drawer_menu_screen.dart';
+import '../models/drawer/drawer_menu_screen.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);

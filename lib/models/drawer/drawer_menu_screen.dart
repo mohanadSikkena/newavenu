@@ -8,7 +8,7 @@ import 'package:newavenue/models/app/app_states.dart';
 import 'package:newavenue/shared/styles/colors.dart';
 import 'package:newavenue/shared/styles/styles.dart';
 
-import '../../drawer/menu_item.dart';
+import 'menu_item.dart';
 
 class DrawerMenuScreen extends StatelessWidget {
   final MenuItem currentItem;
